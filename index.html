@@ -42,30 +42,6 @@
             background-color: rgba(19, 19, 19, 255);
         }
 
-        #control-panel {
-            position: absolute;
-            right: 20px;
-            top: 70px;
-            width: 220px;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-            color: #fff;
-            font-size: 0.9em;
-            z-index: 100;
-        }
-
-        #control-panel h2 {
-            margin-top: 0;
-            font-size: 1.2em;
-        }
-
-        #control-panel p {
-            margin: 5px 0;
-            line-height: 1.4;
-        }
-
         canvas {
             display: block;
             width: 100%;
@@ -101,11 +77,15 @@
         }
 
         .airport-ui .badge.T {
-            background-color: #8B0000; /* Vermelho escuro */
+            background-color: #b82a14; /* Vermelho escuro */
         }
 
         .airport-ui .badge.G {
-            background-color: #006400; /* Verde escuro */
+            background-color: #008856; /* Verde escuro */
+        }
+
+        .airport-ui .badge.C {
+            background-color: #3b6cec; /* Azul claro */
         }
 
         .highlight {
@@ -123,13 +103,13 @@
             font-size: 1em;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
             display: none; /* Inicialmente escondido */
-            z-index: 10;
+            z-index: 11;
         }
 
         /* Estilo do título do aeroporto e posição */
         .airport-info-menu .title {
-            color: #4f88c4; /* Azul claro */
-            font-size: 1.4em; /* Tamanho grande */
+            color: #3b6cec;
+            font-size: 1.1em;
             font-weight: bold;
             margin-bottom: 5px;
         }
@@ -138,6 +118,15 @@
         .airport-info-menu .controller-info {
             font-size: 1em; /* Tamanho normal */
             color: #bdbdbd; /* Cor cinza clara */
+        }
+
+        .airport-info-menu .menu-divider {
+            border: none;
+            height: 1px;
+            background-color: #3b6cec; /* Cor azul para combinar com o texto */
+            width: 100%;
+            margin: 4px 0; /* Ajuste o espaçamento conforme necessário */
+            opacity: 0.3; /* Para dar um efeito de sombra */
         }
     </style>
 </head>
@@ -153,18 +142,6 @@
         <canvas id="map"></canvas>
     </div>
 
-    <!-- Painel de controle -->
-    <div id="control-panel">
-        <h2>Flight Information</h2>
-        <p>Flight: TP123</p>
-        <p>Origin: LPPT</p>
-        <p>Destination: EGLL</p>
-        <p>Altitude: 30000 ft</p>
-        <p>Speed: 450 knots</p>
-        <p>Heading: 180º</p>
-    </div>
-
-    <!-- Scripts -->
     <script src="areas.js"></script>
     <script>
         const canvas = document.getElementById('map');
@@ -249,13 +226,13 @@
             });
         }
 
-        // Função para criar e exibir a UI do aeroporto com novos botões de T e G
         function createAirportUI(airport) {
             const airportUI = document.createElement('div');
             airportUI.className = 'airport-ui';
             airportUI.innerHTML = `
                 <p>${airport.name}</p>
-                ${airport.tower ? '<div class="badge T">T</div>' : ''}
+                ${airport.ctr && airport.tower ? '<div class="badge C">C</div>' : ''}
+                ${!airport.ctr && airport.tower ? '<div class="badge T">T</div>' : ''}
                 ${airport.ground ? '<div class="badge G">G</div>' : ''}
             `;
             document.body.appendChild(airportUI);
@@ -264,29 +241,33 @@
             airportInfoMenu.className = 'airport-info-menu';
             document.body.appendChild(airportInfoMenu);
 
-            // Função para atualizar a posição do menu e mostrar
             function showInfoMenu(badge) {
-                // Define o nome e posição (T ou G) com o estilo atualizado
-                const position = badge.classList.contains('T') ? 'Tower' : 'Ground';
+                const position = badge.classList.contains('T') ? 'Tower' : badge.classList.contains('C') ? 'Control' : 'Ground';
                 airportInfoMenu.style.display = 'block';
                 airportInfoMenu.innerHTML = `
-                    <div class="title">${airport.name} - ${position}</div>
+                    <div class="title">${airport.real_name} - ${position}</div>
+                    <hr class="menu-divider">
                     <div class="controller-info">Alex Jespersen</div>
                     <div class="controller-info">00:46</div>
                 `;
 
-                // Posiciona o menu
                 const [x, y] = transformCoordinates(airport.coordinates);
-                airportInfoMenu.style.left = `${x}px`;
-                airportInfoMenu.style.top = `${y + 60}px`; // Ajuste a posição para ficar abaixo do ícone
+                airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
+                airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
             }
-            // Oculta o menu
+
             function hideInfoMenu() {
                 airportInfoMenu.style.display = 'none';
             }
 
+            const controlBadge = airportUI.querySelector('.badge.C');
             const towerBadge = airportUI.querySelector('.badge.T');
             const groundBadge = airportUI.querySelector('.badge.G');
+
+            if (controlBadge) {
+                controlBadge.addEventListener('mouseenter', () => showInfoMenu(controlBadge));
+                controlBadge.addEventListener('mouseleave', hideInfoMenu);
+            }
 
             if (towerBadge) {
                 towerBadge.addEventListener('mouseenter', () => showInfoMenu(towerBadge));
@@ -298,11 +279,13 @@
                 groundBadge.addEventListener('mouseleave', hideInfoMenu);
             }
 
-            // Atualiza a posição da UI do aeroporto
             function updatePosition() {
                 const [x, y] = transformCoordinates(airport.coordinates);
-                airportUI.style.left = `${x}px`;
-                airportUI.style.top = `${y}px`;
+                const uiWidth = airportUI.offsetWidth;
+                const uiHeight = airportUI.offsetHeight;
+                
+                airportUI.style.left = `${x - uiWidth / 2}px`;
+                airportUI.style.top = `${y + uiHeight / 2}px`;
             }
 
             updatePosition();
@@ -310,7 +293,6 @@
             canvas.addEventListener('mousemove', updatePosition);
         }
 
-        // Exibe a UI de todos os aeroportos listados em areas.js
         function displayAirports() {
             controlAreas.forEach(area => {
                 if (area.type === 'Airport') {
@@ -319,7 +301,6 @@
             });
         }
 
-        // Chama a função para exibir os aeroportos ao carregar o canvas
         displayAirports();
 
         // Evento para arrastar o mapa
@@ -417,7 +398,34 @@
 
         // Executa a função para exibir os botões dos polígonos
         displayPolygonButtons();
+        
+        let lastMouseX = 0;
+        let lastMouseY = 0;
 
+        // Captura a posição do mouse no canvas
+        canvas.addEventListener('mousemove', (e) => {
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        // Função para copiar coordenadas para a área de transferência
+        function copyCoordinatesToClipboard(x, y) {
+            const coordsText = `[${x.toFixed(2)}, ${y.toFixed(2)}]`;
+            navigator.clipboard.writeText(coordsText).then(() => {
+                console.log(`Coordenadas copiadas: ${coordsText}`);
+            }).catch(err => {
+                console.error('Falha ao copiar para a área de transferência', err);
+            });
+        }
+
+        // Evento para copiar coordenadas ao pressionar a tecla "ç"
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ç') { // Verifica se a tecla pressionada é "ç"
+                const mouseX = (lastMouseX - canvas.getBoundingClientRect().left - offsetX) / scale;
+                const mouseY = (lastMouseY - canvas.getBoundingClientRect().top - offsetY) / scale;
+                copyCoordinatesToClipboard(mouseX, mouseY);
+            }
+        });
         // Inicializa o canvas
         resizeCanvas();
     </script>
