@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATC24 RADAR</title>
+    <style>
+        /* Layout de tela cheia */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #2d2d2d;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        /* Cabeçalho da página */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Container principal para o mapa */
+        #map-container {
+            position: absolute;
+            top: 50px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(19, 19, 19, 255);
+        }
+
+        #control-panel {
+            position: absolute;
+            right: 20px;
+            top: 70px;
+            width: 220px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 0.9em;
+            z-index: 100;
+        }
+
+        #control-panel h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+
+        #control-panel p {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .airport-ui {
+            position: absolute;
+            background-color: rgba(32, 47, 54, 0.7);
+            padding: 4px 0px;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 0.9em;
+            text-align: center;
+            width: 50px;
+            pointer-events: none; /* Para evitar interferências */
+        }
+
+        .airport-ui p {
+            margin: 5px 0;
+        }
+
+        .airport-ui .badge {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 0px;
+            text-align: center;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer; /* Mostra que é interativo */
+            pointer-events: auto; /* Permite interações de hover */
+        }
+
+        .airport-ui .badge.T {
+            background-color: #8B0000; /* Vermelho escuro */
+        }
+
+        .airport-ui .badge.G {
+            background-color: #006400; /* Verde escuro */
+        }
+
+        .highlight {
+            background-color: rgba(255, 215, 0, 0.5); /* Cor de destaque para a CTR */
+            z-index: 10;
+        }
+
+        /* Estilo atualizado para o menu de informações do aeroporto */
+        .airport-info-menu {
+            position: absolute;
+            background-color: #131316;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+            display: none; /* Inicialmente escondido */
+            z-index: 10;
+        }
+
+        /* Estilo do título do aeroporto e posição */
+        .airport-info-menu .title {
+            color: #4f88c4; /* Azul claro */
+            font-size: 1.4em; /* Tamanho grande */
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Estilo das informações do controlador */
+        .airport-info-menu .controller-info {
+            font-size: 1em; /* Tamanho normal */
+            color: #bdbdbd; /* Cor cinza clara */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header>
+        <h1>ATC24 RADAR</h1>
+    </header>
+
+    <!-- Container do mapa -->
+    <div id="map-container">
+        <canvas id="map"></canvas>
+    </div>
+
+    <!-- Painel de controle -->
+    <div id="control-panel">
+        <h2>Flight Information</h2>
+        <p>Flight: TP123</p>
+        <p>Origin: LPPT</p>
+        <p>Destination: EGLL</p>
+        <p>Altitude: 30000 ft</p>
+        <p>Speed: 450 knots</p>
+        <p>Heading: 180º</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="areas.js"></script>
+    <script>
+        const canvas = document.getElementById('map');
+        const ctx = canvas.getContext('2d');
+
+        let offsetX = 0, offsetY = 0;
+        let scale = 1;
+        let isDragging = false;
+        let startX, startY;
+
+        // Configuração do tamanho do canvas
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - 50;
+            draw();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // Carregamento da imagem do mapa
+        const mapImage = new Image();
+        mapImage.src = 'PTFS-Map-Grey.png';
+        mapImage.onload = resizeCanvas;
+
+        // Função de transformação das coordenadas
+        function transformCoordinates(coord) {
+            return [
+                coord[0] * scale + offsetX,
+                coord[1] * scale + offsetY
+            ];
+        }
+
+        // Função de desenho
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const mapWidth = 1200 * scale;
+            const mapHeight = 1200 * scale;
+            ctx.drawImage(mapImage, offsetX, offsetY, mapWidth, mapHeight);
+            drawControlAreas();
+        }
+
+        // Função para desenhar áreas de controle
+        function drawControlAreas() {
+            // Primeiro desenha todas as polylines
+            controlAreas.forEach(area => {
+                if (area.active && area.type === 'polyline') {
+                    const coordinates = area.coordinates.map(transformCoordinates);
+                    ctx.beginPath();
+                    ctx.strokeStyle = area.color;
+                    ctx.lineWidth = 0.5;
+
+                    coordinates.forEach((point, index) => {
+                        if (index === 0) {
+                            ctx.moveTo(point[0], point[1]);
+                        } else {
+                            ctx.lineTo(point[0], point[1]);
+                        }
+                    });
+                    ctx.stroke();
+                }
+            });
+
+            // Depois, desenha todos os polygons
+            controlAreas.forEach(area => {
+                if (area.active && area.type === 'polygon') {
+                    const coordinates = area.coordinates.map(transformCoordinates);
+                    ctx.beginPath();
+                    ctx.strokeStyle = area.color;
+                    ctx.fillStyle = area.fillColor;
+                    ctx.lineWidth = 0.5;
+
+                    coordinates.forEach((point, index) => {
+                        if (index === 0) {
+                            ctx.moveTo(point[0], point[1]);
+                        } else {
+                            ctx.lineTo(point[0], point[1]);
+                        }
+                    });
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            });
+        }
+
+        // Função para criar e exibir a UI do aeroporto com novos botões de T e G
+        function createAirportUI(airport) {
+            const airportUI = document.createElement('div');
+            airportUI.className = 'airport-ui';
+            airportUI.innerHTML = `
+                <p>${airport.name}</p>
+                ${airport.tower ? '<div class="badge T">T</div>' : ''}
+                ${airport.ground ? '<div class="badge G">G</div>' : ''}
+            `;
+            document.body.appendChild(airportUI);
+
+            const airportInfoMenu = document.createElement('div');
+            airportInfoMenu.className = 'airport-info-menu';
+            document.body.appendChild(airportInfoMenu);
+
+            // Função para atualizar a posição do menu e mostrar
+            function showInfoMenu(badge) {
+                // Define o nome e posição (T ou G) com o estilo atualizado
+                const position = badge.classList.contains('T') ? 'Tower' : 'Ground';
+                airportInfoMenu.style.display = 'block';
+                airportInfoMenu.innerHTML = `
+                    <div class="title">${airport.name} - ${position}</div>
+                    <div class="controller-info">Alex Jespersen</div>
+                    <div class="controller-info">00:46</div>
+                `;
+
+                // Posiciona o menu
+                const [x, y] = transformCoordinates(airport.coordinates);
+                airportInfoMenu.style.left = `${x}px`;
+                airportInfoMenu.style.top = `${y + 60}px`; // Ajuste a posição para ficar abaixo do ícone
+            }
+            // Oculta o menu
+            function hideInfoMenu() {
+                airportInfoMenu.style.display = 'none';
+            }
+
+            const towerBadge = airportUI.querySelector('.badge.T');
+            const groundBadge = airportUI.querySelector('.badge.G');
+
+            if (towerBadge) {
+                towerBadge.addEventListener('mouseenter', () => showInfoMenu(towerBadge));
+                towerBadge.addEventListener('mouseleave', hideInfoMenu);
+            }
+
+            if (groundBadge) {
+                groundBadge.addEventListener('mouseenter', () => showInfoMenu(groundBadge));
+                groundBadge.addEventListener('mouseleave', hideInfoMenu);
+            }
+
+            // Atualiza a posição da UI do aeroporto
+            function updatePosition() {
+                const [x, y] = transformCoordinates(airport.coordinates);
+                airportUI.style.left = `${x}px`;
+                airportUI.style.top = `${y}px`;
+            }
+
+            updatePosition();
+            window.addEventListener('resize', updatePosition);
+            canvas.addEventListener('mousemove', updatePosition);
+        }
+
+        // Exibe a UI de todos os aeroportos listados em areas.js
+        function displayAirports() {
+            controlAreas.forEach(area => {
+                if (area.type === 'Airport') {
+                    createAirportUI(area);
+                }
+            });
+        }
+
+        // Chama a função para exibir os aeroportos ao carregar o canvas
+        displayAirports();
+
+        // Evento para arrastar o mapa
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - offsetX;
+            startY = e.clientY - offsetY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                offsetX = e.clientX - startX;
+                offsetY = e.clientY - startY;
+                draw();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+
+            // Captura a posição do mouse relativa ao canvas
+            const mouseX = (e.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+            const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+
+            // Ajusta a escala
+            const zoomFactor = e.deltaY * -0.001;
+            scale = Math.min(Math.max(0.1, scale + zoomFactor), 4);
+
+            // Calcula o novo offset para centralizar o zoom no ponto do mouse
+            offsetX = e.clientX - mouseX * scale;
+            offsetY = e.clientY - mouseY * scale;
+
+            draw();
+        });
+
+        // Função para criar um botão de UI para cada polígono ativo
+        function createPolygonButton(area) {
+            // Criação do botão
+            const polygonButton = document.createElement('button');
+            polygonButton.className = 'polygon-button';
+            polygonButton.innerText = area.name;
+            polygonButton.style.position = 'absolute';
+            polygonButton.style.zIndex = 10;
+            polygonButton.style.padding = '5px';
+            polygonButton.style.backgroundColor = '#333';
+            polygonButton.style.color = '#fff';
+            polygonButton.style.border = '1px solid #222';
+            polygonButton.style.borderRadius = '5px';
+            polygonButton.style.cursor = 'pointer';
+
+            // Posiciona o botão de acordo com a variável "center" do polígono
+            const [x, y] = transformCoordinates(area.center);
+            polygonButton.style.left = `${x}px`;
+            polygonButton.style.top = `${y}px`;
+
+            // Adiciona evento de hover para mudar a cor do polígono e do botão
+            polygonButton.addEventListener('mouseenter', () => {
+                area.originalFillColor = area.fillColor; // Salva a cor original
+                area.fillColor = 'rgba(60, 255, 60, 0.15)'; // Cor destacada para o polígono
+                polygonButton.style.backgroundColor = '#0b6094'; // Azul claro para o botão
+                draw(); // Redesenha o mapa
+            });
+
+            // Restaura a cor original do polígono e do botão ao remover o hover
+            polygonButton.addEventListener('mouseleave', () => {
+                area.fillColor = area.originalFillColor;
+                polygonButton.style.backgroundColor = '#333'; // Cor original do botão
+                draw(); // Redesenha o mapa
+            });
+
+            document.body.appendChild(polygonButton);
+
+            // Atualiza a posição do botão quando o canvas é redimensionado ou movido
+            function updateButtonPosition() {
+                const [updatedX, updatedY] = transformCoordinates(area.center);
+                polygonButton.style.left = `${updatedX}px`;
+                polygonButton.style.top = `${updatedY}px`;
+            }
+            window.addEventListener('resize', updateButtonPosition);
+            canvas.addEventListener('mousemove', updateButtonPosition);
+        }
+
+        // Chama a função para exibir botões para todos os polígonos ativos
+        function displayPolygonButtons() {
+            controlAreas.forEach(area => {
+                if (area.active && area.type === 'polygon') {
+                    createPolygonButton(area);
+                }
+            });
+        }
+
+        // Executa a função para exibir os botões dos polígonos
+        displayPolygonButtons();
+
+        // Inicializa o canvas
+        resizeCanvas();
+    </script>
+</body>
+</html>
