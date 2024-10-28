@@ -1,4 +1,3 @@
-// areas.js
 const controlAreas = [
     // FIRs
     {
@@ -261,23 +260,38 @@ const controlAreas = [
     // Airports
     {
         name: "IRFD",
+        real_name: "Rockford",
         type: "Airport",
-        coordinates: [575, 800],
+        prio: 1,
+        coordinates: [583.95, 795.56],
         tower: true,
         ground: true,
         ctr: "IRFD CTR"
     },
     {
-        name: "ILAR",
+        name: "IMLR",
+        real_name: "Mellor",
         type: "Airport",
-        coordinates: [825,911],
+        prio: 1,
+        coordinates: [390, 730],
+        tower: true,
+        ground: false,
+    },
+    {
+        name: "ILAR",
+        real_name: "Larnaca",
+        type: "Airport",
+        prio: 1,
+        coordinates: [832.00, 913.00],
         tower: true,
         ground: true,
         ctr: "ILAR CTR"
     },
     {
         name: "ISAU",
+        real_name: "Sauthemptona",
         type: "Airport",
+        prio: 1,
         coordinates: [131,863],
         tower: true,
         ground: false,
@@ -285,7 +299,9 @@ const controlAreas = [
     },
     {
         name: "IGRV",
+        real_name: "Grindavik",
         type: "Airport",
+        prio: 1,
         coordinates: [162,546],
         tower: true,
         ground: false,
@@ -293,7 +309,9 @@ const controlAreas = [
     },
     {
         name: "ITKO",
+        real_name: "Tokyo",
         type: "Airport",
+        prio: 1,
         coordinates: [528,242],
         tower: true,
         ground: true,
@@ -301,7 +319,9 @@ const controlAreas = [
     },
     {
         name: "IPPH",
+        real_name: "Perth",
         type: "Airport",
+        prio: 1,
         coordinates: [796,362],
         tower: true,
         ground: true,
@@ -309,7 +329,9 @@ const controlAreas = [
     },
     {
         name: "IZOL",
+        real_name: "Izolarini",
         type: "Airport",
+        prio: 1,
         coordinates: [1074,611],
         tower: true,
         ground: true,
@@ -317,11 +339,13 @@ const controlAreas = [
     },
     {
         name: "IBTH",
+        real_name: "Barthelemy",
         type: "Airport",
+        prio: 1,
         coordinates: [670,529],
         tower: true,
         ground: false,
-        ctr: "ITKO CTR"
+        ctr: "IBTH CTR"
     },
 ];
 
