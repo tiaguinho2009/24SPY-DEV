@@ -233,9 +233,9 @@
         <button id="saveATCInfo" style="margin-top: 10px; background-color: #3b6cec; color: #fff; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;" onclick="ATCOnlinefuncion()">
             Save
         </button>
-        <p>
-            Exemple: Rockford Tower @Gamer1 Izolirani Tower @Gamer2 Perth Tower @Gamer3
-        </p>
+        <p id="atclist">
+            <p>Exemple:</p> <p>Rockford Tower</p> <p>@Gamer1</p>
+        </p>        
     </div>
 
     <div class="footer">Made by tiaguinho_2009</div>
@@ -601,6 +601,29 @@
             // Atualiza a interface de usuário completa
             refreshUI();
         }
+
+        // Function to generate the list of ATCs in the specified format
+        function generateATCsListFromAreas() {
+            // List to collect ATCs in the desired format
+            let atcsList = [];
+
+            // Filter areas by type 'Airport' and extract their ATCs
+            controlAreas.forEach(area => {
+                if (area.type === "Airport" && area.atcs && area.atcs.length > 0) {
+                    area.atcs.forEach(atc => {
+                        // Add the ATC name followed by '@' on a new line
+                        atcsList.push(atc);
+                        atcsList.push("@");
+                    });
+                }
+            });
+
+            // Juntar os ATCs em uma string
+            const formattedATCs = atcsList.join(" ");
+            console.log(formattedATCs)
+        }
+
+        generateATCsListFromAreas()
 
         // Função para copiar coordenadas para a área de transferência
         function copyCoordinatesToClipboard(x, y) {
