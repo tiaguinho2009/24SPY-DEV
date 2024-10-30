@@ -188,73 +188,81 @@ const controlAreas = [
         name: "IRFD CTR",
         type: "polygon",
         firReference: "IRFD FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [470,1000],
-        active: true
+        active: false,
+        atc: "",
     },
     {
         name: "ISAU CTR",
         type: "polygon",
         firReference: "ISAU FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [170,1000],
-        active: true
+        active: false,
+        atc: "",
     },
     {
         name: "ILAR CTR",
         type: "polygon",
         firReference: "ILAR FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [1000,1000],
-        active: true
+        active: false,
+        atc: "",
     },
     {
         name: "IGRV CTR",
         type: "polygon",
         firReference: "IGRV FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [150,400],
-        active: true
+        active: false,
+        atc: "",
     },
     {
         name: "ITKO CTR",
         type: "polygon",
         firReference: "ITKO FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [535,370],
-        active: true
+        active: false,
+        atc: "",
     },
     {
         name: "IPPH CTR",
         type: "polygon",
         firReference: "IPPH FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [950,400],
-        active: true
+        active: false,
+        atc: "",
     },
     {
         name: "IZOL CTR",
         type: "polygon",
         firReference: "IZOL FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [1000,750],
-        active: true
+        active: false,
+        atc: "",
     },
     {
         name: "IBTH CTR",
         type: "polygon",
         firReference: "IBTH FIR",
-        color: "rgba(19,82,59, 1)",
-        fillColor: "rgba(0,82,59, 0.1)",
+        color: "rgba(0, 90, 50, 1)",
+        fillColor: "rgba(0, 90, 50, 0.1)",
         center: [500,550],
-        active: true
+        active: false,
+        atc: "",
     },
 
     // Airports
@@ -264,9 +272,16 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [583.95, 795.56],
-        tower: true,
-        ground: true,
-        ctr: "IRFD CTR"
+        tower: false,
+        ground: false,
+        ctr: "IRFD CTR",
+        atc: "",
+        towerAtc: "",
+        groundATC: "",
+        atcs: [
+            "Rockford Tower",
+            "Rockford Ground"
+        ]
     },
     {
         name: "IMLR",
@@ -274,8 +289,12 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [390, 730],
-        tower: true,
-        ground: false,
+        tower: false,
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Mellor Tower",
+        ]
     },
     {
         name: "ILAR",
@@ -283,9 +302,15 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [832.00, 913.00],
-        tower: true,
-        ground: true,
-        ctr: "ILAR CTR"
+        tower: false,
+        ground: false,
+        ctr: "ILAR CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Larnaca Tower",
+            "Larnaca Ground"
+        ]
     },
     {
         name: "ISAU",
@@ -293,9 +318,13 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [131,863],
-        tower: true,
-        ground: false,
-        ctr: "ISAU CTR"
+        tower: false,
+        ctr: "ISAU CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Sauthemptona Tower",
+        ]
     },
     {
         name: "IGRV",
@@ -303,9 +332,13 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [162,546],
-        tower: true,
-        ground: false,
-        ctr: "IGRV CTR"
+        tower: false,
+        ctr: "IGRV CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Grindavik Tower",
+        ]
     },
     {
         name: "ITKO",
@@ -313,9 +346,15 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [528,242],
-        tower: true,
-        ground: true,
-        ctr: "ITKO CTR"
+        tower: false,
+        ground: false,
+        ctr: "ITKO CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Tokyo Tower",
+            "Tokyo Ground"
+        ]
     },
     {
         name: "IPPH",
@@ -323,9 +362,15 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [796,362],
-        tower: true,
-        ground: true,
-        ctr: "IPPH CTR"
+        tower: false,
+        ground: false,
+        ctr: "IPPH CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Perth Tower",
+            "Perth Ground"
+        ]
     },
     {
         name: "IZOL",
@@ -333,19 +378,30 @@ const controlAreas = [
         type: "Airport",
         prio: 1,
         coordinates: [1074,611],
-        tower: true,
-        ground: true,
-        ctr: "IZOL CTR"
+        tower: false,
+        ground: false,
+        ctr: "IZOL CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Izolarini Tower",
+            "Izolarini Ground"
+        ]
     },
     {
         name: "IBTH",
-        real_name: "Barthelemy",
+        real_name: "Barthélemy",
         type: "Airport",
         prio: 1,
         coordinates: [670,529],
-        tower: true,
-        ground: false,
-        ctr: "IBTH CTR"
+        tower: false,
+        ctr: "IBTH CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Saint Barthélemy Tower",
+            "Saint Barthélemy Ground"
+        ]
     },
 ];
 

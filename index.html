@@ -23,13 +23,67 @@
             left: 0;
             right: 0;
             height: 50px;
-            background-color: #1a1a1a;
+            background-color: #131316;
             color: #fff;
             display: flex;
             align-items: center;
             padding: 0 20px;
             z-index: 100;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+            justify-content: space-between;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        /* Estilo do botão de configurações */
+        .settings-button,
+        .close-button {
+            background-color: rgba(32, 32, 36, 1);
+            border: none;
+            border-radius: 5px;
+            padding: 5px; /* Espaçamento interno para centralizar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            height: 30px;
+            width: 30px;
+        }
+
+        .settings-icon,
+        .close-icon {
+            width: 18px; /* Ajuste o tamanho do SVG conforme necessário */
+            height: 18px;
+        }
+
+        /* Estilo do menu de configurações */
+        .settings-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background-color: #131316;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            z-index: 101;
+        }
+
+        .settings-menu h2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0;
+            color: #3b6cec;
+        }
+
+        .settings-menu p {
+            color: #bdbdbd;
+            margin: 10px 0;
         }
 
         /* Container principal para o mapa */
@@ -129,6 +183,21 @@
             opacity: 0.3; /* Para dar um efeito de sombra */
         }
 
+        /* Estilo da seção de informações do controlador */
+        .controller-info-section {
+            background-color: rgba(32,32,36,1);
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        .controller-info-section p {
+            margin: 4px 0;
+            color: #ddd;
+            font-size: 0.9em;
+        }
+
         .footer {
             position: absolute;
             bottom: 5px;
@@ -145,7 +214,29 @@
     <!-- Cabeçalho -->
     <header>
         <h1>ATC24 RADAR</h1>
+        <button class="settings-button" onclick="toggleSettingsMenu()">
+            <img src="Icons/settings-svgrepo-com.svg" alt="Configurações" class="settings-icon">
+        </button>       
     </header>
+
+    <!-- Menu de Configurações -->
+    <div class="settings-menu" id="settingsMenu">
+        <h2>
+            Settings
+            <button class="close-button" onclick="toggleSettingsMenu()">
+                <img src="Icons/close-svgrepo-com.svg" class="close-icon">
+            </button>
+        </h2>
+        <hr class="menu-divider">
+        <h3>ATC Information</h3>
+        <textarea id="atcInfo" rows="4" placeholder="Insert here the embed text of the online-atc channel of the ATC24 Discord Server..." style="width: 100%; border-radius: 5px; padding: 5px; background-color: #2a2a2a; color: #fff; border: 1px solid #3b6cec;"></textarea>
+        <button id="saveATCInfo" style="margin-top: 10px; background-color: #3b6cec; color: #fff; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;" onclick="ATCOnlinefuncion()">
+            Save
+        </button>
+        <p>
+            Exemple: Rockford Tower @Gamer1 Izolirani Tower @Gamer2 Perth Tower @Gamer3
+        </p>
+    </div>
 
     <div class="footer">Made by tiaguinho_2009</div>
 
@@ -195,29 +286,39 @@
         }
 
         // Função para desenhar áreas de controle
-        function drawControlAreas() {
-            // Primeiro desenha todas as polylines
-            controlAreas.forEach(area => {
-                if (area.active && area.type === 'polyline') {
-                    const coordinates = area.coordinates.map(transformCoordinates);
-                    ctx.beginPath();
-                    ctx.strokeStyle = area.color;
-                    ctx.lineWidth = 0.5;
+    function drawControlAreas() {
+        // Primeiro desenha todas as polylines
+        controlAreas.forEach(area => {
+            if (area.active && area.type === 'polyline') {
+                const coordinates = area.coordinates.map(transformCoordinates);
+                ctx.beginPath();
+                ctx.strokeStyle = area.color;
+                ctx.lineWidth = 0.5;
 
-                    coordinates.forEach((point, index) => {
-                        if (index === 0) {
-                            ctx.moveTo(point[0], point[1]);
-                        } else {
-                            ctx.lineTo(point[0], point[1]);
-                        }
-                    });
-                    ctx.stroke();
-                }
-            });
+                coordinates.forEach((point, index) => {
+                    if (index === 0) {
+                        ctx.moveTo(point[0], point[1]);
+                    } else {
+                        ctx.lineTo(point[0], point[1]);
+                    }
+                });
+                ctx.stroke();
+            }
+        });
 
-            // Depois, desenha todos os polygons
-            controlAreas.forEach(area => {
-                if (area.active && area.type === 'polygon') {
+        // Depois desenha os polygons, verificando a condição "ctr"
+        controlAreas.forEach(area => {
+            if (area.type === 'polygon') {
+                let shouldDraw = false;
+
+                // Verifica se algum aeroporto possui o valor "ctr" igual ao nome da área e "tower" ativo
+                controlAreas.forEach(airport => {
+                    if (airport.type === 'Airport' && airport.ctr === area.name && airport.tower) {
+                        shouldDraw = true;
+                    }
+                });
+
+                if (shouldDraw) {
                     const coordinates = area.coordinates.map(transformCoordinates);
                     ctx.beginPath();
                     ctx.strokeStyle = area.color;
@@ -234,76 +335,86 @@
                     ctx.closePath();
                     ctx.fill();
                     ctx.stroke();
+                    
+                    createPolygonButton(area)
                 }
-            });
-        }
-
-        function createAirportUI(airport) {
-            const airportUI = document.createElement('div');
-            airportUI.className = 'airport-ui';
-            airportUI.innerHTML = `
-                <p>${airport.name}</p>
-                ${airport.ctr && airport.tower ? '<div class="badge C">C</div>' : ''}
-                ${!airport.ctr && airport.tower ? '<div class="badge T">T</div>' : ''}
-                ${airport.ground ? '<div class="badge G">G</div>' : ''}
-            `;
-            document.body.appendChild(airportUI);
-
-            const airportInfoMenu = document.createElement('div');
-            airportInfoMenu.className = 'airport-info-menu';
-            document.body.appendChild(airportInfoMenu);
-
-            function showInfoMenu(badge) {
-                const position = badge.classList.contains('T') ? 'Tower' : badge.classList.contains('C') ? 'Control' : 'Ground';
-                airportInfoMenu.style.display = 'block';
-                airportInfoMenu.innerHTML = `
-                    <div class="title">${airport.real_name} - ${position}</div>
-                    <hr class="menu-divider">
-                    <div class="controller-info">Alex Jespersen</div>
-                    <div class="controller-info">00:46</div>
-                `;
-
-                const [x, y] = transformCoordinates(airport.coordinates);
-                airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
-                airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
             }
+        });
+    }
 
-            function hideInfoMenu() {
-                airportInfoMenu.style.display = 'none';
-            }
+    function createAirportUI(airport) {
+        const airportUI = document.createElement('div');
+        airportUI.className = 'airport-ui';
+        airportUI.innerHTML = `
+            <p>${airport.name}</p>
+            ${airport.ctr && airport.tower ? '<div class="badge C">C</div>' : ''}
+            ${!airport.ctr && airport.tower ? '<div class="badge T">T</div>' : ''}
+            ${airport.ground ? '<div class="badge G">G</div>' : ''}
+        `;
+        document.body.appendChild(airportUI);
 
-            const controlBadge = airportUI.querySelector('.badge.C');
-            const towerBadge = airportUI.querySelector('.badge.T');
-            const groundBadge = airportUI.querySelector('.badge.G');
+        const airportInfoMenu = document.createElement('div');
+        airportInfoMenu.className = 'airport-info-menu';
+        document.body.appendChild(airportInfoMenu);
 
-            if (controlBadge) {
-                controlBadge.addEventListener('mouseenter', () => showInfoMenu(controlBadge));
-                controlBadge.addEventListener('mouseleave', hideInfoMenu);
-            }
+        function showInfoMenu(badge) {
+            const position = badge.classList.contains('T') || badge.classList.contains('C') ? 'Tower' : 'Ground';
+            
+            // Seleciona o ATC correto baseado na posição (Tower ou Ground)
+            const atcName = position === 'Tower' ? airport.towerAtc : airport.groundAtc;
 
-            if (towerBadge) {
-                towerBadge.addEventListener('mouseenter', () => showInfoMenu(towerBadge));
-                towerBadge.addEventListener('mouseleave', hideInfoMenu);
-            }
-
-            if (groundBadge) {
-                groundBadge.addEventListener('mouseenter', () => showInfoMenu(groundBadge));
-                groundBadge.addEventListener('mouseleave', hideInfoMenu);
-            }
-
-            function updatePosition() {
-                const [x, y] = transformCoordinates(airport.coordinates);
-                const uiWidth = airportUI.offsetWidth;
-                const uiHeight = airportUI.offsetHeight;
+            airportInfoMenu.style.display = 'block';
+            airportInfoMenu.innerHTML = `
+                <div class="title">${airport.real_name} ${position}</div>
+                <hr class="menu-divider">
                 
-                airportUI.style.left = `${x - uiWidth / 2}px`;
-                airportUI.style.top = `${y + uiHeight / 2}px`;
-            }
+                <!-- Seção de informações do controlador -->
+                <div class="controller-info-section">
+                    <p><strong>ATC:</strong> @${atcName}</p>
+                </div>
+            `;
 
-            updatePosition();
-            window.addEventListener('resize', updatePosition);
-            canvas.addEventListener('mousemove', updatePosition);
+            const [x, y] = transformCoordinates(airport.coordinates);
+            airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
+            airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
         }
+
+        function hideInfoMenu() {
+            airportInfoMenu.style.display = 'none';
+        }
+
+        const controlBadge = airportUI.querySelector('.badge.C');
+        const towerBadge = airportUI.querySelector('.badge.T');
+        const groundBadge = airportUI.querySelector('.badge.G');
+
+        if (controlBadge) {
+            controlBadge.addEventListener('mouseenter', () => showInfoMenu(controlBadge));
+            controlBadge.addEventListener('mouseleave', hideInfoMenu);
+        }
+
+        if (towerBadge) {
+            towerBadge.addEventListener('mouseenter', () => showInfoMenu(towerBadge));
+            towerBadge.addEventListener('mouseleave', hideInfoMenu);
+        }
+
+        if (groundBadge) {
+            groundBadge.addEventListener('mouseenter', () => showInfoMenu(groundBadge));
+            groundBadge.addEventListener('mouseleave', hideInfoMenu);
+        }
+
+        function updatePosition() {
+            const [x, y] = transformCoordinates(airport.coordinates);
+            const uiWidth = airportUI.offsetWidth;
+            const uiHeight = airportUI.offsetHeight;
+            
+            airportUI.style.left = `${x - uiWidth / 2}px`;
+            airportUI.style.top = `${y + uiHeight / 2}px`;
+        }
+
+        updatePosition();
+        window.addEventListener('resize', updatePosition);
+        canvas.addEventListener('mousemove', updatePosition);
+    }
 
         function displayAirports() {
             controlAreas.forEach(area => {
@@ -375,7 +486,7 @@
             // Adiciona evento de hover para mudar a cor do polígono e do botão
             polygonButton.addEventListener('mouseenter', () => {
                 area.originalFillColor = area.fillColor; // Salva a cor original
-                area.fillColor = 'rgba(60, 255, 60, 0.15)'; // Cor destacada para o polígono
+                area.fillColor = 'rgba(0, 255, 150, 0.1)'; // Cor destacada para o polígono
                 polygonButton.style.backgroundColor = '#0b6094'; // Azul claro para o botão
                 draw(); // Redesenha o mapa
             });
@@ -419,6 +530,77 @@
             lastMouseX = e.clientX;
             lastMouseY = e.clientY;
         });
+
+        function toggleSettingsMenu() {
+            const settingsMenu = document.getElementById('settingsMenu');
+            settingsMenu.style.display = settingsMenu.style.display === 'none' || settingsMenu.style.display === '' ? 'block' : 'none';
+        }
+
+        function refreshUI() {
+            // Limpa e redesenha o canvas
+            draw();
+
+            // Remove todos os elementos da UI (exemplo de classes específicas)
+            document.querySelectorAll('.airport-ui').forEach(el => el.remove());
+            document.querySelectorAll('.polygon-button').forEach(el => el.remove());
+
+            // Redesenha os elementos da interface do usuário
+            displayAirports();
+            displayPolygonButtons();
+        }
+
+        // Atualiza a função ATCOnlinefuncion para chamar refreshUI ao final
+        function ATCOnlinefuncion() {
+            console.log('Iniciando função ATCOnlinefuncion');
+            const atcInfoTextarea = document.getElementById('atcInfo');
+            const atcInfoText = atcInfoTextarea.value;
+
+            // Divide o texto em linhas
+            const lines = atcInfoText.trim().split('\n');
+
+            // Percorre cada linha para extrair informações
+            for (let i = 0; i < lines.length; i += 2) {
+                const nameLine = lines[i].trim();
+                const atcLine = lines[i + 1] ? lines[i + 1].trim() : ''; // Protege contra undefined
+
+                // Valida se ambas as partes estão presentes e no formato correto
+                if (!nameLine || !atcLine.includes('@')) {
+                    console.log(`Erro: Formato inválido em linha ${i + 1}`);
+                    continue;
+                }
+
+                const name = nameLine;
+                const atc = atcLine.split('@')[1].trim();
+
+                let foundInList = false; // Flag para saber se o ATC foi encontrado
+
+                controlAreas.forEach(area => {
+                    if (area.type === 'Airport' && area.atcs && area.atcs.includes(name)) {
+                        // Define o estado dos controladores e o nome do ATC com base no tipo
+                        if (name.includes("Tower")) {
+                            area.tower = true;
+                            area.towerAtc = atc; // Armazena o valor de ATC no campo towerAtc
+                            foundInList = true;
+                        }
+                        if (name.includes("Ground")) {
+                            area.ground = true;
+                            area.groundAtc = atc; // Armazena o valor de ATC no campo groundAtc
+                            foundInList = true;
+                        }
+
+                        // Log para acompanhar a atualização
+                        console.log(`Atualizado ${name} - Tower Ativo: ${area.tower}, Ground Ativo: ${area.ground}, ATC: ${atc}`);
+                    }
+                });
+
+                if (!foundInList) {
+                    console.log(`Erro: Nome ou tipo de área não correspondem para ${name}`);
+                }
+            }
+
+            // Atualiza a interface de usuário completa
+            refreshUI();
+        }
 
         // Função para copiar coordenadas para a área de transferência
         function copyCoordinatesToClipboard(x, y) {

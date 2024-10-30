@@ -16,6 +16,6 @@ Currently, the site is still in development, so there may be many missing featur
 | ![status: done](https://img.shields.io/badge/status-done-brightgreen) | Display major airports icons, ACC areas on the map              |
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Display all airports icons working with zoom, TMA/APP areas on the map              |
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Implement zoom and drag functionality for the map |
+| ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Discord Server |
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | User Settings |
-| ![status: planned](https://img.shields.io/badge/status-planned-blue) | Discord Server |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Integrate real-time ATC information           |
