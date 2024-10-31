@@ -86,6 +86,31 @@
             z-index: 101;
         }
 
+        /* Estilo para o campo de texto ATC Information */
+        #atcInfo {
+            width: 100%;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #2a2a2a;
+            color: #fff;
+            border: 1px solid #3b6cec;
+            resize: none;
+            height: 100px;
+        }
+
+        /* Estilo para o botão Save */
+        #saveATCInfo,
+        #ActiveAllATC,
+        #resetAllATC {
+            margin-top: 10px;
+            background-color: #3b6cec;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
         .settings-menu h2 {
             display: flex;
             justify-content: space-between;
@@ -230,6 +255,10 @@
             <img src="Icons/ATC24-Radar-logo.svg" alt="ATC24 Logo" class="Radar-logo">
         </h1>
         <div class="header-buttons">
+            <!-- Botão da Wiki -->
+            <button class="settings-button" onclick="redirectToWiki()">
+                <img src="Icons/book-open-svgrepo-com.svg" alt="Wiki" class="settings-icon">
+            </button>
             <!-- Botão do GitHub -->
             <button class="settings-button" onclick="redirectToGitHub()">
                 <img src="Icons/github-142-svgrepo-com.svg" alt="GitHub" class="settings-icon">
@@ -255,10 +284,10 @@
         </h2>
         <hr class="menu-divider">
         <h3>ATC Information</h3>
-        <textarea id="atcInfo" rows="4" placeholder="Insert here the embed text of the online-atc channel of the ATC24 Discord Server..." style="width: 100%; border-radius: 5px; padding: 5px; background-color: #2a2a2a; color: #fff; border: 1px solid #3b6cec;"></textarea>
-        <button id="saveATCInfo" style="margin-top: 10px; background-color: #3b6cec; color: #fff; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;" onclick="ATCOnlinefuncion()">
-            Save
-        </button>
+        <textarea id="atcInfo" rows="4" placeholder="Insert here the embed text of the online-atc channel of the ATC24 Discord Server..."></textarea>
+        <button id="saveATCInfo" onclick="ATCOnlinefuncion()">Save</button>
+        <button id="ActiveAllATC" onclick="ActiveAllATCfunction()">All</button>
+        <button id="resetAllATC" onclick="resetAllATCfuntion()">Reset</button>
         <p id="atclist"></p>
     </div>
 
@@ -359,8 +388,6 @@
                     ctx.closePath();
                     ctx.fill();
                     ctx.stroke();
-                    
-                    createPolygonButton(area)
                 }
             }
         });
@@ -399,16 +426,25 @@
         document.body.appendChild(airportInfoMenu);
 
         function showInfoMenu(badge) {
-            const position = badge.classList.contains('T') || badge.classList.contains('C') ? 'Tower' : 'Ground';
-            
-            // Seleciona o ATC correto baseado na posição (Tower ou Ground)
-            const atcName = position === 'Tower' ? airport.towerAtc : airport.groundAtc;
+            const position = 
+                badge.classList.contains('C') ? 'Control' :
+                badge.classList.contains('R') ? 'Radar' :
+                badge.classList.contains('T') ? 'Tower' :
+                badge.classList.contains('G') ? 'Ground' :
+                badge.classList.contains('D') ? 'Delivery' :
+                'Unknown';
+
+            // Seleciona o ATC correto baseado na posição
+            const atcName = (position === 'Control' || position === 'Radar' || position === 'Tower') 
+                ? airport.towerAtc 
+                : (position === 'Ground' || position === 'Delivery') 
+                ? airport.groundAtc 
+                : null;
 
             airportInfoMenu.style.display = 'block';
             airportInfoMenu.innerHTML = `
                 <div class="title">${airport.real_name} ${position}</div>
                 <hr class="menu-divider">
-                
                 <!-- Seção de informações do controlador -->
                 <div class="controller-info-section">
                     <p><strong>ATC:</strong> @${atcName}</p>
@@ -428,9 +464,38 @@
         const towerBadge = airportUI.querySelector('.badge.T');
         const groundBadge = airportUI.querySelector('.badge.G');
 
+        function highlightCTR(ctrName) {
+            const ctrAreas = controlAreas.forEach(area => {
+                if (area.type === 'polygon'){
+                    if (area.name === ctrName) {
+                        area.originalFillColor = area.fillColor
+                        area.fillColor = 'rgba(0, 255, 150, 0.1)';
+                        draw()
+                    }
+                }    
+            });
+        }
+
+        function resetCTRHighlight(ctrName) {
+            const ctrAreas = controlAreas.forEach(area => {
+                if (area.type === 'polygon'){
+                    if (area.name === ctrName) {
+                        area.fillColor = area.originalFillColor;
+                        draw()
+                    }
+                }    
+            });
+        }
+
         if (controlBadge) {
-            controlBadge.addEventListener('mouseenter', () => showInfoMenu(controlBadge));
-            controlBadge.addEventListener('mouseleave', hideInfoMenu);
+            controlBadge.addEventListener('mouseenter', () => {
+                showInfoMenu(controlBadge);
+                highlightCTR(airport.ctr);
+            });
+            controlBadge.addEventListener('mouseleave', () => {
+                hideInfoMenu();
+                resetCTRHighlight(airport.ctr);
+            });
         }
 
         if (towerBadge) {
@@ -550,75 +615,6 @@
         console.log(scale)
         draw();
     });
-
-    // Função para criar um botão de UI para cada polígono ativo
-    function createPolygonButton(area) {
-        // Verifica se o botão já foi criado para evitar duplicação
-        if (area.buttonCreated) {
-            console.log(`Botão já foi criado para a área: ${area.name}`);
-            return;
-        }
-
-        // Criação do botão
-        const polygonButton = document.createElement('button');
-        polygonButton.className = 'polygon-button';
-        polygonButton.innerText = area.name;
-        polygonButton.style.position = 'absolute';
-        polygonButton.style.zIndex = 10;
-        polygonButton.style.padding = '5px';
-        polygonButton.style.backgroundColor = '#333';
-        polygonButton.style.color = '#fff';
-        polygonButton.style.border = '1px solid #222';
-        polygonButton.style.borderRadius = '5px';
-        polygonButton.style.cursor = 'pointer';
-
-        // Posiciona o botão de acordo com a variável "center" do polígono
-        const [x, y] = transformCoordinates(area.center);
-        polygonButton.style.left = `${x}px`;
-        polygonButton.style.top = `${y}px`;
-
-        // Adiciona evento de hover para mudar a cor do polígono e do botão
-        polygonButton.addEventListener('mouseenter', () => {
-            area.originalFillColor = area.fillColor; // Salva a cor original
-            area.fillColor = 'rgba(0, 255, 150, 0.1)'; // Cor destacada para o polígono
-            polygonButton.style.backgroundColor = '#0b6094'; // Azul claro para o botão
-            draw(); // Redesenha o mapa
-        });
-
-        // Restaura a cor original do polígono e do botão ao remover o hover
-        polygonButton.addEventListener('mouseleave', () => {
-            area.fillColor = area.originalFillColor;
-            polygonButton.style.backgroundColor = '#333'; // Cor original do botão
-            draw(); // Redesenha o mapa
-        });
-
-        document.body.appendChild(polygonButton);
-
-        // Atualiza a posição do botão quando o canvas é redimensionado ou movido
-        function updateButtonPosition() {
-            const [updatedX, updatedY] = transformCoordinates(area.center);
-            polygonButton.style.left = `${updatedX}px`;
-            polygonButton.style.top = `${updatedY}px`;
-        }
-        window.addEventListener('resize', updateButtonPosition);
-        canvas.addEventListener('mousemove', updateButtonPosition);
-
-        // Marca o botão como criado
-        area.buttonCreated = true;
-        console.log(`Botão criado para a área: ${area.name}`);
-    }
-
-    // Chama a função para exibir botões para todos os polígonos ativos
-    function displayPolygonButtons() {
-        controlAreas.forEach(area => {
-            if (area.active && area.type === 'polygon') {
-                createPolygonButton(area);
-            }
-        });
-    }
-
-    // Executa a função para exibir os botões dos polígonos
-    displayPolygonButtons();
     
     let lastMouseX = 0;
     let lastMouseY = 0;
@@ -640,78 +636,102 @@
 
         // Remove todos os elementos da UI (exemplo de classes específicas)
         document.querySelectorAll('.airport-ui').forEach(el => el.remove());
-        document.querySelectorAll('.polygon-button').forEach(el => el.remove());
 
         // Redesenha os elementos da interface do usuário
         displayAirports();
-        displayPolygonButtons();
     }
 
     // Atualiza a função ATCOnlinefuncion para chamar refreshUI ao final
     function ATCOnlinefuncion() {
-    console.log('Iniciando função ATCOnlinefuncion');
-    const atcInfoTextarea = document.getElementById('atcInfo');
-    const atcInfoText = atcInfoTextarea.value;
+        console.log('Iniciando função ATCOnlinefuncion');
+        const atcInfoTextarea = document.getElementById('atcInfo');
+        const atcInfoText = atcInfoTextarea.value;
 
-    // Divide o texto em linhas
-    const lines = atcInfoText.trim().split('\n');
+        // Divide o texto em linhas
+        const lines = atcInfoText.trim().split('\n');
 
-    // Primeiro, desativa todas as torres e ground dos aeroportos
-    controlAreas.forEach(area => {
-        if (area.type === 'Airport') {
-            area.tower = false;      // Desativa a torre
-            area.ground = false;     // Desativa o ground
-            area.towerAtc = '';      // Limpa o ATC da torre
-            area.groundAtc = '';     // Limpa o ATC do ground
-            area.scale = area.originalscale;          // Opcional: redefinir a escala para não mostrar
-            console.log(`Desativado ${area.name} - Tower: ${area.tower}, Ground: ${area.ground}`);
-        }
-    });
-
-    // Percorre cada linha para extrair informações
-    for (let i = 0; i < lines.length; i += 2) {
-        const nameLine = lines[i].trim();
-        const atcLine = lines[i + 1] ? lines[i + 1].trim() : ''; // Protege contra undefined
-
-        // Valida se ambas as partes estão presentes e no formato correto
-        if (!nameLine || !atcLine.includes('@')) {
-            console.log(`Erro: Formato inválido em linha ${i + 1}`);
-            continue;
-        }
-
-        const name = nameLine;
-        const atc = atcLine.split('@')[1].trim();
-
-        let foundInList = false; // Flag para saber se o ATC foi encontrado
-
+        // Primeiro, desativa todas as torres e ground dos aeroportos
         controlAreas.forEach(area => {
-            if (area.type === 'Airport' && area.atcs && area.atcs.includes(name)) {
-                area.scale = 0;
-                // Define o estado dos controladores e o nome do ATC com base no tipo
-                if (name.includes("Tower")) {
-                    area.tower = true;             // Ativa a torre
-                    area.towerAtc = atc;          // Armazena o valor de ATC no campo towerAtc
-                    foundInList = true;
-                }
-                if (name.includes("Ground")) {
-                    area.ground = true;            // Ativa o ground
-                    area.groundAtc = atc;         // Armazena o valor de ATC no campo groundAtc
-                    foundInList = true;
-                }
-
-                // Log para acompanhar a atualização
-                console.log(`Atualizado ${name} - Tower Ativo: ${area.tower}, Ground Ativo: ${area.ground}, ATC: ${atc}`);
+            if (area.type === 'Airport') {
+                area.tower = false;      // Desativa a torre
+                area.ground = false;     // Desativa o ground
+                area.towerAtc = '';      // Limpa o ATC da torre
+                area.groundAtc = '';     // Limpa o ATC do ground
+                area.scale = area.originalscale;          // Opcional: redefinir a escala para não mostrar
+                console.log(`Desativado ${area.name} - Tower: ${area.tower}, Ground: ${area.ground}`);
             }
         });
 
-        if (!foundInList) {
-            console.log(`Erro: Nome ou tipo de área não correspondem para ${name}`);
+        // Percorre cada linha para extrair informações
+        for (let i = 0; i < lines.length; i += 2) {
+            const nameLine = lines[i].trim();
+            const atcLine = lines[i + 1] ? lines[i + 1].trim() : ''; // Protege contra undefined
+
+            // Valida se ambas as partes estão presentes e no formato correto
+            if (!nameLine || !atcLine.includes('@')) {
+                console.log(`Erro: Formato inválido em linha ${i + 1}`);
+                continue;
+            }
+
+            const name = nameLine;
+            const atc = atcLine.split('@')[1].trim();
+
+            let foundInList = false; // Flag para saber se o ATC foi encontrado
+
+            controlAreas.forEach(area => {
+                if (area.type === 'Airport' && area.atcs && area.atcs.includes(name)) {
+                    area.scale = 0;
+                    // Define o estado dos controladores e o nome do ATC com base no tipo
+                    if (name.includes("Tower")) {
+                        area.tower = true;             // Ativa a torre
+                        area.towerAtc = atc;          // Armazena o valor de ATC no campo towerAtc
+                        foundInList = true;
+                    }
+                    if (name.includes("Ground")) {
+                        area.ground = true;            // Ativa o ground
+                        area.groundAtc = atc;         // Armazena o valor de ATC no campo groundAtc
+                        foundInList = true;
+                    }
+
+                    // Log para acompanhar a atualização
+                    console.log(`Atualizado ${name} - Tower Ativo: ${area.tower}, Ground Ativo: ${area.ground}, ATC: ${atc}`);
+                }
+            });
+
+            if (!foundInList) {
+                console.log(`Erro: Nome ou tipo de área não correspondem para ${name}`);
+            }
         }
+
+        // Atualiza a interface de usuário completa
+        refreshUI();
     }
 
-    // Atualiza a interface de usuário completa
-    refreshUI();
-}
+    function ActiveAllATCfunction() {
+        controlAreas.forEach(area => {
+            if (area.type === 'Airport') {
+                area.tower = true;
+                area.ground = true;
+                area.originalscale = area.scale;
+                area.scale = 0;
+            }
+        });
+        refreshUI();
+    }
+
+    function resetAllATCfuntion() {
+        controlAreas.forEach(area => {
+            if (area.type === 'Airport') {
+                area.tower = false;      // Desativa a torre
+                area.ground = false;     // Desativa o ground
+                area.towerAtc = '';      // Limpa o ATC da torre
+                area.groundAtc = '';     // Limpa o ATC do ground
+                area.scale = area.originalscale;          // Opcional: redefinir a escala para não mostrar
+                console.log(`Desativado ${area.name} - Tower: ${area.tower}, Ground: ${area.ground}`);
+            }
+        });
+        refreshUI();
+    }
 
     // Function to generate the list of ATCs in the specified format
     function generateATCsListFromAreas() {
@@ -731,7 +751,7 @@
 
         // Juntar os ATCs em uma string
         const formattedATCs = atcsList.join("\n");
-
+        return formattedATCs;
         console.log(formattedATCs);
     }
 
@@ -742,7 +762,11 @@
     }
 
     function redirectToGitHub() {
-        window.open('https://github.com/tiaguinho2009/ATC24-Radar', '_blank');
+        window.open('https://github.com/tiaguinho2009/ATC24-Radar');
+    }
+
+    function redirectToWiki() {
+        window.open('https://github.com/tiaguinho2009/ATC24-Radar/wiki');
     }
 
     function copyCoordinatesToClipboard(x, y) {
@@ -764,7 +788,7 @@
 
     // Inicializa o canvas
     resizeCanvas();
-    
+
     </script>
 </body>
 </html>

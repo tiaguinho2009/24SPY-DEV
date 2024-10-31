@@ -284,7 +284,6 @@ const controlAreas = [
             "Rockford Tower",
             "Rockford Ground"
         ],
-        buttonCreated: false,
     },
     {
         name: "IPPH",
@@ -425,6 +424,19 @@ const controlAreas = [
         groundATC: "",
         atcs: [
             "Mellor Tower",
+        ]
+    },
+    {
+        name: "IDCS",
+        real_name: "Saba",
+        type: "Airport",
+        originalscale: 1,
+        scale: 1,
+        coordinates: [560.17, 109.67],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Saba Tower",
         ]
     },
 ];
