@@ -266,11 +266,13 @@ const controlAreas = [
     },
 
     // Airports
+    //0
     {
         name: "IRFD",
         real_name: "Rockford",
         type: "Airport",
-        prio: 1,
+        originalscale: 0,
+        scale: 0,
         coordinates: [583.95, 795.56],
         tower: false,
         ground: false,
@@ -281,98 +283,15 @@ const controlAreas = [
         atcs: [
             "Rockford Tower",
             "Rockford Ground"
-        ]
-    },
-    {
-        name: "IMLR",
-        real_name: "Mellor",
-        type: "Airport",
-        prio: 1,
-        coordinates: [390, 730],
-        tower: false,
-        towerATC: "",
-        groundATC: "",
-        atcs: [
-            "Mellor Tower",
-        ]
-    },
-    {
-        name: "ILAR",
-        real_name: "Larnaca",
-        type: "Airport",
-        prio: 1,
-        coordinates: [832.00, 913.00],
-        tower: false,
-        ground: false,
-        ctr: "ILAR CTR",
-        towerATC: "",
-        groundATC: "",
-        atcs: [
-            "Larnaca Tower",
-            "Larnaca Ground"
-        ]
-    },
-    {
-        name: "IPPH",
-        real_name: "Paphos",
-        type: "Airport",
-        prio: 1,
-        coordinates: [940.43, 931.13],
-        tower: false,
-        towerATC: "",
-        atcs: [
-            "Paphos Tower",
-        ]
-    },
-    {
-        name: "ISAU",
-        real_name: "Sauthemptona",
-        type: "Airport",
-        prio: 1,
-        coordinates: [131,863],
-        tower: false,
-        ctr: "ISAU CTR",
-        towerATC: "",
-        groundATC: "",
-        atcs: [
-            "Sauthemptona Tower",
-        ]
-    },
-    {
-        name: "IGRV",
-        real_name: "Grindavik",
-        type: "Airport",
-        prio: 1,
-        coordinates: [162,546],
-        tower: false,
-        ctr: "IGRV CTR",
-        towerATC: "",
-        groundATC: "",
-        atcs: [
-            "Grindavik Tower",
-        ]
-    },
-    {
-        name: "ITKO",
-        real_name: "Tokyo",
-        type: "Airport",
-        prio: 1,
-        coordinates: [528,242],
-        tower: false,
-        ground: false,
-        ctr: "ITKO CTR",
-        towerATC: "",
-        groundATC: "",
-        atcs: [
-            "Tokyo Tower",
-            "Tokyo Ground"
-        ]
+        ],
+        buttonCreated: false,
     },
     {
         name: "IPPH",
         real_name: "Perth",
         type: "Airport",
-        prio: 1,
+        originalscale: 0,
+        scale: 0,
         coordinates: [796,362],
         tower: false,
         ground: false,
@@ -386,9 +305,10 @@ const controlAreas = [
     },
     {
         name: "IZOL",
-        real_name: "Izolarini",
+        real_name: "Izolirani",
         type: "Airport",
-        prio: 1,
+        originalscale: 0,
+        scale: 0,
         coordinates: [1074,611],
         tower: false,
         ground: false,
@@ -396,15 +316,65 @@ const controlAreas = [
         towerATC: "",
         groundATC: "",
         atcs: [
-            "Izolarini Tower",
-            "Izolarini Ground"
+            "Izolirani Tower",
+            "Izolirani Ground"
+        ]
+    },
+    {
+        name: "ITKO",
+        real_name: "Tokyo",
+        type: "Airport",
+        originalscale: 0,
+        scale: 0,
+        coordinates: [528,242],
+        tower: false,
+        ground: false,
+        ctr: "ITKO CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Tokyo Tower",
+            "Tokyo Ground"
+        ]
+    },
+    {
+        name: "ILAR",
+        real_name: "Larnaca",
+        type: "Airport",
+        originalscale: 0,
+        scale: 0,
+        coordinates: [832.00, 913.00],
+        tower: false,
+        ground: false,
+        ctr: "ILAR CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Larnaca Tower",
+            "Larnaca Ground"
+        ]
+    },
+    {
+        name: "IGRV",
+        real_name: "Grindavik",
+        type: "Airport",
+        originalscale: 0,
+        scale: 0,
+        coordinates: [162,546],
+        tower: false,
+        ctr: "IGRV CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Grindavik Tower",
         ]
     },
     {
         name: "IBTH",
         real_name: "Barthélemy",
         type: "Airport",
-        prio: 1,
+        originalscale: 0,
+        scale: 0,
         coordinates: [670,529],
         tower: false,
         ctr: "IBTH CTR",
@@ -412,7 +382,49 @@ const controlAreas = [
         groundATC: "",
         atcs: [
             "Saint Barthélemy Tower",
-            "Saint Barthélemy Ground"
+        ]
+    },
+    {
+        name: "ISAU",
+        real_name: "Sauthemptona",
+        type: "Airport",
+        originalscale: 0,
+        scale: 0,
+        coordinates: [131,863],
+        tower: false,
+        ctr: "ISAU CTR",
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Sauthemptona Tower",
+        ]
+    },
+    //1
+    {
+        name: "IPPH",
+        real_name: "Paphos",
+        type: "Airport",
+        originalscale: 1,
+        scale: 1,
+        coordinates: [940.43, 931.13],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Paphos Tower",
+        ]
+    },
+    {
+        name: "IMLR",
+        real_name: "Mellor",
+        type: "Airport",
+        originalscale: 1,
+        scale: 1,
+        coordinates: [407.90, 729.67],
+        tower: false,
+        towerATC: "",
+        groundATC: "",
+        atcs: [
+            "Mellor Tower",
         ]
     },
 ];
