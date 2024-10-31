@@ -12,7 +12,6 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Display all airport icons with zoom functionality, TMA/APP areas on the map |
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Implement zoom and drag functionality for the map |
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Configure [Discord Server](https://discord.gg/8cQAguPjkh) |
-| ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Request listing on ATC24’s unofficial resources |
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Add User Settings |
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Integrate real-time ATC information |
