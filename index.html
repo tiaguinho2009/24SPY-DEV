@@ -22,7 +22,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 50px;
+            height: 60px;
             background-color: #131316;
             color: #fff;
             display: flex;
@@ -35,6 +35,19 @@
 
         header h1 {
             margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Ajuste o espaço entre os botões conforme necessário */
+        }
+
+        .Radar-logo {
+            width: 120px;
+            height: auto;
         }
 
         /* Estilo do botão de configurações */
@@ -48,8 +61,8 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            height: 30px;
-            width: 30px;
+            height: 35px;
+            width: 35px;
         }
 
         .settings-icon,
@@ -213,11 +226,24 @@
 
     <!-- Cabeçalho -->
     <header>
-        <h1>ATC24 RADAR</h1>
-        <button class="settings-button" onclick="toggleSettingsMenu()">
-            <img src="Icons/settings-svgrepo-com.svg" alt="Configurações" class="settings-icon">
-        </button>       
-    </header>
+        <h1>
+            <img src="Icons/ATC24-Radar-logo.svg" alt="ATC24 Logo" class="Radar-logo">
+        </h1>
+        <div class="header-buttons">
+            <!-- Botão do GitHub -->
+            <button class="settings-button" onclick="redirectToGitHub()">
+                <img src="Icons/github-142-svgrepo-com.svg" alt="GitHub" class="settings-icon">
+            </button>
+            <!-- Botão do Discord -->
+            <button class="settings-button" onclick="redirectToDiscord()">
+                <img src="Icons/discord-svgrepo-com.svg" alt="Discord" class="settings-icon">
+            </button>
+            <!-- Botão de Configurações -->
+            <button class="settings-button" onclick="toggleSettingsMenu()">
+                <img src="Icons/settings-svgrepo-com.svg" alt="Configurações" class="settings-icon">
+            </button>
+        </div>
+    </header>    
 
     <!-- Menu de Configurações -->
     <div class="settings-menu" id="settingsMenu">
@@ -624,6 +650,15 @@
         }
 
         generateATCsListFromAreas()
+
+        function redirectToDiscord() {
+            // Link de autorização do Discord (substitui com o link correto)
+            window.open('https://discord.gg/8cQAguPjkh');
+        }
+
+        function redirectToGitHub() {
+            window.open('https://github.com/tiaguinho2009/ATC24-Radar', '_blank');
+        }
 
         // Função para copiar coordenadas para a área de transferência
         function copyCoordinatesToClipboard(x, y) {

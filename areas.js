@@ -313,6 +313,18 @@ const controlAreas = [
         ]
     },
     {
+        name: "IPPH",
+        real_name: "Paphos",
+        type: "Airport",
+        prio: 1,
+        coordinates: [940.43, 931.13],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Paphos Tower",
+        ]
+    },
+    {
         name: "ISAU",
         real_name: "Sauthemptona",
         type: "Airport",
