@@ -291,7 +291,7 @@
         <p id="atclist"></p>
     </div>
 
-    <div class="footer">Made by tiaguinho_2009</div>
+    <div class="footer">© Made by tiaguinho_2009</div>
 
     <!-- Container do mapa -->
     <div id="map-container">
@@ -642,10 +642,14 @@
     }
 
     // Atualiza a função ATCOnlinefuncion para chamar refreshUI ao final
-    function ATCOnlinefuncion() {
+    function ATCOnlinefuncion(list) {
         console.log('Iniciando função ATCOnlinefuncion');
         const atcInfoTextarea = document.getElementById('atcInfo');
         const atcInfoText = atcInfoTextarea.value;
+
+        if (list) {
+            atcInfoText = list;
+        }
 
         // Divide o texto em linhas
         const lines = atcInfoText.trim().split('\n');
@@ -708,14 +712,10 @@
     }
 
     function ActiveAllATCfunction() {
-        controlAreas.forEach(area => {
-            if (area.type === 'Airport') {
-                area.tower = true;
-                area.ground = true;
-                area.originalscale = area.scale;
-                area.scale = 0;
-            }
-        });
+        const list = generateATCsListFromAreas();
+        const atcInfoTextarea = document.getElementById('atcInfo');
+        atcInfoTextarea.value = list;
+        ATCOnlinefuncion();
         refreshUI();
     }
 
@@ -751,8 +751,8 @@
 
         // Juntar os ATCs em uma string
         const formattedATCs = atcsList.join("\n");
-        return formattedATCs;
         console.log(formattedATCs);
+        return formattedATCs;
     }
 
     generateATCsListFromAreas()

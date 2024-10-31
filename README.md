@@ -20,8 +20,6 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/ATC24-Radar/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/ATC24-Radar/wiki/How-to-see-the-ATCs-Online) guide.
 
-## Latest Update DEV 0.1.3.1
+## Latest Update DEV 0.1.3.2
 
-- Removed individual CTR buttons; main airport buttons in each FIR now handle this function.
-- Added new airports.
-- Significant code improvements focused on performance and organization.
+- Problem with the button to activate all ATCs resolved.
