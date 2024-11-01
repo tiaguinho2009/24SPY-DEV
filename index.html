@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>24SPY</title>
+    <link rel="icon" href="Icons/24SPY-logo.png" type="Image.png">
     <style>
         /* Layout de tela cheia */
         body, html {
@@ -142,11 +143,11 @@
 
         .airport-ui {
             position: absolute;
-            background-color: rgba(32, 47, 54, 0.7);
-            padding: 4px 0px;
+            background-color: rgba(32, 47, 54, 0);
+            padding: 3px 0px;
             border-radius: 3px;
-            color: #fff;
-            font-size: 0.9em;
+            color: #7d7d85;
+            font-size: 0.85em;
             text-align: center;
             width: 50px;
             pointer-events: none; /* Para evitar interferências */
@@ -425,6 +426,11 @@
         airportInfoMenu.className = 'airport-info-menu';
         document.body.appendChild(airportInfoMenu);
 
+        if (airportUI.querySelector('.badge')) {
+            airportUI.style.backgroundColor = "rgba(32, 47, 54, 0.5)";
+            airportUI.style.color = "#ffffff";
+        }
+
         function showInfoMenu(badge) {
             const position = 
                 badge.classList.contains('C') ? 'Control' :
@@ -469,7 +475,7 @@
                 if (area.type === 'polygon'){
                     if (area.name === ctrName) {
                         area.originalFillColor = area.fillColor
-                        area.fillColor = 'rgba(0, 255, 150, 0.1)';
+                        area.fillColor = 'rgba(0, 255, 125, 0.075)';
                         draw()
                     }
                 }    
@@ -584,36 +590,47 @@
         isDragging = false;
     });
 
+    let isZooming = false;
+
     canvas.addEventListener('wheel', (e) => {
         e.preventDefault();
 
-        // Captura a posição do mouse relativa ao canvas
-        const mouseX = (e.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
-        const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+        if (!isZooming) {
+            isZooming = true;
 
-        // Ajusta a escala e aumenta a taxa de zoom
-        const zoomRate = 0.005; // Aumente o valor para um zoom mais rápido
-        const zoomFactor = e.deltaY * -zoomRate;
+            requestAnimationFrame(() => {
+                // Captura a posição do mouse relativa ao canvas
+                const mouseX = (e.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+                const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
 
-        // Define um limite de zoom out mínimo e máximo
-        const minScale = 0.5; // Limite de zoom out
-        const maxScale = 5;   // Limite de zoom in
+                // Ajusta a escala e aumenta a taxa de zoom
+                const zoomRate = 0.005; // Aumente o valor para um zoom mais rápido
+                const zoomFactor = e.deltaY * -zoomRate;
 
-        // Calcula a nova escala e aplica os limites
-        const newScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
+                // Define um limite de zoom out mínimo e máximo
+                const minScale = 0.5; // Limite de zoom out
+                const maxScale = 10;   // Limite de zoom in
 
-        // Se o zoom estiver dentro dos limites, ajusta o offset; caso contrário, mantém o último offset
-        if (newScale !== scale) {
-            // Atualiza a escala
-            scale = newScale;
+                // Calcula a nova escala e aplica os limites
+                const newScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
 
-            // Calcula o novo offset para centralizar o zoom no ponto do mouse
-            offsetX = e.clientX - mouseX * scale;
-            offsetY = e.clientY - mouseY * scale;
+                // Se o zoom estiver dentro dos limites, ajusta o offset; caso contrário, mantém o último offset
+                if (newScale !== scale) {
+                    // Atualiza a escala
+                    scale = newScale;
+
+                    // Calcula o novo offset para centralizar o zoom no ponto do mouse
+                    offsetX = e.clientX - mouseX * scale;
+                    offsetY = e.clientY - mouseY * scale;
+                }
+
+                console.log(scale);
+                draw();
+
+                // Libera o zooming para o próximo evento
+                isZooming = false;
+            });
         }
-
-        console.log(scale)
-        draw();
     });
     
     let lastMouseX = 0;
@@ -751,7 +768,6 @@
 
         // Juntar os ATCs em uma string
         const formattedATCs = atcsList.join("\n");
-        console.log(formattedATCs);
         return formattedATCs;
     }
 

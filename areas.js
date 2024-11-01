@@ -20,7 +20,7 @@ const controlAreas = [
             [362, 1200],
             [644, 1200]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -40,7 +40,7 @@ const controlAreas = [
             [978, 759],
             [760, 817]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -56,7 +56,7 @@ const controlAreas = [
             [362, 898],
             [362, 1200]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -73,7 +73,7 @@ const controlAreas = [
             [769, 868],
             [760, 817]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -90,7 +90,7 @@ const controlAreas = [
             [0,0],
             [0,718]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -103,7 +103,7 @@ const controlAreas = [
             [714,0],
             [274,0]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -122,7 +122,7 @@ const controlAreas = [
             [1200,0],
             [714,0]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -147,7 +147,7 @@ const controlAreas = [
             [856,500],
             [797,529]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -166,7 +166,7 @@ const controlAreas = [
             [714,410],
             [433,410]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
     {
@@ -179,7 +179,7 @@ const controlAreas = [
             [1200, 0],
             [0, 0]
         ],
-        color: "rgba(0,0,0,1)",
+        color: "rgba(45,45,45,1)",
         active: true
     },
 
@@ -189,7 +189,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "IRFD FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [470,1000],
         active: false,
         atc: "",
@@ -199,7 +199,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "ISAU FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [170,1000],
         active: false,
         atc: "",
@@ -209,7 +209,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "ILAR FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [1000,1000],
         active: false,
         atc: "",
@@ -219,7 +219,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "IGRV FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [150,400],
         active: false,
         atc: "",
@@ -229,7 +229,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "ITKO FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [535,370],
         active: false,
         atc: "",
@@ -239,7 +239,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "IPPH FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [950,400],
         active: false,
         atc: "",
@@ -249,7 +249,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "IZOL FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [1000,750],
         active: false,
         atc: "",
@@ -259,7 +259,7 @@ const controlAreas = [
         type: "polygon",
         firReference: "IBTH FIR",
         color: "rgba(0, 90, 50, 1)",
-        fillColor: "rgba(0, 90, 50, 0.1)",
+        fillColor: "rgba(0, 90, 50, 0.05)",
         center: [500,550],
         active: false,
         atc: "",

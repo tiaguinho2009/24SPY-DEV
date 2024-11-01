@@ -9,17 +9,19 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 | Status                                         | Task                                         |
 |------------------------------------------------|----------------------------------------------|
 | ![status: done](https://img.shields.io/badge/status-done-brightgreen) | Display major airport icons and ACC areas on the map |
+| ![status: almost finished](https://img.shields.io/badge/status-Almost%20finished-yellow) | Implement zoom and drag functionality for the map |
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Display all airport icons with zoom functionality, TMA/APP areas on the map |
-| ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Implement zoom and drag functionality for the map |
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Configure [Discord Server](https://discord.gg/8cQAguPjkh) |
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Add User Settings |
-| ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization |
+| ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization and otimization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Integrate real-time ATC information |
 
 ## [Wiki & Documentation](https://github.com/tiaguinho2009/24SPY/wiki)
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## Latest Update DEV 0.1.3.5
+## Latest Update DEV 0.1.3.6
 
-- Name of the Website changed to "24SPY"
+- Added the logo of 24SPY to the tab of the browser.
+- Zoom and drag functionality optimization update.
+- Colors of CTRs and Aiports UI changed.
