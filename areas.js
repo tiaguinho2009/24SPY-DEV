@@ -439,6 +439,124 @@ const controlAreas = [
             "Saba Tower",
         ]
     },
+    {
+        name: "IGAR",
+        real_name: "Garry",
+        type: "Airport",
+        originalscale: 1,
+        scale: 1,
+        coordinates: [440.93, 820.24],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Garry Tower",
+        ]
+    },
+    {
+        name: "IIAB",
+        real_name: "McConnell",
+        type: "Airport",
+        originalscale: 1,
+        scale: 1,
+        coordinates: [849.00, 996.00],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "McConnell Tower",
+        ]
+    },
+    {
+        name: "ISCM",
+        real_name: "Scampton",
+        type: "Airport",
+        originalscale: 1,
+        scale: 1,
+        coordinates: [988.00, 525.00],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Scampton Tower",
+        ]
+    },
+    //2
+    {
+        name: "IBLT",
+        real_name: "Boltic",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [493.87, 757.33],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Boltic Tower",
+        ]
+    },
+    {
+        name: "ILKL",
+        real_name: "Lukla",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [844.00, 408.00],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Lukla Tower",
+        ]
+    },
+    {
+        name: "ITRN",
+        real_name: "Training Centre",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [589.33, 892.00],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Training Centre Tower",
+        ]
+    },
+    {
+        name: "IJAF",
+        real_name: "Al Najaf",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [1087.76, 576.64],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Al Najaf Tower",
+        ]
+    },
+    {
+        name: "IHEN",
+        real_name: "Henstridge",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [788.62, 1004.13],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Henstridge Tower",
+        ]
+    },
+    {
+        name: "IBAR",
+        real_name: "Barra",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [897.02, 973.33],
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Barra Tower",
+        ]
+    },
 ];
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
