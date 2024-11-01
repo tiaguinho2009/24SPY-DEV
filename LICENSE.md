@@ -1,4 +1,4 @@
-# ATC24 RADAR License
+# 24SPY License
 
 Copyright (c) 2024 Tiago Murteira (nickname: tiaguinho_2009)
 
