@@ -1,5 +1,81 @@
 const controlAreas = [
+    //TMA/RDR
+    {
+        name: "IRFD TMA",
+        type: "polyline",
+        coordinates: [
+            [513,665],
+            [610,665],
+            [680,700],
+            [700,740],
+            [700,810],
+            [644,875],
+            [644,957],
+            [479,957],
+            [479,792],
+            [480,770],
+            [465,765],
+            [480,740],
+            [490,740],
+            [513,665]
+        ],
+        color: "rgba(45,45,45,1)",
+        active: false
+    },
+    {
+        name: "IMLR TMA",
+        type: "polyline",
+        coordinates: [
+            [362,817],
+            [330,785],
+            [330,667],
+            [385,635],
+            [440,635],
+            [470,665],
+            [513,665],
+            [490,740],
+            [480,740],
+            [465,765],
+            [390,790],
+            [362,817],
+        ],
+        color: "rgba(45,45,45,1)",
+        active: false
+    },
+    {
+        name: "IGAR TMA",
+        type: "polyline",
+        coordinates: [
+            [479,927],
+            [479,792],
+            [480,770],
+            [465,765],
+            [390,790],
+            [362,817],
+            [320.5,858.5],
+            [362,898],
+            [362,927],
+            [479,927]
+        ],
+        color: "rgba(45,45,45,1)",
+        active: false
+    },
     // FIRs
+    {
+        name: "Test",
+        type: "polyline",
+        coordinates: [
+            [470.00, 1120.00],
+            [470.00, 1000.00],
+            [500.00, 800.00],
+            [700.00, 800.00],
+            [585.00, 983.00],
+            [470.00, 1120.00],
+        ],
+        Circle: 'L2',
+        color: "rgba(45,45,45,1)",
+        active: false
+    },
     {
         name: "IRFD FIR",
         type: "polyline",
@@ -183,6 +259,25 @@ const controlAreas = [
         active: true
     },
 
+    //RDRs
+    {
+        name: "IMLR APP",
+        type: "polygon",
+        tmaReference: "IMLR TMA",
+        color: "rgba(255, 122, 0,1)",
+        fillColor: "rgba(255, 122, 0, 0)",
+        active: false,
+        atc: "",
+    },
+    {
+        name: "IGAR APP",
+        type: "polygon",
+        tmaReference: "IGAR TMA",
+        color: "rgba(255, 122, 0,1)",
+        fillColor: "rgba(255, 122, 0, 0)",
+        active: false,
+        atc: "",
+    },
     // CTRs
     {
         name: "IRFD CTR",
@@ -400,7 +495,7 @@ const controlAreas = [
     },
     //1
     {
-        name: "IPPH",
+        name: "IPAP",
         real_name: "Paphos",
         type: "Airport",
         originalscale: 1,
@@ -416,6 +511,7 @@ const controlAreas = [
         name: "IMLR",
         real_name: "Mellor",
         type: "Airport",
+        app: "IMLR APP",
         originalscale: 1,
         scale: 1,
         coordinates: [407.90, 729.67],
@@ -443,6 +539,7 @@ const controlAreas = [
         name: "IGAR",
         real_name: "Garry",
         type: "Airport",
+        app: "IGAR APP",
         originalscale: 1,
         scale: 1,
         coordinates: [440.93, 820.24],
@@ -562,6 +659,7 @@ const controlAreas = [
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
 function assignCTRCoordinates() {
     controlAreas.forEach(area => {
+        // Verifica e copia coordenadas da FIR, se existir referência
         if (area.firReference) {
             const firArea = controlAreas.find(fir => fir.name === area.firReference);
             if (firArea) {
@@ -572,6 +670,19 @@ function assignCTRCoordinates() {
             const airport = controlAreas.find(ap => ap.type === "Airport" && ap.ctr === area.name);
             if (airport) {
                 area.active = airport.tower;
+            }
+        }
+
+        // Verifica e copia coordenadas da TMA, se existir referência
+        if (area.tmaReference) {
+            const tmaArea = controlAreas.find(tma => tma.name === area.tmaReference);
+            if (tmaArea) {
+                area.coordinates = tmaArea.coordinates;
+            }
+
+            // Sincroniza o estado ativo/inativo da APP com o estado da TMA correspondente
+            if (tmaArea) {
+                area.active = tmaArea.active;
             }
         }
     });

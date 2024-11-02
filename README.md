@@ -20,8 +20,7 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## Latest Update DEV 0.1.3.6
+## Latest Update DEV 0.1.3.7
 
-- Added the logo of 24SPY to the tab of the browser.
-- Zoom and drag functionality optimization update.
-- Colors of CTRs and Aiports UI changed.
+- Started working with Aproach Zones! IMLR/IGAR Already working!
+- Correction on code ICAO of Paphos to IPAP.
