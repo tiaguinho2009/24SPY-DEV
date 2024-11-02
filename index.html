@@ -297,7 +297,7 @@
         <p id="atclist"></p>
     </div>
 
-    <div class="footer">24SPY | vDEV0.1.3.7 | © Made by tiaguinho_2009</div>
+    <div class="footer">24SPY | vDEV0.1.3.8 | © Made by tiaguinho_2009</div>
 
     <!-- Container do mapa -->
     <div id="map-container">
@@ -367,19 +367,44 @@
 
         // Desenho dos polygons (TMAs e CTRs)
         controlAreas.forEach(area => {
-            if (area.type === 'polygon') {  // Somente desenha se "active" for true
-                let shouldDraw = false;
+            if (area.type === 'polygon') {
+                let drawCTR = false;
+                let drawAPP = false;
 
                 // Verifica se algum aeroporto possui o valor "ctr" ou "app" igual ao nome da área e "tower" ativo
                 controlAreas.forEach(airport => {
                     if (airport.type === 'Airport' && airport.tower) {
-                        if (airport.ctr === area.name || airport.app === area.name) {
-                            shouldDraw = true;
+                        if (airport.ctr === area.name) {
+                            drawCTR = true;
+                        }
+                        if (airport.app === area.name) {
+                            drawAPP = true;
                         }
                     }
                 });
 
-                if (shouldDraw) {
+                // Desenha o CTR se existir
+                if (drawCTR) {
+                    const coordinates = area.coordinates.map(transformCoordinates);
+                    ctx.beginPath();
+                    ctx.strokeStyle = area.color;
+                    ctx.fillStyle = area.fillColor;
+                    ctx.lineWidth = 0.5;
+
+                    coordinates.forEach((point, index) => {
+                        if (index === 0) {
+                            ctx.moveTo(point[0], point[1]);
+                        } else {
+                            ctx.lineTo(point[0], point[1]);
+                        }
+                    });
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
+
+                // Desenha o APP se existir
+                if (drawAPP) {
                     const coordinates = area.coordinates.map(transformCoordinates);
                     ctx.beginPath();
                     ctx.strokeStyle = area.color;
@@ -441,14 +466,14 @@
 
         function showInfoMenu(badge) {
             const position = 
-                badge.classList.contains('C') ? 'Control' :
+                badge.classList.contains('C') ? (airport.ctr && airport.oceanic ? 'Oceanic' : 'Control') :
                 badge.classList.contains('A') ? 'Approach' :
                 badge.classList.contains('T') ? 'Tower' :
                 badge.classList.contains('G') ? 'Ground' :
                 badge.classList.contains('D') ? 'Delivery' :
                 'Unknown';
 
-            const atcName = (position === 'Control' || position === 'Approach' || position === 'Tower') 
+            const atcName = (position === 'Control' || position === 'Oceanic' || position === 'Approach' || position === 'Tower') 
                 ? airport.towerAtc 
                 : (position === 'Ground' || position === 'Delivery') 
                 ? airport.groundAtc 
@@ -501,7 +526,7 @@
             controlAreas.forEach(area => {
                 if (area.type === 'polygon' && area.name === appName) {
                     area.originalFillColor = area.fillColor;
-                    area.fillColor = 'rgba(255, 122, 0, 0.1)'; // Cor de destaque para APP
+                    area.fillColor = 'rgba(255, 122, 0, 0.1)';
                     draw();
                 }
             });
@@ -520,11 +545,13 @@
         if (controlBadge) {
             controlBadge.addEventListener('mouseenter', () => {
                 showInfoMenu(controlBadge);
-                highlightCTR(airport.ctr);
+                highlightCTR(airport.ctr); // Destaque CTR
+                highlightAPP(airport.app); // Destaque APP se existir
             });
             controlBadge.addEventListener('mouseleave', () => {
                 hideInfoMenu();
-                resetCTRHighlight(airport.ctr);
+                resetCTRHighlight(airport.ctr); // Reset CTR
+                resetAPPHighlight(airport.app); // Reset APP
             });
         }
 

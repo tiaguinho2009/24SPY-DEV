@@ -20,7 +20,7 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## Latest Update DEV 0.1.3.7
+## Latest Update DEV 0.1.3.8
 
-- Started working with Aproach Zones! IMLR/IGAR Already working!
-- Correction on code ICAO of Paphos to IPAP.
+- Added all missing APP zones.
+- Added ISKP Oceanic and Changed IBTH Control to IBTH Oceanic.
