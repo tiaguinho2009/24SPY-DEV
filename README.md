@@ -27,3 +27,4 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 - Added ISKP Oceanic and Changed IBTH Control to IBTH Oceanic.
 - Started working with user settings. (NOT WORKING YET)
 - Starting working with frequencies. (NOT WORKING YET)
+- Organized/formatted code in PR #1 by @awdev1
