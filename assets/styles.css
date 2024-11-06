@@ -189,6 +189,7 @@ canvas {
     text-align: center;
     width: 50px;
     pointer-events: none; /* Para evitar interferências */
+    z-index: 10;
 }
 
 .airport-ui p {
@@ -239,7 +240,7 @@ pointer-events: auto;   /* Permite interações de hover */
     font-size: 1em;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     display: none; /* Inicialmente escondido */
-    z-index: 11;
+    z-index: 20;
 }
 
 /* Estilo do título do aeroporto e posição */

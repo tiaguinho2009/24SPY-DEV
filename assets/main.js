@@ -143,6 +143,7 @@ function updatePosition(airportUI, airport) {
 function createAirportUI(airport) {
 	const airportUI = document.createElement('div');
 	airportUI.className = 'airport-ui';
+	airportUI.style.zIndex = 10 + (3 - airport.originalscale);
 	airportUI.innerHTML = `
             <p>${airport.name}</p>
             ${airport.ctr && airport.tower ? '<div class="badge C">C</div>' : ''}
