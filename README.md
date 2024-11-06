@@ -21,10 +21,10 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## Latest Update DEV 0.1.3.8
+## Latest Update DEV 0.1.3.8.1
 
 - Added all missing APP zones.
 - Added ISKP Oceanic and Changed IBTH Control to IBTH Oceanic.
 - Started working with user settings. (NOT WORKING YET)
-- Starting working with frequencies. (NOT WORKING YET)
+- Starting working with frequencies. (Working Only with major Airports!)
 - Organized/formatted code in PR #1 by @awdev1
