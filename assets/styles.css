@@ -150,7 +150,7 @@ header h1 {
 /* Estilo para o ícone de checkmark */
 .map-option input[type="checkbox"]:checked {
     background-color: #3b6cec;
-    background-image: url('Icons/checkmark-svgrepo-com.svg');
+    background-image: url('assets/Icons/checkmark-svgrepo-com.svg');
     background-size: 100%; /* Ajusta o tamanho do ícone */
     background-position: center;
     background-repeat: no-repeat;
