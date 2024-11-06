@@ -1,0 +1,290 @@
+/* Layout de tela cheia */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #2d2d2d;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Cabeçalho da página */
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #131316;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    justify-content: space-between;
+}
+
+header h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Ajuste o espaço entre os botões conforme necessário */
+}
+
+.SPY-logo {
+    width: 150px;
+    height: auto;
+}
+
+/* Estilo do botão de configurações */
+.settings-button,
+.close-button {
+    background-color: rgba(32, 32, 36, 1);
+    border: none;
+    border-radius: 5px;
+    padding: 5px; /* Espaçamento interno para centralizar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+}
+
+.settings-icon,
+.close-icon {
+    width: 18px; /* Ajuste o tamanho do SVG conforme necessário */
+    height: 18px;
+}
+
+.settings-menu {
+    display: none;
+    position: fixed;
+    top: 10%; /* Alinha ao topo da tela */
+    left: 80%; /* Alinha à esquerda da tela */
+    width: 300px;
+    max-height: 90vh; /* Limita a altura ao tamanho da tela */
+    overflow-y: auto; /* Adiciona rolagem vertical */
+    background-color: #131316;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.5); /* Sombra lateral */
+    z-index: 101;
+}
+
+/* Estilo para o campo de texto ATC Information */
+#atcInfo {
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #2a2a2a;
+    color: #fff;
+    border: 1px solid #3b6cec;
+    resize: vertical;
+    height: 100px;
+}
+
+/* Estilo para o botão Save */
+#saveATCInfo,
+#ActiveAllATC,
+#resetAllATC {
+    margin-top: 10px;
+    background-color: #3b6cec;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.settings-menu h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    color: #3b6cec;
+}
+
+.settings-menu p {
+    color: #bdbdbd;
+    margin: 10px 0;
+}
+
+/* Estilo para o contêiner de configurações do mapa */
+.map-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Estilo para cada opção de configuração */
+.map-option {
+    display: flex;
+    align-items: center;
+    background-color: #131316;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+/* Estilo da checkbox personalizada */
+.map-option input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background-color: #2d2d2d;
+    border: 1px solid #3b6cec;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 10px;
+    position: relative;
+}
+
+/* Estilo para o ícone de checkmark */
+.map-option input[type="checkbox"]:checked {
+    background-color: #3b6cec;
+    background-image: url('Icons/checkmark-svgrepo-com.svg');
+    background-size: 100%; /* Ajusta o tamanho do ícone */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Estilo do texto da opção */
+.map-option label {
+    color: #fff;
+    font-size: 0.9em;
+}
+
+/* Container principal para o mapa */
+#map-container {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(19, 19, 19, 255);
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.airport-ui {
+    position: absolute;
+    background-color: rgba(32, 47, 54, 0);
+    padding: 3px 0px;
+    border-radius: 3px;
+    color: #7d7d85;
+    font-size: 0.85em;
+    text-align: center;
+    width: 50px;
+    pointer-events: none; /* Para evitar interferências */
+}
+
+.airport-ui p {
+    margin: 5px 0;
+}
+
+.airport-ui .badge {
+display: inline-block;
+width: 20px;
+height: 20px;
+line-height: 20px;      /* Centraliza verticalmente o texto */
+margin: 0px;
+text-align: center;     /* Centraliza horizontalmente */
+border-radius: 5px;
+color: #fff;
+cursor: pointer;        /* Mostra que é interativo */
+pointer-events: auto;   /* Permite interações de hover */
+}
+
+.airport-ui .badge.C {
+    background-color: #3b6cec;
+}
+
+.airport-ui .badge.A {
+    background-color: #ff7a00;
+}
+
+.airport-ui .badge.T {
+    background-color: #b82a14;
+}
+
+.airport-ui .badge.G {
+    background-color: #008856;
+}
+
+.highlight {
+    background-color: rgba(255, 215, 0, 0.5); /* Cor de destaque para a CTR */
+    z-index: 10;
+}
+
+/* Estilo atualizado para o menu de informações do aeroporto */
+.airport-info-menu {
+    position: absolute;
+    background-color: #131316;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1em;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    display: none; /* Inicialmente escondido */
+    z-index: 11;
+}
+
+/* Estilo do título do aeroporto e posição */
+.airport-info-menu .title {
+    color: #3b6cec;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Estilo das informações do controlador */
+.airport-info-menu .controller-info {
+    font-size: 1em; /* Tamanho normal */
+    color: #bdbdbd; /* Cor cinza clara */
+}
+
+.airport-info-menu .menu-divider {
+    border: none;
+    height: 1px;
+    background-color: #3b6cec; /* Cor azul para combinar com o texto */
+    width: 100%;
+    margin: 4px 0; /* Ajuste o espaçamento conforme necessário */
+    opacity: 0.3; /* Para dar um efeito de sombra */
+}
+
+/* Estilo da seção de informações do controlador */
+.controller-info-section {
+    background-color: rgba(32,32,36,1);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.controller-info-section p {
+    margin: 4px 0;
+    color: #ddd;
+    font-size: 0.9em;
+}
+
+.footer {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: #bdbdbd; /* Cor cinza clara */
+    font-size: 0.7em;
+    z-index: 1000;
+    user-select: none;
+}
