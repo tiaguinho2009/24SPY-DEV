@@ -67,8 +67,9 @@ header h1 {
 .settings-menu {
     display: none;
     position: fixed;
-    top: 10%; /* Alinha ao topo da tela */
-    left: 80%; /* Alinha à esquerda da tela */
+    top: 50%; /* Centraliza verticalmente */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Move o elemento para o centro exato */
     width: 300px;
     max-height: 90vh; /* Limita a altura ao tamanho da tela */
     overflow-y: auto; /* Adiciona rolagem vertical */

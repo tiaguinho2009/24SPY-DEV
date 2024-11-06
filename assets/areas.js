@@ -1,3 +1,9 @@
+const websiteInfo = {
+    version: "DEV 0.1.3.8.2",
+}
+
+document.getElementById("version").textContent = `v${websiteInfo.version}`;
+
 const controlAreas = [
     //TMA/RDR
     {
@@ -844,6 +850,7 @@ const controlAreas = [
         originalscale: 1,
         scale: 1,
         coordinates: [560.17, 109.67],
+        towerfreq: "118.250",
         tower: false,
         towerATC: "",
         atcs: [
@@ -858,6 +865,7 @@ const controlAreas = [
         originalscale: 1,
         scale: 1,
         coordinates: [440.93, 820.24],
+        towerfreq: "124.275",
         tower: false,
         towerATC: "",
         atcs: [
@@ -872,6 +880,7 @@ const controlAreas = [
         originalscale: 1,
         scale: 1,
         coordinates: [849.00, 996.00],
+        towerfreq: "127.250",
         tower: false,
         towerATC: "",
         atcs: [
@@ -886,6 +895,7 @@ const controlAreas = [
         originalscale: 1,
         scale: 1,
         coordinates: [988.00, 525.00],
+        towerfreq: "None",
         tower: false,
         towerATC: "",
         atcs: [
@@ -900,6 +910,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [493.87, 757.33],
+        towerfreq: "None",
         tower: false,
         towerATC: "",
         atcs: [
@@ -913,6 +924,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [844.00, 408.00],
+        towerfreq: "120.150",
         tower: false,
         towerATC: "",
         atcs: [
@@ -926,6 +938,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [589.33, 892.00],
+        towerfreq: "None",
         tower: false,
         towerATC: "",
         atcs: [
@@ -939,6 +952,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [1087.76, 576.64],
+        towerfreq: "120.200",
         tower: false,
         towerATC: "",
         atcs: [
@@ -952,6 +966,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [788.62, 1004.13],
+        towerfreq: "130.250",
         tower: false,
         towerATC: "",
         atcs: [
@@ -965,6 +980,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [897.02, 973.33],
+        towerfreq: "118.080",
         tower: false,
         towerATC: "",
         atcs: [
@@ -978,6 +994,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [873.80, 714.13],
+        towerfreq: "126.060",
         ctr: "ISKP CTR",
         tower: false,
         towerATC: "",

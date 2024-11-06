@@ -1,0 +1,22 @@
+# Changelog
+
+## [DEV 0.1.3.8.2] - 6/11/2024
+### Added
+- Dev Small things.
+- All Frequencies were added.
+
+### Corrected
+- Settings Menu is now centered on the screen.
+
+## [DEV 0.1.3.8.1] - 6/11/2024
+### Added
+- Added all missing APP zones.
+- Added ISKP Oceanic and Changed IBTH Control to IBTH Oceanic.
+- Started working with user settings. (NOT WORKING YET)
+- Starting working with frequencies. (Working Only with major Airports!)
+
+### Corrected
+- Organized/formatted code in PR #1 by @awdev1
+
+### Honorable Mention
+- A big thanks to @awdev1 for helping to organize my script, which seemed more disorganized than the trash on a trash can.
