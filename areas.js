@@ -660,6 +660,8 @@ const controlAreas = [
         originalscale: 0,
         scale: 0,
         coordinates: [583.95, 795.56],
+        towerfreq: "124.850",
+        groundfreq: "121.855",
         tower: false,
         ground: false,
         ctr: "IRFD CTR",
@@ -679,6 +681,8 @@ const controlAreas = [
         originalscale: 0,
         scale: 0,
         coordinates: [796,362],
+        towerfreq: "135.250",
+        groundfreq: "121.700",
         tower: false,
         ground: false,
         ctr: "IPPH CTR",
@@ -697,6 +701,8 @@ const controlAreas = [
         originalscale: 0,
         scale: 0,
         coordinates: [1074,611],
+        towerfreq: "125.640",
+        groundfreq: "120.900",
         tower: false,
         ground: false,
         ctr: "IZOL CTR",
@@ -972,6 +978,28 @@ const controlAreas = [
         oceanic: true,
     },
 ];
+
+const settings = [
+    'showAirportUI',
+    'showFIRlines',
+    'showAPPlines',
+    'showCTRareas',
+    'showAPPareas',
+    'showOnlineATC',
+    'showATCmenu',
+    'showICAOcodes'
+];
+
+const settingsValues = {
+    showAirportUI: true,
+    showFIRlines: true,
+    showAPPlines: true,
+    showCTRareas: true,
+    showAPPareas: true,
+    showOnlineATC: true,
+    showATCmenu: true,
+    showICAOcodes: true,
+};
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
 function assignCTRCoordinates() {

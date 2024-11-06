@@ -72,18 +72,18 @@
             height: 18px;
         }
 
-        /* Estilo do menu de configurações */
         .settings-menu {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 10%; /* Alinha ao topo da tela */
+            left: 80%; /* Alinha à esquerda da tela */
             width: 300px;
+            max-height: 90vh; /* Limita a altura ao tamanho da tela */
+            overflow-y: auto; /* Adiciona rolagem vertical */
             background-color: #131316;
             border-radius: 5px;
             padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.5); /* Sombra lateral */
             z-index: 101;
         }
 
@@ -95,7 +95,7 @@
             background-color: #2a2a2a;
             color: #fff;
             border: 1px solid #3b6cec;
-            resize: none;
+            resize: vertical;
             height: 100px;
         }
 
@@ -123,6 +123,51 @@
         .settings-menu p {
             color: #bdbdbd;
             margin: 10px 0;
+        }
+
+        /* Estilo para o contêiner de configurações do mapa */
+        .map-settings {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        /* Estilo para cada opção de configuração */
+        .map-option {
+            display: flex;
+            align-items: center;
+            background-color: #131316;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        /* Estilo da checkbox personalizada */
+        .map-option input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background-color: #2d2d2d;
+            border: 1px solid #3b6cec;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 10px;
+            position: relative;
+        }
+
+        /* Estilo para o ícone de checkmark */
+        .map-option input[type="checkbox"]:checked {
+            background-color: #3b6cec;
+            background-image: url('Icons/checkmark-svgrepo-com.svg');
+            background-size: 100%; /* Ajusta o tamanho do ícone */
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Estilo do texto da opção */
+        .map-option label {
+            color: #fff;
+            font-size: 0.9em;
         }
 
         /* Container principal para o mapa */
@@ -282,6 +327,7 @@
 
     <!-- Menu de Configurações -->
     <div class="settings-menu" id="settingsMenu">
+        <!-- Configurações existentes -->
         <h2>
             Settings
             <button class="close-button" onclick="toggleSettingsMenu()">
@@ -294,8 +340,46 @@
         <button id="saveATCInfo" onclick="ATCOnlinefuncion()">Save</button>
         <button id="ActiveAllATC" onclick="ActiveAllATCfunction()">All</button>
         <button id="resetAllATC" onclick="resetAllATCfuntion()">Reset</button>
-        <p id="atclist"></p>
+        <hr class="menu-divider">
+    
+        <!-- Novas configurações de mapa -->
+        <h3>Map Settings</h3>
+        <div class="map-settings">
+            <p>NOT WORKING YET</p>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showAirportUI" checked>
+                <label for="showAirportUI">Show Airport UI</label>
+            </div>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showFIRlines" checked>
+                <label for="showFIRlines">Show FIR Lines</label>
+            </div>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showAPPlines" checked>
+                <label for="showAPPlines">Show APP Lines</label>
+            </div>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showCTRareas" checked>
+                <label for="showCTRareas">Show CTR Areas</label>
+            </div>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showAPPareas" checked>
+                <label for="showAPPareas">Show APP Areas</label>
+            </div>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showOnlineATC" checked>
+                <label for="showOnlineATC">Show Online ATC</label>
+            </div>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showATCmenu" checked>
+                <label for="showATCmenu">Show ATC Menu</label>
+            </div>
+            <div class="map-option">
+                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showICAOcodes" checked>
+                <label for="showICAOcodes">Show ICAO Codes</label>
+            </div>
     </div>
+    </div>    
 
     <div class="footer">24SPY | vDEV0.1.3.8 | © Made by tiaguinho_2009</div>
 
@@ -479,12 +563,15 @@
                 ? airport.groundAtc 
                 : null;
 
+            const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
+
             airportInfoMenu.style.display = 'block';
             airportInfoMenu.innerHTML = `
                 <div class="title">${airport.real_name} ${position}</div>
                 <hr class="menu-divider">
                 <div class="controller-info-section">
                     <p><strong>ATC:</strong> ${atcName}</p>
+                    <p><strong>Freq:</strong> ${frequency}</p>
                 </div>
             `;
 
@@ -851,6 +938,16 @@
 
     function redirectToWiki() {
         window.open('https://github.com/tiaguinho2009/24SPY/wiki');
+    }
+
+    function onCheckBoxChange(checkbox) {
+        console.log(checkbox.id);
+        settings.forEach(setting => {
+            if (setting === checkbox.id) {
+                settingsValues[setting] = checkbox.checked; // Atualiza o valor correspondente na configuração
+                console.log(settingsValues[setting], checkbox.checked);
+            }
+        });
     }
 
     function copyCoordinatesToClipboard(x, y) {
