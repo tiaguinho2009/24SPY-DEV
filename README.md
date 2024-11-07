@@ -11,7 +11,7 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 | ![status: done](https://img.shields.io/badge/status-done-brightgreen) | Display major airport icons and ACC areas on the map |
 | ![status: done](https://img.shields.io/badge/status-done-brightgreen) | Display all airport icons with zoom functionality, TMA/APP areas on the map |
 | ![status: almost finished](https://img.shields.io/badge/status-Almost%20finished-yellow) | Implement zoom and drag functionality for the map |
-| ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Configure [Discord Server](https://discord.gg/8cQAguPjkh) |
+| ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | [Discord Server](https://discord.gg/8cQAguPjkh) |
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Add User Settings |
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization and otimization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | "Mobile friendly" version |
@@ -24,3 +24,4 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 ## [DEV 0.1.3.8.3] - 7/11/2024
 ### Added
 - New ATC Online Number.
+- Now the Reset button also clears the text.
