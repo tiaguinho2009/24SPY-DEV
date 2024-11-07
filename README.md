@@ -16,6 +16,7 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization and otimization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | "Mobile friendly" version |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Integrate real-time ATC information |
+| ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Show the Waypoints on the map and be able to put the FPL on the map.|
 
 ## [Wiki & Documentation](https://github.com/tiaguinho2009/24SPY/wiki)
 
