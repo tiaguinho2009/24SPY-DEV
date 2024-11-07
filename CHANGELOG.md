@@ -1,5 +1,9 @@
 # Changelog
 
+## [DEV 0.1.3.8.4] - 7/11/2024
+### Corrected
+- Bug with the ckeckmark of the settings resolved.
+
 ## [DEV 0.1.3.8.3] - 7/11/2024
 ### Added
 - New ATC Online Number.

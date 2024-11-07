@@ -21,7 +21,6 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## [DEV 0.1.3.8.3] - 7/11/2024
-### Added
-- New ATC Online Number.
-- Now the Reset button also clears the text.
+## [DEV 0.1.3.8.4] - 7/11/2024
+### Corrected
+- Bug with the ckeckmark of the settings resolved.
