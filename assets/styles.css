@@ -38,6 +38,26 @@ header h1 {
     gap: 20px; /* Ajuste o espaço entre os botões conforme necessário */
 }
 
+.atc-online {
+    font-size: 15px;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(32, 32, 36, 1);
+    height: 35px;
+    width: 75px;
+    border: none;
+    border-radius: 5px;
+}
+
+.atc-online .online-number {
+    color: #3b6cec;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
 .SPY-logo {
     width: 150px;
     height: auto;

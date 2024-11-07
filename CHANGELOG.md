@@ -1,5 +1,10 @@
 # Changelog
 
+## [DEV 0.1.3.8.3] - 7/11/2024
+### Added
+- New ATC Online Number.
+- Now the Reset button also clears the text.
+
 ## [DEV 0.1.3.8.2] - 6/11/2024
 ### Added
 - Dev Small things.

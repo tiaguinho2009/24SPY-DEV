@@ -10,6 +10,7 @@ let offsetX = 0,
 let scale = 1;
 let isDragging = false;
 let startX, startY;
+let onlineATC = 0;
 
 // Configuração do tamanho do canvas
 function resizeCanvas() {
@@ -423,12 +424,20 @@ function refreshUI() {
 	displayAirports();
 }
 
+function updateATCCount() {
+    const atcNumberElement = document.querySelector('.online-number');
+    if (atcNumberElement) {
+        atcNumberElement.textContent = onlineATC;
+    }
+}
+
 // Atualiza a função ATCOnlinefuncion para chamar refreshUI ao final
 function ATCOnlinefuncion(list) {
 	console.log('Iniciando função ATCOnlinefuncion');
 	const atcInfoTextarea = document.getElementById('atcInfo');
 	const atcInfoText = list || atcInfoTextarea.value;
 	const lines = atcInfoText.trim().split('\n');
+	onlineATC = 0;
 
 	// Desativa todas as áreas e aeroportos ao iniciar
 	controlAreas.forEach(area => {
@@ -464,6 +473,7 @@ function ATCOnlinefuncion(list) {
 				if (name.includes("Tower")) {
 					area.tower = true;
 					area.towerAtc = atc;
+					onlineATC += 1;
 
 					// Ativa a TMA correspondente, se aplicável
 					controlAreas.forEach(tmaArea => {
@@ -477,6 +487,7 @@ function ATCOnlinefuncion(list) {
 				if (name.includes("Ground")) {
 					area.ground = true;
 					area.groundAtc = atc;
+					onlineATC += 1;
 				}
 
 				// Ativa a CTR correspondente, se aplicável
@@ -494,6 +505,7 @@ function ATCOnlinefuncion(list) {
 		});
 	}
 
+	updateATCCount()
 	refreshUI();
 }
 
@@ -506,6 +518,8 @@ function ActiveAllATCfunction() {
 }
 
 function resetAllATCfuntion() {
+	const atcInfoTextarea = document.getElementById('atcInfo');
+	atcInfoTextarea.value = "";
 	controlAreas.forEach(area => {
 		if (area.type === 'Airport') {
 			area.tower = false; // Desativa a torre
@@ -516,6 +530,7 @@ function resetAllATCfuntion() {
 			console.log(`Desativado ${area.name} - Tower: ${area.tower}, Ground: ${area.ground}`);
 		}
 	});
+	ATCOnlinefuncion();
 	refreshUI();
 }
 
