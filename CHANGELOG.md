@@ -1,5 +1,9 @@
 # Changelog
 
+## [DEV 0.1.4.2] - 9/11/2024
+### Added
+- Added Google Analytics to the website.
+
 ## [DEV 0.1.4.1] - 9/11/2024
 ### Changed
 - Corrected the Name of IBTH Airport to Saint Barthélemy.
