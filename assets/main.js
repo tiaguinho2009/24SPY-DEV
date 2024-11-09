@@ -431,12 +431,8 @@ function updateATCCount() {
     }
 }
 
-// Atualiza a função ATCOnlinefuncion para chamar refreshUI ao final
-function ATCOnlinefuncion(list) {
-	console.log('Iniciando função ATCOnlinefuncion');
-	const atcInfoTextarea = document.getElementById('atcInfo');
-	const atcInfoText = list || atcInfoTextarea.value;
-	const lines = atcInfoText.trim().split('\n');
+function ATCOnlinefuncion(atcList) {
+	console.log('Iniciando função de teste ATCOnlineFunction');
 	onlineATC = 0;
 
 	// Desativa todas as áreas e aeroportos ao iniciar
@@ -453,40 +449,35 @@ function ATCOnlinefuncion(list) {
 		}
 	});
 
-	// Processa cada linha de controlador
-	for (let i = 0; i < lines.length; i += 2) {
-		const nameLine = lines[i].trim();
-		const atcLine = lines[i + 1] ? lines[i + 1].trim() : '';
-
-		if (!nameLine || !atcLine.includes('@')) {
-			console.log(`Erro: Formato inválido em linha ${i + 1}`);
-			continue;
-		}
-
-		const name = nameLine;
-		const atc = atcLine.split('@')[1].trim();
-
+	// Processa cada objeto da lista ATC
+	atcList.forEach(atcData => {
+		const { holder, claimable, airport, position } = atcData;
+		
+		if (claimable) return;
+		
+		// Encontra a área correspondente ao aeroporto
 		controlAreas.forEach(area => {
-			if (area.type === 'Airport' && area.atcs && area.atcs.includes(name)) {
-				area.scale = 0;
-
-				if (name.includes("Tower")) {
+			
+			if (area.type === 'Airport' && area.real_name === airport) {
+				console.log('oooo');
+				area.scale = 0; // Reduz o scale ao ativar uma posição no aeroporto
+				if (position === "tower") {
 					area.tower = true;
-					area.towerAtc = atc;
+					area.towerAtc = holder;
 					onlineATC += 1;
 
 					// Ativa a TMA correspondente, se aplicável
 					controlAreas.forEach(tmaArea => {
-						if (tmaArea.type === 'polygon' && tmaArea.name === area.tma) { // Verifica pelo tma em vez de ctr
+						if (tmaArea.type === 'polygon' && tmaArea.name === area.tma) {
 							tmaArea.active = true;
 							console.log(`TMA ${tmaArea.name} ativada para ${area.name}`);
 						}
 					});
 				}
 
-				if (name.includes("Ground")) {
+				if (position === "ground") {
 					area.ground = true;
-					area.groundAtc = atc;
+					area.groundAtc = holder;
 					onlineATC += 1;
 				}
 
@@ -500,14 +491,41 @@ function ATCOnlinefuncion(list) {
 					});
 				}
 
-				console.log(`Atualizado ${name} - Tower Ativo: ${area.tower}, Ground Ativo: ${area.ground}, ATC: ${atc}`);
+				console.log(`Atualizado ${airport} - Tower Ativo: ${area.tower}, Ground Ativo: ${area.ground}, ATC: ${holder}`);
 			}
 		});
-	}
+	});
 
-	updateATCCount()
+	updateATCCount();
 	refreshUI();
 }
+
+ATCOnlinefuncion(PTFSAPI);
+
+// Função para buscar dados do endpoint e atualizar o estado de ATC
+function fetchATCDataAndUpdate() {
+    fetch('https://ptfs.xyz/api/controllers')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro ao buscar dados: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Atualiza a variável PTFSAPI com os dados recebidos
+            PTFSAPI = data;
+
+            // Executa a função de atualização com os dados recebidos
+            ATCOnlinefuncion(PTFSAPI);
+        })
+        .catch(error => {
+            console.error('Erro ao buscar os dados ATC:', error);
+        });
+}
+
+//setInterval(fetchATCDataAndUpdate, 30000);
+
+fetchATCDataAndUpdate();
 
 function ActiveAllATCfunction() {
 	const list = generateATCsListFromAreas();
@@ -569,12 +587,49 @@ function redirectToWiki() {
 	window.open('https://github.com/tiaguinho2009/24SPY/wiki');
 }
 
+function saveToLocalStorage() {
+    localStorage.setItem('settingsValues', JSON.stringify(settingsValues));
+    localStorage.setItem('websiteInfo', JSON.stringify(websiteInfo));
+    console.log('Dados salvos no localStorage.');
+}
+
+function loadFromLocalStorage() {
+    const storedSettings = localStorage.getItem('settingsValues');
+    const storedWebsiteInfo = localStorage.getItem('websiteInfo');
+
+    if (storedSettings) {
+        Object.assign(settingsValues, JSON.parse(storedSettings));
+        console.log('settingsValues carregado do localStorage:', settingsValues);
+
+        // Atualiza os checkboxes com base nos valores de settingsValues
+        for (const key in settingsValues) {
+            if (settingsValues.hasOwnProperty(key)) {
+                const checkbox = document.getElementById(key);
+                if (checkbox) {
+                    checkbox.checked = settingsValues[key];
+                }
+            }
+        }
+    } else {
+        console.log('Nenhum settingsValues encontrado no localStorage. Usando valores padrão.');
+    }
+
+    if (storedWebsiteInfo) {
+        Object.assign(websiteInfo, JSON.parse(storedWebsiteInfo));
+        console.log('websiteInfo carregado do localStorage:', websiteInfo);
+    } else {
+        console.log('Nenhum websiteInfo encontrado no localStorage. Usando valores padrão.');
+    }
+}
+loadFromLocalStorage();
+
 function onCheckBoxChange(checkbox) {
 	console.log(checkbox.id);
 	settings.forEach(setting => {
 		if (setting === checkbox.id) {
 			settingsValues[setting] = checkbox.checked; // Atualiza o valor correspondente na configuração
 			console.log(settingsValues[setting], checkbox.checked);
+			saveToLocalStorage()
 		}
 	});
 }

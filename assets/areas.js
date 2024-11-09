@@ -1,8 +1,23 @@
-const websiteInfo = {
-    version: "DEV 0.1.3.8.2",
-}
-
-document.getElementById("version").textContent = `v${websiteInfo.version}`;
+const PTFSAPI = [
+    {
+      "holder": "Purladi2411 | LTFH_APP 118.220",
+      "claimable": false,
+      "airport": "Tokyo",
+      "position": "tower"
+    },
+    {
+      "holder": "",
+      "claimable": true,
+      "airport": "Tokyo",
+      "position": "ground"
+    },
+    {
+      "holder": "",
+      "claimable": true,
+      "airport": "Barra",
+      "position": "tower"
+    }
+]
 
 const controlAreas = [
     //TMA/RDR
@@ -1005,28 +1020,6 @@ const controlAreas = [
     },
 ];
 
-const settings = [
-    'showAirportUI',
-    'showFIRlines',
-    'showAPPlines',
-    'showCTRareas',
-    'showAPPareas',
-    'showOnlineATC',
-    'showATCmenu',
-    'showICAOcodes'
-];
-
-const settingsValues = {
-    showAirportUI: true,
-    showFIRlines: true,
-    showAPPlines: true,
-    showCTRareas: true,
-    showAPPareas: true,
-    showOnlineATC: true,
-    showATCmenu: true,
-    showICAOcodes: true,
-};
-
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
 function assignCTRCoordinates() {
     controlAreas.forEach(area => {
@@ -1060,3 +1053,33 @@ function assignCTRCoordinates() {
 }
 
 assignCTRCoordinates();
+
+const settings = [
+    'showAirportUI',
+    'showFIRlines',
+    'showAPPlines',
+    'showCTRareas',
+    'showAPPareas',
+    'showOnlineATC',
+    'showATCmenu',
+    'showICAOcodes'
+];
+
+const settingsValues = {
+    showAirportUI: true,
+    showFIRlines: true,
+    showAPPlines: true,
+    showCTRareas: true,
+    showAPPareas: true,
+    showOnlineATC: true,
+    showATCmenu: true,
+    showICAOcodes: true,
+};
+
+const websiteInfo = {
+    version: "DEV 0.1.3.8.4",
+}
+
+const localInfo = {}
+
+document.getElementById("version").textContent = `v${websiteInfo.version}`;
