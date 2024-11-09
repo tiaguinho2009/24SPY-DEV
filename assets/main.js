@@ -513,6 +513,7 @@ function fetchATCDataAndUpdate() {
         })
         .then(data => {
             // Atualiza a variável PTFSAPI com os dados recebidos
+			console.log(data)
             PTFSAPI = data;
 
             // Executa a função de atualização com os dados recebidos
