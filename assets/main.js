@@ -524,7 +524,7 @@ function fetchATCDataAndUpdate() {
         });
 }
 
-//setInterval(fetchATCDataAndUpdate, 30000);
+setInterval(fetchATCDataAndUpdate, 30000);
 
 fetchATCDataAndUpdate();
 

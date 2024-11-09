@@ -100,31 +100,6 @@ header h1 {
     z-index: 101;
 }
 
-/* Estilo para o campo de texto ATC Information */
-#atcInfo {
-    width: 100%;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #2a2a2a;
-    color: #fff;
-    border: 1px solid #3b6cec;
-    resize: vertical;
-    height: 100px;
-}
-
-/* Estilo para o botão Save */
-#saveATCInfo,
-#ActiveAllATC,
-#resetAllATC {
-    margin-top: 10px;
-    background-color: #3b6cec;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
 .settings-menu h2 {
     display: flex;
     justify-content: space-between;

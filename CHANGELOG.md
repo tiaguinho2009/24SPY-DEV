@@ -1,5 +1,9 @@
 # Changelog
 
+## [DEV 0.1.4] - 9/11/2024
+### Added
+- Real-time integration with ATC24, now the controllers will appear automatically! **(STILL UNDER DEVELOPMENT)**.
+
 ## [DEV 0.1.3.8.4] - 7/11/2024
 ### Corrected
 - Bug with the ckeckmark of the settings resolved.

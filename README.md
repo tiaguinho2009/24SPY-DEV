@@ -15,13 +15,13 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 | ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Add User Settings |
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization and otimization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | "Mobile friendly" version |
-| ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Integrate real-time ATC information |
+| ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Integrate real-time ATC information |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Show the Waypoints on the map and be able to put the FPL on the map.|
 
 ## [Wiki & Documentation](https://github.com/tiaguinho2009/24SPY/wiki)
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## [DEV 0.1.3.8.4] - 7/11/2024
-### Corrected
-- Bug with the ckeckmark of the settings resolved.
+## [DEV 0.1.4] - 9/11/2024
+### Added
+- Real-time integration with ATC24, now the controllers will appear automatically! **(STILL UNDER DEVELOPMENT)**.
