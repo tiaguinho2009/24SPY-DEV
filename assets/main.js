@@ -616,7 +616,7 @@ function loadFromLocalStorage() {
     }
 
     if (storedWebsiteInfo) {
-        Object.assign(websiteInfo, JSON.parse(storedWebsiteInfo));
+        Object.assign(localInfo, JSON.parse(storedWebsiteInfo));
         console.log('websiteInfo carregado do localStorage:', websiteInfo);
     } else {
         console.log('Nenhum websiteInfo encontrado no localStorage. Usando valores padrão.');

@@ -1,7 +1,8 @@
 let PTFSAPI = [
+    //example
     {
-      "holder": "Purladi2411 | LTFH_APP 118.220",
-      "claimable": false,
+      "holder": "Test",
+      "claimable": true,
       "airport": "Tokyo",
       "position": "tower"
     },
