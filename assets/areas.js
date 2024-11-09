@@ -1,4 +1,4 @@
-const PTFSAPI = [
+let PTFSAPI = [
     {
       "holder": "Purladi2411 | LTFH_APP 118.220",
       "claimable": false,
