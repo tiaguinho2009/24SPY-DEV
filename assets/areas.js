@@ -793,7 +793,7 @@ const controlAreas = [
     },
     {
         name: "IBTH",
-        real_name: "Barthélemy",
+        real_name: "Saint Barthélemy",
         type: "Airport",
         app: "IBTH APP",
         originalscale: 0,
@@ -1077,7 +1077,7 @@ const settingsValues = {
 };
 
 const websiteInfo = {
-    version: "DEV 0.1.4",
+    version: "DEV 0.1.4.1",
 }
 
 const localInfo = {}

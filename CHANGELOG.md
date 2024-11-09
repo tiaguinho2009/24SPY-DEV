@@ -1,5 +1,9 @@
 # Changelog
 
+## [DEV 0.1.4.1] - 9/11/2024
+### Changed
+- Corrected the Name of IBTH Airport to Saint Barthélemy.
+
 ## [DEV 0.1.4] - 9/11/2024
 ### Added
 - Real-time integration with ATC24, now the controllers will appear automatically! **(STILL UNDER DEVELOPMENT)**.
