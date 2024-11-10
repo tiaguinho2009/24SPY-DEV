@@ -418,7 +418,7 @@ function toggleSettingsMenu() {
 function refreshUI() {
 	// Limpa e redesenha o canvas
 	draw();
-
+	resetAllHighlights(); // put that new function here...
 	// Remove todos os elementos da UI (exemplo de classes específicas)
 	document.querySelectorAll('.airport-ui').forEach(el => el.remove());
 
@@ -529,7 +529,7 @@ function fetchATCDataAndUpdate() {
 		document.querySelector('.mapUpdateTime .time').textContent = ` ${time}`;
 }
 
-setInterval(fetchATCDataAndUpdate, 30000);
+setInterval(fetchATCDataAndUpdate, 30000); // dont mess with refresh times or ptfs dev mad 
 
 fetchATCDataAndUpdate();
 
@@ -557,7 +557,14 @@ function resetAllATCfuntion() {
 	ATCOnlinefuncion();
 	refreshUI();
 }
-
+function resetAllHighlights() { // new function just to redraw the polygons lmao
+	controlAreas.forEach(area => {
+	   if (area.type === 'polygon') {
+		  area.fillColor = area.originalFillColor;
+	   }
+	});
+	draw();
+ }
 // Function to generate the list of ATCs in the specified format
 function generateATCsListFromAreas() {
 	// List to collect ATCs in the desired format
