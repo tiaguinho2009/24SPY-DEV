@@ -559,13 +559,17 @@ function resetAllATCfuntion() {
 }
 function resetAllHighlights() {
 	controlAreas.forEach(area => {
-	   if (area.type === 'polygon' && area.name !== 'FIR') { 
-		  area.fillColor = area.originalFillColor;
-		  area.active = false;
+	   if (area.type === 'polygon') {
+		  area.fillColor = area.originalFillColor; // Reset polygon fill color
 	   }
+	   if (area.name === 'FIR') {
+		  area.strokeStyle = area.originalStrokeStyle; // Reset FIR stroke color specifically
+	   }
+	   area.active = false; // Deactivate any active highlight
 	});
-	draw();
+	draw(); // Redraw to apply the changes
  }
+ 
 // Function to generate the list of ATCs in the specified format
 function generateATCsListFromAreas() {
 	// List to collect ATCs in the desired format
