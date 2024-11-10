@@ -559,7 +559,8 @@ function resetAllATCfuntion() {
 }
 function resetAllHighlights() {
 	controlAreas.forEach(area => {
-	   if (area.type === 'polygon' && area.name !== 'FIR') {
+	   if (area.type === 'polygon' && area.name !== 'FIR') { 
+		  area.fillColor = area.originalFillColor;
 		  area.active = false;
 	   }
 	});
