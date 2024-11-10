@@ -140,11 +140,6 @@ function updatePosition(airportUI, airport) {
 	airportUI.style.left = `${x - uiWidth / 2}px`;
 	airportUI.style.top = `${y + uiHeight / 2}px`;
 }
-function resetHighlights() {
-    controlAreas.forEach(area => area.active = false); 
-    hideAirportUI();
-    draw();
-}
 
 function createAirportUI(airport) {
 	const airportUI = document.createElement('div');
@@ -429,8 +424,6 @@ function refreshUI() {
 
 	// Redesenha os elementos da interface do usuário
 	displayAirports();
-	resetHighlights()
-	drawControlAreas()
 }
 
 function updateATCCount() {
