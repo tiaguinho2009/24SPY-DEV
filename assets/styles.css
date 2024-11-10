@@ -40,7 +40,7 @@ header h1 {
 
 .atc-online {
     font-size: 15px;
-    color: white;
+    color: rgb(255, 255, 255);
     text-align: center;
     display: flex;
     align-items: center;
@@ -56,6 +56,25 @@ header h1 {
     color: #3b6cec;
     margin-right: 5px;
     font-weight: bold;
+}
+
+.mapUpdateTime {
+    font-size: 15px;
+    color: rgb(190, 190, 190);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(32, 32, 36, 1);
+    height: 35px;
+    width: 210px;
+    border: none;
+    border-radius: 5px;
+}
+
+.mapUpdateTime .time {
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .SPY-logo {

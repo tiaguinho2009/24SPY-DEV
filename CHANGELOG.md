@@ -1,5 +1,9 @@
 # Changelog
 
+## [DEV 0.1.4.4] - 10/11/2024
+### Added
+- Added the "Map last update time" Information.
+
 ## [DEV 0.1.4.3] - 9/11/2024
 ### Removed
 - Removed Google Analytics to the website.

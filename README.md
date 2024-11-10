@@ -22,6 +22,6 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## [DEV 0.1.4.3] - 9/11/2024
-### Removed
-- Removed Google Analytics to the website.
+## [DEV 0.1.4.4] - 10/11/2024
+### Added
+- Added the "Map last update time" Information.
