@@ -557,13 +557,16 @@ function resetAllATCfuntion() {
 	ATCOnlinefuncion();
 	refreshUI();
 }
-function resetAllHighlights() { // new function just to redraw the polygons lmao
+function resetAllHighlights() {
 	controlAreas.forEach(area => {
-	   if (area.type === 'polygon') {
-		  area.fillColor = area.originalFillColor;
+	   if (area.type === 'polygon' && area.originalFillColor) {
+		  area.fillColor = area.originalFillColor; 
+	   }
+	   if (area.active) {
+		  area.active = false; 
 	   }
 	});
-	draw();
+	draw(); 
  }
 // Function to generate the list of ATCs in the specified format
 function generateATCsListFromAreas() {
