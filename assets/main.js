@@ -573,7 +573,7 @@ function resetAllHighlights() {
 	   if (area.type === 'polygon') {
 		  area.fillColor = area.originalFillColor || area.fillColor; 
 	   }
-	   if (area.name === 'FIR') {
+	   if (area.type === 'polyline') {
 		  area.strokeStyle = area.originalStrokeStyle || area.strokeStyle;
 	   }
 	   area.active = false; 
