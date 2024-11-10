@@ -49,7 +49,7 @@ function drawControlAreas() {
 		if (area.active && area.type === 'polyline') {
 			const coordinates = area.coordinates.map(transformCoordinates);
 			ctx.beginPath();
-			ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+			ctx.strokeStyle = area.color;
 			ctx.lineWidth = 0.5;
 
 			coordinates.forEach((point, index) => {
@@ -418,7 +418,7 @@ function toggleSettingsMenu() {
 function refreshUI() {
 	// Limpa e redesenha o canvas
 	draw();
-	resetAllHighlights(); // put that new function here...
+
 	// Remove todos os elementos da UI (exemplo de classes específicas)
 	document.querySelectorAll('.airport-ui').forEach(el => el.remove());
 
@@ -540,18 +540,7 @@ function ActiveAllATCfunction() {
 	ATCOnlinefuncion();
 	refreshUI();
 }
-function toggleFIRLines(isVisible) {
-	controlAreas.forEach(area => {
-	   if (area.name === 'FIR') {
-		  if (!area.originalStrokeStyle) {
-			 area.originalStrokeStyle = area.strokeStyle;
-		  }
- 
-		  area.strokeStyle = isVisible ? area.originalStrokeStyle : 'transparent';
-	   }
-	});
-	draw();
- }
+
 function resetAllATCfuntion() {
 	const atcInfoTextarea = document.getElementById('atcInfo');
 	atcInfoTextarea.value = "";
@@ -568,19 +557,7 @@ function resetAllATCfuntion() {
 	ATCOnlinefuncion();
 	refreshUI();
 }
-function resetAllHighlights() {
-	controlAreas.forEach(area => {
-	   if (area.type === 'polygon') {
-		  area.fillColor = area.originalFillColor || area.fillColor; 
-	   }
-	   if (area.type === 'polyline') {
-		  area.strokeStyle = area.originalStrokeStyle || area.strokeStyle;
-	   }
-	   area.active = false; 
-	});
-	draw(); 
- }
- 
+
 // Function to generate the list of ATCs in the specified format
 function generateATCsListFromAreas() {
 	// List to collect ATCs in the desired format
