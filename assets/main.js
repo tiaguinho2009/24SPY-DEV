@@ -49,7 +49,7 @@ function drawControlAreas() {
 		if (area.active && area.type === 'polyline') {
 			const coordinates = area.coordinates.map(transformCoordinates);
 			ctx.beginPath();
-			ctx.strokeStyle = area.color;
+			ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
 			ctx.lineWidth = 0.5;
 
 			coordinates.forEach((point, index) => {
