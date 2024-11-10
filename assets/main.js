@@ -16,7 +16,18 @@ let onlineATC = 0;
 function resizeCanvas() {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight - 50;
-	draw();
+	controlAreas.forEach(area => {
+		if (area.type === 'polygon') {
+		   // Reset polygon areas to their original fill color
+		   area.fillColor = area.originalFillColor;
+		}
+		if (area.name === 'FIR') {
+		   // Reset FIR lines to their original stroke color
+		   area.strokeStyle = area.originalStrokeStyle;
+		}
+		area.active = false; // Reset active status for all areas
+	 });
+	 draw();
 }
 window.addEventListener('resize', resizeCanvas);
 
@@ -578,7 +589,7 @@ function resetAllHighlights() {
 	   }
 	   area.active = false; 
 	});
-	draw(); 
+	draw();
  }
  
 // Function to generate the list of ATCs in the specified format
