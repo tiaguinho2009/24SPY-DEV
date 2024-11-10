@@ -540,7 +540,18 @@ function ActiveAllATCfunction() {
 	ATCOnlinefuncion();
 	refreshUI();
 }
-
+function toggleFIRLines(isVisible) {
+	controlAreas.forEach(area => {
+	   if (area.name === 'FIR') {
+		  if (!area.originalStrokeStyle) {
+			 area.originalStrokeStyle = area.strokeStyle;
+		  }
+ 
+		  area.strokeStyle = isVisible ? area.originalStrokeStyle : 'transparent';
+	   }
+	});
+	draw();
+ }
 function resetAllATCfuntion() {
 	const atcInfoTextarea = document.getElementById('atcInfo');
 	atcInfoTextarea.value = "";
