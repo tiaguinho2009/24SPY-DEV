@@ -430,6 +430,7 @@ function refreshUI() {
 	// Redesenha os elementos da interface do usuário
 	displayAirports();
 	resetHighlights()
+	drawControlAreas()
 }
 
 function updateATCCount() {
