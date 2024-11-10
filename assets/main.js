@@ -17,7 +17,6 @@ function resizeCanvas() {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight - 50;
 	draw();
-	
 }
 window.addEventListener('resize', resizeCanvas);
 
@@ -572,14 +571,14 @@ function resetAllATCfuntion() {
 function resetAllHighlights() {
 	controlAreas.forEach(area => {
 	   if (area.type === 'polygon') {
-		  area.fillColor = area.originalFillColor;
+		  area.fillColor = area.originalFillColor || area.fillColor; 
 	   }
 	   if (area.name === 'FIR') {
-		  area.strokeStyle = area.originalStrokeStyle;
+		  area.strokeStyle = area.originalStrokeStyle || area.strokeStyle;
 	   }
 	   area.active = false; 
 	});
-	draw();
+	draw(); 
  }
  
 // Function to generate the list of ATCs in the specified format
