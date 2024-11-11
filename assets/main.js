@@ -141,7 +141,16 @@ function updatePosition(airportUI, airport) {
 	airportUI.style.top = `${y + uiHeight / 2}px`;
 }
 function resetHighlights() {
-    controlAreas.forEach(area => area.active = false); 
+    controlAreas.forEach(area =>{
+		if (area.type === "polygon") {
+			if (area.name.endsWith("CTR")) {
+				area.fillColor = "rgba(0, 90, 50, 0.05)";
+			};
+			if (area.name.endsWith("APP")) {
+				area.fillColor = "rgba(255, 122, 0, 0)";
+			};
+		};
+	});
     hideAirportUI();
     draw();
 }
@@ -429,8 +438,8 @@ function refreshUI() {
 
 	// Redesenha os elementos da interface do usuário
 	displayAirports();
-	resetHighlights()
-	drawControlAreas()
+	resetHighlights();
+	drawControlAreas();
 }
 
 function updateATCCount() {
@@ -509,7 +518,6 @@ function ATCOnlinefuncion(atcList) {
 	refreshUI();
 }
 
-ATCOnlinefuncion(PTFSAPI);
 
 // Função para buscar dados do endpoint e atualizar o estado de ATC
 function fetchATCDataAndUpdate() {
