@@ -182,7 +182,10 @@ function createAirportUI(airport) {
 
 		airportInfoMenu.style.display = 'block';
 		airportInfoMenu.innerHTML = `
-                <div class="title">${airport.real_name} ${position}</div>
+                <div class="title">
+				${airport.real_name} ${position}
+				<div class="role">ATC>
+				</div>
                 <hr class="menu-divider">
                 <div class="controller-info-section">
                     <p><strong>Controller:</strong> ${atcName}</p>
