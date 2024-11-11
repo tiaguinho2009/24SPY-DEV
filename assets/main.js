@@ -439,7 +439,7 @@ function refreshUI() {
 
 	// Redesenha os elementos da interface do usuário
 	displayAirports();
-	resetHighlights()
+	resetHighlights();
 }
 
 function updateATCCount() {
@@ -545,7 +545,7 @@ function fetchATCDataAndUpdate() {
 		document.querySelector('.mapUpdateTime .time').textContent = ` ${time}`;
 }
 
-setInterval(fetchATCDataAndUpdate, 30000); // dont mess with refresh times or ptfs dev mad 
+setInterval(fetchATCDataAndUpdate, 30000);
 
 fetchATCDataAndUpdate();
 
