@@ -430,6 +430,11 @@ function toggleSettingsMenu() {
 	settingsMenu.style.display = settingsMenu.style.display === 'none' || settingsMenu.style.display === '' ? 'block' : 'none';
 }
 
+function toggleChangeLogMenu() {
+	const Changelogmenu = document.getElementById('ChangelogMenu');
+	Changelogmenu.style.display = Changelogmenu.style.display === 'none' || Changelogmenu.style.display === '' ? 'flex' : 'none';
+}
+
 function resetHighlights() {
     controlAreas.forEach(area =>{
 		if (area.type === "polygon") {
@@ -659,6 +664,11 @@ function loadFromLocalStorage() {
     } else {
         console.log('Nenhum websiteInfo encontrado no localStorage. Usando valores padrão.');
     }
+
+	if (websiteInfo.version !== localInfo.version) {
+		toggleChangeLogMenu()
+		saveToLocalStorage()
+	}
 }
 loadFromLocalStorage();
 
