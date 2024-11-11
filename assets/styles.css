@@ -267,7 +267,7 @@ pointer-events: auto;   /* Permite interações de hover */
     align-items: center;
 }
 
-.airport-info-menu .title .role {
+.airport-info-menu .title .role1 {
     color: white;
     background-color: #3b6cec;
     font-size: 1em;
@@ -282,6 +282,23 @@ pointer-events: auto;   /* Permite interações de hover */
     margin-left: 10px;
     vertical-align: middle;
     display: flex;
+}
+
+.airport-info-menu .title .role2 {
+    color: white;
+    background-color: #3b6cec;
+    font-size: 1em;
+    font-weight: normal;
+    width: 150px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    vertical-align: middle;
+    display: none;
 }
 
 /* Estilo das informações do controlador */

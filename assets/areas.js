@@ -4,7 +4,13 @@ let PTFSAPIError = [
         "claimable": false,
         "airport": "Skopelos",
         "position": "tower"
-      },
+    },
+    {
+        "holder": "aaronandethan123 | ERROR",
+        "claimable": false,
+        "airport": "Saint Barthélemy",
+        "position": "tower"
+    },
 ]
 
 let PTFSAPI = [
@@ -1103,5 +1109,9 @@ const specialUsers = {
     "aaronandethan123": [{
         "Role": "Developer",
         "DiscordNick": "awdev_",
+    }],
+    "AvatarRoblox2018": [{
+        "Role": "24SPY Helper",
+        "DiscordNick": "noah_the_plane_guy",
     }],
 };

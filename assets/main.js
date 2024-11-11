@@ -180,16 +180,28 @@ function createAirportUI(airport) {
 
 		const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
 
+		let atcName2 = atcName
+		if (atcName.includes("|")) {
+			atcName2 = atcName.split("|")[0].trim();
+		}
+		console.log(atcName2)
+		let roleText = "";
+		let roleIndex = "role2";
+		if (specialUsers[atcName2]) {
+			roleText = specialUsers[atcName2][0].Role;
+			roleIndex = "role1";
+		}
+
 		airportInfoMenu.style.display = 'block';
 		airportInfoMenu.innerHTML = `
                 <div class="title">
 				${airport.real_name} ${position}
-				<div class="role">Main Developer</div>
+				<div class="${roleIndex}">${roleText}</div>
 				</div>
                 <hr class="menu-divider">
                 <div class="controller-info-section">
                     <p><strong>Controller:</strong> ${atcName}</p>
-                    <p><strong>Freq:</strong> ${frequency}</p>
+                    <p><strong>Frequency:</strong> ${frequency}</p>
                 </div>
             `;
 
