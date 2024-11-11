@@ -543,6 +543,7 @@ function fetchATCDataAndUpdate() {
         .catch(error => {
             console.error('Erro ao buscar os dados ATC:', error);
 			PTFSAPI = PTFSAPIError
+			ATCOnlinefuncion(PTFSAPI);
         });
 
 		const time = getTime()

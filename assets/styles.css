@@ -280,11 +280,13 @@ pointer-events: auto;   /* Permite interações de hover */
 .airport-info-menu .controller-info {
     font-size: 1em; /* Tamanho normal */
     color: #bdbdbd; /* Cor cinza clara */
+    font-weight: normal;
 }
 
 .airport-info-menu .menu-divider {
     border: none;
     height: 1px;
+    font-weight: normal;
     background-color: #3b6cec; /* Cor azul para combinar com o texto */
     width: 100%;
     margin: 4px 0; /* Ajuste o espaçamento conforme necessário */
