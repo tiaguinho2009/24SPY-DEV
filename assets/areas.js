@@ -1,3 +1,12 @@
+let PTFSAPIError = [
+    {
+        "holder": "Tiaguinho_2009 | ERROR",
+        "claimable": false,
+        "airport": "Skopelos",
+        "position": "tower"
+      },
+]
+
 let PTFSAPI = [
     //example
     {
