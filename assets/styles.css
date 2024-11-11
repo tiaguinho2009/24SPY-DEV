@@ -268,11 +268,12 @@ pointer-events: auto;   /* Permite interações de hover */
 
 .airport-info-menu .title .role {
     color: white;
-    background-color: #ffffff;
+    background-color: #000000;
     font-size: 1em;
     font-weight: normal;
     width: 50px;
     height: auto;
+    border-radius: 5px;
 }
 
 /* Estilo das informações do controlador */
