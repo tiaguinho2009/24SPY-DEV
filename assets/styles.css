@@ -272,9 +272,9 @@ pointer-events: auto;   /* Permite interações de hover */
     background-color: #3b6cec;
     font-size: 1em;
     font-weight: normal;
-    width: 50px;
-    height: 22px;
-    line-height: 22px;
+    width: 150px;
+    height: 25px;
+    line-height: 25px;
     border-radius: 5px;
     display: inline-flex;
     align-items: center;

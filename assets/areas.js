@@ -1088,8 +1088,20 @@ const settingsValues = {
 
 const websiteInfo = {
     version: "DEV 0.1.4.4.3",
-}
+};
 
-const localInfo = {}
+const localInfo = {};
 
 document.getElementById("version").textContent = `v${websiteInfo.version}`;
+
+
+const specialUsers = {
+    "Tiaguinho_2009": [{
+        "Role": "Main Developer",
+        "DiscordNick": "tiaguinho_2009",
+    }],
+    "aaronandethan123": [{
+        "Role": "Developer",
+        "DiscordNick": "awdev_",
+    }],
+};
