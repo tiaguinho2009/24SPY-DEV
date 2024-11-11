@@ -426,7 +426,7 @@ function resetHighlights() {
 			};
 		};
 	});
-    hideAirportUI();
+    //hideAirportUI();
     draw();
 }
 
