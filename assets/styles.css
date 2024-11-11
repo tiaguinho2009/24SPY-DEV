@@ -263,17 +263,25 @@ pointer-events: auto;   /* Permite interações de hover */
     font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 5px;
-    margin-right: 5px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .airport-info-menu .title .role {
     color: white;
-    background-color: #000000;
+    background-color: #3b6cec;
     font-size: 1em;
     font-weight: normal;
     width: 50px;
-    height: auto;
+    height: 22px;
+    line-height: 22px;
     border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    vertical-align: middle;
+    display: flex;
 }
 
 /* Estilo das informações do controlador */

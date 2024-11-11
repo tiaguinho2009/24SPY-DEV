@@ -184,7 +184,7 @@ function createAirportUI(airport) {
 		airportInfoMenu.innerHTML = `
                 <div class="title">
 				${airport.real_name} ${position}
-				<div class="role">ATC
+				<div class="role">ATC</div>
 				</div>
                 <hr class="menu-divider">
                 <div class="controller-info-section">
