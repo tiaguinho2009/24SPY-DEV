@@ -23,7 +23,6 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## [DEV 0.1.4.5] - 11/11/2024
+## [DEV 0.1.4.5.1] - 12/11/2024
 ### Added
-- New Change Log Menu.
-- New roles for special Users like Developers of this website and some other guys!
+- The settings now are working!

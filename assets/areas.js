@@ -1090,14 +1090,15 @@ const settings = [
 ];
 
 const settingsValues = {
+    //default
     showAirportUI: true,
     showFIRlines: true,
-    showAPPlines: true,
+    showAPPlines: false,
     showOnlineATC: true,
 };
 
 const websiteInfo = {
-    version: "DEV 0.1.4.5",
+    version: "DEV 0.1.4.5.1",
 };
 
 const localInfo = {};
