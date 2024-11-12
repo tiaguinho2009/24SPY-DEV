@@ -47,19 +47,30 @@ function drawControlAreas() {
 	// Desenho das polylines
 	controlAreas.forEach(area => {
 		if (area.active && area.type === 'polyline') {
+			let drawLine = false;
+
+			if (area.name.includes('TMA') && settingsValues.showAPPlines) {
+				drawLine = true;
+			};
+			if (area.name.includes('FIR') && settingsValues.showFIRlines) {
+				drawLine = true;
+			};
+
 			const coordinates = area.coordinates.map(transformCoordinates);
 			ctx.beginPath();
 			ctx.strokeStyle = area.color;
 			ctx.lineWidth = 0.5;
 
-			coordinates.forEach((point, index) => {
-				if (index === 0) {
-					ctx.moveTo(point[0], point[1]);
-				} else {
-					ctx.lineTo(point[0], point[1]);
-				}
-			});
-			ctx.stroke();
+			if (drawLine) {
+				coordinates.forEach((point, index) => {
+					if (index === 0) {
+						ctx.moveTo(point[0], point[1]);
+					} else {
+						ctx.lineTo(point[0], point[1]);
+					}
+				});
+				ctx.stroke();
+			}
 		}
 	});
 
@@ -487,6 +498,8 @@ function ATCOnlinefuncion(atcList) {
 		}
 	});
 
+	if (settingsValues.showOnlineATC === false) {updateATCCount(); refreshUI(); return};
+
 	// Processa cada objeto da lista ATC
 	atcList.forEach(atcData => {
 		const { holder, claimable, airport, position } = atcData;
@@ -679,7 +692,10 @@ function onCheckBoxChange(checkbox) {
 			settingsValues[setting] = checkbox.checked; // Atualiza o valor correspondente na configuração
 			console.log(settingsValues[setting], checkbox.checked);
 			saveToLocalStorage()
-		}
+			draw()
+			refreshUI()
+		};
+		if (setting === "showOnlineATC") {fetchATCDataAndUpdate()};
 	});
 }
 
