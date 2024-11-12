@@ -153,6 +153,7 @@ function updatePosition(airportUI, airport) {
 }
 
 function createAirportUI(airport) {
+	if (settingsValues.showAirportUI === false) {return};
 	const airportUI = document.createElement('div');
 	airportUI.className = 'airport-ui';
 	airportUI.style.zIndex = 10 + (3 - airport.originalscale);

@@ -1086,8 +1086,6 @@ const settings = [
     'showAirportUI',
     'showFIRlines',
     'showAPPlines',
-    'showCTRareas',
-    'showAPPareas',
     'showOnlineATC',
 ];
 
@@ -1095,8 +1093,6 @@ const settingsValues = {
     showAirportUI: true,
     showFIRlines: true,
     showAPPlines: true,
-    showCTRareas: true,
-    showAPPareas: true,
     showOnlineATC: true,
 };
 
