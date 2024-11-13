@@ -23,6 +23,9 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance, including the [How to see the ATCs Online](https://github.com/tiaguinho2009/24SPY/wiki/How-to-see-the-ATCs-Online) guide.
 
-## [DEV 0.1.4.5.1] - 12/11/2024
+## [DEV 0.1.4.5.2] - 12/11/2024
 ### Added
-- The settings now are working!
+- Added IDCS APP.
+
+### Modified
+- Modifications on the IRFD APP, IMLR RDR, IZOL APP and ITKO APP.
