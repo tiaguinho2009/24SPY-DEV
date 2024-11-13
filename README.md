@@ -14,7 +14,7 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 | ![status: done](https://img.shields.io/badge/status-done-brightgreen) | Implement zoom and drag functionality for the map |
 | ![status: done](https://img.shields.io/badge/status-done-brightgreen) | [Discord Server](https://discord.gg/8cQAguPjkh) |
 | ![status: done](https://img.shields.io/badge/status-done-brightgreen) | Add User Settings |
-| ![status: in-progress](https://img.shields.io/badge/status-in--progress-orange) | Show the Waypoints on the map and be able to put the FPL on the map.|
+| ![status: planned](https://img.shields.io/badge/status-planned-blue) | Show the Waypoints on the map and be able to put the FPL on the map.|
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization and otimization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | "Mobile friendly" version |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Show the ATIS |
