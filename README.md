@@ -18,6 +18,7 @@ Though still in early stages, the site may eventually support live ATC data. Ach
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization and otimization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | "Mobile friendly" version |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Show the ATIS |
+| ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Make a menu to show the charts of the airports. |
 
 ## [Wiki & Documentation](https://github.com/tiaguinho2009/24SPY/wiki)
 
