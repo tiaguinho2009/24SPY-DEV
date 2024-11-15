@@ -756,6 +756,9 @@ const controlAreas = [
             "Rockford Tower",
             "Rockford Ground"
         ],
+        charts: [
+            ["Official", "https://ptfs.xyz/charts/dark/IRFD%20Ground%20Chart.png"],
+        ],
     },
     {
         name: "IPPH",
