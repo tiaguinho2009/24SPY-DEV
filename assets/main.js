@@ -186,7 +186,7 @@ function createAirportUI(airport) {
 			<hr class="menu-divider">
 			<div class="charts-buttons"></div>
 		`;
-		document.body.appendChild(icaoMenu); // Adicione o icaoMenu ao DOM aqui
+		document.body.appendChild(icaoMenu);
 	
 		const chartsButtonsContainer = icaoMenu.querySelector('.charts-buttons');
 		if (airport.charts) {
@@ -194,9 +194,9 @@ function createAirportUI(airport) {
 				const [chartName, chartLink] = chart;
 				const chartButton = document.createElement('button');
 				chartButton.className = 'chart-button';
-				chartButton.textContent = chartName; // Nome do chart
+				chartButton.textContent = chartName;
 				chartButton.onclick = () => {
-					window.open(chartLink, '_blank'); // Abre o link em uma nova aba
+					window.open(chartLink, '_blank');
 				};
 				chartsButtonsContainer.appendChild(chartButton);
 			});

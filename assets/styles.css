@@ -370,6 +370,16 @@ pointer-events: auto;   /* Permite interações de hover */
     align-items: center;
 }
 
+.no-charts {
+    font-size: 15px;
+    color: rgb(190, 190, 190);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
 .chart-button {
     font-size: 15px;
     color: rgb(190, 190, 190);
