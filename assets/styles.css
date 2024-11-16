@@ -320,16 +320,18 @@ canvas {
 }
 
 .airport-ui .badge {
-display: inline-block;
-width: 20px;
-height: 20px;
-line-height: 20px;      /* Centraliza verticalmente o texto */
-margin: 0px;
-text-align: center;     /* Centraliza horizontalmente */
-border-radius: 5px;
-color: #fff;
-cursor: pointer;        /* Mostra que é interativo */
-pointer-events: auto;   /* Permite interações de hover */
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;      /* Centraliza verticalmente o texto */
+    margin: 0px;
+    text-align: center;     /* Centraliza horizontalmente */
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;        /* Mostra que é interativo */
+    pointer-events: auto;   /* Permite interações de hover */
+    position: relative;
+    transition: background-color 0.2s ease;
 }
 
 .airport-ui .badge.C {
@@ -349,23 +351,19 @@ pointer-events: auto;   /* Permite interações de hover */
 }
 
 .airport-ui .badge.C:hover {
-    width: 21px;
-    height: 21px;
+    background-color: #497dff;
 }
 
 .airport-ui .badge.A:hover {
-    width: 21px;
-    height: 21px;
+    background-color: #e66900;
 }
 
 .airport-ui .badge.T:hover {
-    width: 21px;
-    height: 21px;
+    background-color: #9e2411;
 }
 
 .airport-ui .badge.G:hover {
-    width: 21px;
-    height: 21px;
+    background-color: #006f45;
 }
 
 .highlight {
