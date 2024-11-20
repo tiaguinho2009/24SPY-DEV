@@ -1016,6 +1016,8 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IIAB%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1opJg195YF73dI5t-tsQ88hyoIC9eoBde/view?usp=sharing"],
+            ["AeroNav ILAR SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
     },
     {
@@ -1211,7 +1213,7 @@ const settingsValues = {
 };
 
 const websiteInfo = {
-    version: "DEV 0.1.4.6.2",
+    version: "DEV 0.1.4.6.3",
 };
 
 const localInfo = {};
