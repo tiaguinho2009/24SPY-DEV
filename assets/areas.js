@@ -783,6 +783,8 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IPPH%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1Qhg6zRsIBAjeC_iidsy39FVt5UZhdi5o/view?usp=sharing"],
+            ["AeroNav SOP", "https://docs.google.com/document/d/1s4xXrrKYt5BMCcXUvx5RF-wo76cAQ0ot6XVZEQvNiIc/edit?usp=sharing"],
         ],
     },
     {
@@ -829,6 +831,8 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ITKO%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1iYxp9qz4f7C6o5DaMVQQufx9rInLcmJh/view?usp=sharing"],
+            ["AeroNav SOP", "https://docs.google.com/document/d/1MleQXy5h_2zbMrS6Iu0hUmH8W3qgtK7lCWtkHwVkxFI/edit?usp=sharing"],
         ],
     },
     {
@@ -852,7 +856,8 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ILAR%20Ground%20Chart.png"],
-            ["TUGACHARTS", "https://drive.google.com/file/d/1ofmuravfpMXW1d4B9M43MyOGbc1RORCs/view"]
+            ["TUGACHARTS", "https://drive.google.com/file/d/1ofmuravfpMXW1d4B9M43MyOGbc1RORCs/view"],
+            ["AeroNav SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
     },
     {
@@ -873,6 +878,7 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IGRV%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1G4M1CGxjXO688x-l7WBnD8UfhiLq2yrB/view?usp=sharing"],
         ],
     },
     {
@@ -894,6 +900,7 @@ const controlAreas = [
         oceanic: true,
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IBTH%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1OSWgKHBnu8ch3sP68erv8_nVcAFIY7CQ/view?usp=sharing"],
         ],
     },
     {
@@ -914,6 +921,7 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ISAU%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1m18kxQhwlVMXoY4T8FSIHtmz_ohooGbI/view?usp=sharing"],
         ],
     },
     //1
@@ -933,6 +941,8 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IPAP%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1Ckwrvr93OBZxEfpSwTzc75ALkCmjqsqr/view?usp=sharing"],
+            ["AeroNav ILAR SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
     },
     {
