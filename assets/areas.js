@@ -758,6 +758,8 @@ const controlAreas = [
         ],
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IRFD%20Ground%20Chart.png"],
+            ["AeroNav", "https://drive.google.com/file/d/1a8ZqQjxqUC99J5oSskeH6dmsBeDTRUb9/view?usp=sharing"],
+            ["AeroNav SOP", "https://docs.google.com/document/d/1_g0U7Zf4VtxZSkpNLzIEAaU4rEW0m-Uma1jnO_BoCvU/edit?usp=sharing"],
         ],
     },
     {
