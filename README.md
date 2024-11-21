@@ -17,6 +17,7 @@
 | ![status: planned](https://img.shields.io/badge/status-planned-blue) | Refactor code for better organization and otimization |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | "Mobile friendly" version |
 | ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Show the ATIS |
+| ![status: idea](https://img.shields.io/badge/status-idea-lightgrey) | Buy a mini pc to be a backhand server for the website |
 
 ## [Wiki & Documentation](https://github.com/tiaguinho2009/24SPY/wiki)
 
