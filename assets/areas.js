@@ -1161,6 +1161,37 @@ const controlAreas = [
             //["TUGACHARTS", "https://drive.google.com/file/d/1BEaoKLa9hvXCPPKdkc4IGa9Wc22OXr0s/view"]//NOT PUBLISHIED YET
         ],
     },
+    {
+        name: "SHV",
+        real_name: "Sea Haven",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [857.51, 358.51],
+        towerfreq: "None",
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Sea Haven Tower",
+        ],
+        charts: [
+            ["Official", "https://github.com/Treelon/ptfs-charts/blob/main/Perth/Sea%20Haven/SHV%20Ground%20Chart.svg"]
+        ],
+    },
+    {
+        name: "WTL",
+        real_name: "Waterloo",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [541.07, 712.27],
+        towerfreq: "None",
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Waterloo Tower",
+        ],
+    },
 ];
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
