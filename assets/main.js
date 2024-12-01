@@ -140,7 +140,6 @@ function drawControlAreas() {
 
 function drawFlightPlan(points) {
     if (points.length < 2) {
-        //console.error("É necessário pelo menos dois pontos para desenhar o traçado!");
         return;
     }
 
@@ -166,20 +165,23 @@ function drawFlightPlan(points) {
     }
     ctx.stroke();
 
-    transformedPoints.forEach(point => {
+    transformedPoints.forEach((point, index) => {
         const [x, y] = point.transformedCoordinates;
 
+        // Desenha as "bolas" para todos os pontos
         const pointColor = point.type === "VOR" ? "#66B2FF" : "#FFFF66"; // VOR azul claro, Waypoint amarelo claro
-
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = "14px Arial";
-
-        ctx.fillText(point.name, x + 5, y - 5);
-
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, 2 * Math.PI);
         ctx.fillStyle = pointColor;
         ctx.fill();
+
+        // Pula a label do primeiro e último ponto
+        if (index === 0 || index === transformedPoints.length - 1) return;
+
+        // Desenha as labels para os outros pontos
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "14px Arial";
+        ctx.fillText(point.name, x + 5, y - 5);
     });
 }
 
