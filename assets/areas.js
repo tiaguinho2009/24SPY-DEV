@@ -1195,7 +1195,11 @@ const controlAreas = [
 ];
 
 const Waypoints = [
-    //ILAR FIR
+    ////EXAMPLES
+    //{ name: "WAYPO", type: "Waypoint", coordinates: [, ] },
+    //{ name: "VOR", type: "VOR", coordinates: [, ] },
+
+    ////ILAR FIR
     //Waypoints
     { name: "FORIA", type: "Waypoint", coordinates: [683.25, 1010.62] },
     { name: "AQWRT", type: "Waypoint", coordinates: [776.12, 953.12] },
@@ -1217,6 +1221,16 @@ const Waypoints = [
     { name: "KIN", type: "VOR", coordinates: [929.50, 868.50] },
     { name: "PFO", type: "VOR", coordinates: [936.50, 935.25] },
     { name: "HUT", type: "VOR", coordinates: [931.00, 985.75] },
+
+    ////ISKP FIR
+    //Waypoints
+    { name: "ANYMS", type: "Waypoint", coordinates: [768.00, 764.50] },
+    { name: "CAWZE", type: "Waypoint", coordinates: [815.62, 659.12] },
+    //VORs
+    { name: "CLR", type: "VOR", coordinates: [829.87, 731.75] },
+    { name: "DEL", type: "VOR", coordinates: [912.12, 696.25] },
+
+    
 ];
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
