@@ -1269,4 +1269,8 @@ const specialUsers = {
         "Role": "24SPY First User",
         "DiscordNick": "echogecko89",
     }],
+    "2316Nati": [{
+        "Role": "Contributor",
+        "DiscordNick": "bedsdrout",
+    }],
 };
