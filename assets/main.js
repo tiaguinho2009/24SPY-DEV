@@ -279,8 +279,7 @@ function createAirportUI(airport) {
 		if (savedTime) {
 			startTime = new Date(savedTime);
 		} else {
-			startTime = new Date();
-			localStorage.setItem('startTime', startTime.toISOString());
+			resetTimer();
 		}
 	}
 	
@@ -292,8 +291,20 @@ function createAirportUI(airport) {
 		return `${hours}:${minutes.toString().padStart(2, '0')}`;
 	}
 	
+	function resetTimer() {
+		startTime = new Date();
+		localStorage.setItem('startTime', startTime.toISOString());
+	}
+	
+	function onATCConnectionEvent() {
+		resetTimer();
+	}
+	
+	setTimeout(onATCConnectionEvent, 5000);
+	
 	let startTime;
 	loadStartTime();
+	
 	
 	
 	
