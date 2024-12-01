@@ -11,6 +11,7 @@ let scale = 1;
 let isDragging = false;
 let startX, startY;
 let onlineATC = 0;
+let flightRoute = [];
 
 // Configuração do tamanho do canvas
 function resizeCanvas() {
@@ -40,6 +41,7 @@ function draw() {
 	const mapHeight = 1200 * scale;
 	ctx.drawImage(mapImage, offsetX, offsetY, mapWidth, mapHeight);
 	drawControlAreas();
+	drawFlightPlan(Waypoints);
 	resetChartsMenu()
 }
 
@@ -134,6 +136,60 @@ function drawControlAreas() {
 			}
 		}
 	});
+}
+
+function drawFlightPlan(points) {
+    if (points.length < 2) {
+        console.error("É necessário pelo menos dois pontos para desenhar o traçado!");
+        return;
+    }
+
+    // Configuração do traçado
+    ctx.strokeStyle = "#cc4265"; // Cor do traçado (rosa suave)
+    ctx.lineWidth = 2; // Espessura do traçado
+
+    // Transformar as coordenadas para o sistema atual
+    const transformedPoints = points.map(point => ({
+        ...point,
+        transformedCoordinates: transformCoordinates(point.coordinates),
+    }));
+
+    // Início do traçado
+    ctx.beginPath();
+    ctx.moveTo(
+        transformedPoints[0].transformedCoordinates[0],
+        transformedPoints[0].transformedCoordinates[1]
+    );
+
+    // Desenhar linhas entre os pontos
+    for (let i = 1; i < transformedPoints.length; i++) {
+        ctx.lineTo(
+            transformedPoints[i].transformedCoordinates[0],
+            transformedPoints[i].transformedCoordinates[1]
+        );
+    }
+    ctx.stroke(); // Traçado completo
+
+    // Adicionar labels e círculos para cada ponto
+    transformedPoints.forEach(point => {
+        const [x, y] = point.transformedCoordinates;
+
+        // Cor do ponto
+        const pointColor = point.type === "VOR" ? "#66B2FF" : "#FFFF66"; // VOR azul claro, Waypoint amarelo claro
+
+        // Estilo do texto
+        ctx.fillStyle = "#FFFFFF"; // Cor do texto (branco)
+        ctx.font = "14px Arial";
+
+        // Escrever o nome do ponto
+        ctx.fillText(point.name, x + 5, y - 5);
+
+        // Adicionar um círculo para destacar cada ponto
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI); // Ponto com raio 4
+        ctx.fillStyle = pointColor; // Cor do ponto
+        ctx.fill();
+    });
 }
 
 // Função para atualizar a posição do aeroporto

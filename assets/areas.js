@@ -1179,7 +1179,7 @@ const controlAreas = [
         ],
     },
     {
-        name: "WTL",
+        name: "OWO",
         real_name: "Waterloo",
         type: "Airport",
         originalscale: 2,
@@ -1192,6 +1192,14 @@ const controlAreas = [
             "Waterloo Tower",
         ],
     },
+];
+
+const Waypoints = [
+    //Waypoints
+    { name: "TESTE", type: "Waypoint", coordinates: [492.04, 463.77] },
+    { name: "TESTA", type: "Waypoint", coordinates: [466.00, 654.00] },
+    //VORs
+    { name: "OVR", type: "VOR", coordinates: [645.00, 791.00] },
 ];
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
@@ -1268,6 +1276,14 @@ const specialUsers = {
     "BEANZBURGERBEANZ": [{
         "Role": "24SPY First User",
         "DiscordNick": "echogecko89",
+    }],
+    "frozenterror13": [{
+        "Role": "Chart Maker",
+        "DiscordNick": "aerosd",
+    }],
+    "EzyDubbs": [{
+        "Role": "Chart Maker",
+        "DiscordNick": "ezydubbs",
     }],
     "2316Nati": [{
         "Role": "Contributor",
