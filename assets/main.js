@@ -239,7 +239,7 @@ function createAirportUI(airport) {
 	
 		const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
 	
-		let atcName2 = atcName
+		let atcName2 = atcName;
 		if (atcName.includes("|")) {
 			atcName2 = atcName.split("|")[0].trim();
 		}
@@ -259,8 +259,7 @@ function createAirportUI(airport) {
 			<hr class="menu-divider">
 			<div class="controller-info-section">
 				<p><strong>Controller:</strong> ${atcName}</p>
-				<p><strong>Frequency:</strong> ${frequency}	‎ ‎ ‎ <strong>Time Online:</strong> ${getTimeOnline()}</p>
-
+				<p><strong>Frequency:</strong> ${frequency} <strong>Time Online:</strong> ${getTimeOnline()}</p>
 			</div>
 		`;
 	
@@ -271,11 +270,19 @@ function createAirportUI(airport) {
 	
 	function hideInfoMenu() {
 		document.querySelectorAll('.airport-info-menu').forEach(menu => {
-		   menu.style.display = 'none';
+			menu.style.display = 'none';
 		});
 	}
 	
-	let startTime = new Date();
+	function loadStartTime() {
+		const savedTime = localStorage.getItem('startTime');
+		if (savedTime) {
+			startTime = new Date(savedTime);
+		} else {
+			startTime = new Date();
+			localStorage.setItem('startTime', startTime.toISOString());
+		}
+	}
 	
 	function getTimeOnline() {
 		let currentTime = new Date();
@@ -284,6 +291,10 @@ function createAirportUI(airport) {
 		let minutes = Math.floor((timeDiff % 3600000) / 60000);
 		return `${hours}:${minutes.toString().padStart(2, '0')}`;
 	}
+	
+	let startTime;
+	loadStartTime();
+	
 	
 	
 
