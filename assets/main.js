@@ -41,7 +41,7 @@ function draw() {
 	const mapHeight = 1200 * scale;
 	ctx.drawImage(mapImage, offsetX, offsetY, mapWidth, mapHeight);
 	drawControlAreas();
-	drawFlightPlan(Waypoints);
+	drawFlightPlan(flightRoute);
 	resetChartsMenu()
 }
 
@@ -140,7 +140,7 @@ function drawControlAreas() {
 
 function drawFlightPlan(points) {
     if (points.length < 2) {
-        console.error("É necessário pelo menos dois pontos para desenhar o traçado!");
+        //console.error("É necessário pelo menos dois pontos para desenhar o traçado!");
         return;
     }
 
@@ -627,8 +627,49 @@ function repositionFlpMenu() {
     FlpMenu.style.top = `${menuTop}px`;
     FlpMenu.style.left = `${menuLeft}px`;
 }
-
 repositionFlpMenu()
+
+function saveFlp() {
+    // Obtém os valores das text areas
+    const departure = document.querySelector('.small-input[placeholder="IRFD"]').value.trim().toUpperCase();
+    const arrival = document.querySelector('.small-input[placeholder="ILAR"]').value.trim().toUpperCase();
+    const waypoints = document.querySelector('.large-input[placeholder="MOGTA, TRN, CAN"]').value.trim().toUpperCase();
+
+    // Divide os waypoints em uma lista
+    const inputPoints = [departure, ...waypoints.split(',').map(wp => wp.trim()), arrival];
+
+    // Junta os dados de aeroportos e waypoints
+    const allPoints = [
+        ...controlAreas.filter(area => area.type === "Airport"),
+        ...Waypoints
+    ];
+
+    const flightPlanPoints = [];
+
+    // Procura cada ponto na lista de dados
+    inputPoints.forEach(input => {
+        const matchedPoint = allPoints.find(point => point.name === input);
+
+        if (matchedPoint) {
+            flightPlanPoints.push(matchedPoint);
+        } else {
+            console.error(`Ponto "${input}" não encontrado em controlAreas ou Waypoints!`);
+        }
+    });
+
+    // Verifica se há pelo menos dois pontos válidos
+    if (flightPlanPoints.length < 2) {
+        console.error("É necessário pelo menos dois pontos válidos para desenhar o plano de voo!");
+        return;
+    }
+
+	flightRoute = flightPlanPoints;
+    drawFlightPlan(flightRoute);
+}
+
+function resetFlp() {
+
+}
 
 function resetHighlights() {
     controlAreas.forEach(area =>{
