@@ -1197,14 +1197,19 @@ const controlAreas = [
 const Waypoints = [
     //ILAR FIR
     //Waypoints
-    { name: "FORIA", type: "Waypoint", coordinates: [683.25,1010.62] },
+    { name: "FORIA", type: "Waypoint", coordinates: [683.25, 1010.62] },
     { name: "AQWRT", type: "Waypoint", coordinates: [776.12, 953.12] },
-    { name: "FORCE", type: "Waypoint", coordinates: [825.02,1078.34] },
+    { name: "FORCE", type: "Waypoint", coordinates: [825.02, 1078.34] },
     { name: "GRASS", type: "Waypoint", coordinates: [805.39, 848.35] },
     { name: "RENTS", type: "Waypoint", coordinates: [885.47, 814.23] },
-    { name: "MASEV", type: "Waypoint", coordinates: [836.68,1040.51] },
-    { name: "MASEV", type: "Waypoint", coordinates: [836.68,1040.51] },
+    { name: "MASEV", type: "Waypoint", coordinates: [836.68, 1040.51] },
     { name: "JACKI", type: "Waypoint", coordinates: [975.12, 886.19] },
+    { name: "ALTRS", type: "Waypoint", coordinates: [989.95, 1080.46] },
+    { name: "MUONE", type: "Waypoint", coordinates: [1022.48, 1011.87] },
+    { name: "BOBUX", type: "Waypoint", coordinates: [1035.91, 945.40] },
+    { name: "DEBUG", type: "Waypoint", coordinates: [1112.99, 887.42] },
+    { name: "JAZZR", type: "Waypoint", coordinates: [1111.57, 1011.87] },
+    { name: "NUBER", type: "Waypoint", coordinates: [1197.84, 959.54] },
     //VORs
     { name: "DIR", type: "VOR", coordinates: [746.75,1031.25] },
     { name: "CAN", type: "VOR", coordinates: [719.00, 982.75] },
