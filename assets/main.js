@@ -619,7 +619,7 @@ function repositionFlpMenu() {
     const buttonRect = FlpButton.getBoundingClientRect();
 
     // Calcula a posição do menu
-    const menuTop = buttonRect.bottom + window.scrollY + 160 + FlpMenu.offsetHeight;
+    const menuTop = buttonRect.bottom + window.scrollY + 180 + FlpMenu.offsetHeight;
     const menuLeft = buttonRect.right + window.scrollX + 10 - FlpMenu.offsetWidth;
 
     // Define a posição do menu
