@@ -594,6 +594,42 @@ function toggleChangeLogMenu() {
 	Changelogmenu.style.display = Changelogmenu.style.display === 'none' || Changelogmenu.style.display === '' ? 'flex' : 'none';
 }
 
+function toggleFlpMenu() {
+    const FlpMenu = document.getElementById('FlpMenu');
+    const FlpButton = document.getElementById('FlpButton');
+	const FlpIcon = document.getElementById('FlpIcon');
+
+    // Alterna o menu entre visível e escondido
+    if (FlpMenu.style.display === 'none' || FlpMenu.style.display === '') {
+        FlpMenu.style.display = 'flex'; // Mostra o menu
+        FlpButton.classList.add('on'); // Adiciona a classe "on" ao botão
+		FlpIcon.style.filter = 'brightness(1)';
+    } else {
+        FlpMenu.style.display = 'none'; // Esconde o menu
+        FlpButton.classList.remove('on'); // Remove a classe "on" do botão
+		FlpIcon.style.filter = 'brightness(0.8)';
+    }
+}
+
+function repositionFlpMenu() {
+    const FlpMenu = document.getElementById('FlpMenu');
+    const FlpButton = document.getElementById('FlpButton');
+
+    // Obtém as coordenadas e dimensões do botão
+    const buttonRect = FlpButton.getBoundingClientRect();
+
+    // Calcula a posição do menu
+    const menuTop = buttonRect.bottom + window.scrollY + 160 + FlpMenu.offsetHeight;
+    const menuLeft = buttonRect.right + window.scrollX + 10 - FlpMenu.offsetWidth;
+
+    // Define a posição do menu
+    FlpMenu.style.position = 'absolute';
+    FlpMenu.style.top = `${menuTop}px`;
+    FlpMenu.style.left = `${menuLeft}px`;
+}
+
+repositionFlpMenu()
+
 function resetHighlights() {
     controlAreas.forEach(area =>{
 		if (area.type === "polygon") {

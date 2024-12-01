@@ -14,8 +14,8 @@
             <img src="assets/Icons/24SPY-logo.svg" alt="SPY Logo" class="SPY-logo">
          </h1>
          <div class="header-left-buttons">
-            <button class="fpl-button">
-               <img src="assets/Icons/map-svgrepo-com.svg" class="fpl-icon">
+            <button class="fpl-button" id="FlpButton" onclick="toggleFlpMenu()">
+               <img src="assets/Icons/map-svgrepo-com.svg" class="fpl-icon" id="FlpIcon">
                Flight Plan
             </button>
             <button class="atc-left-button">
@@ -92,8 +92,24 @@
             </div>
          </div>
       </div>
+      <div class="flp-menu" id="FlpMenu">
+         <h3>Flight Plan (Beta)</h3>
+         <hr class="menu-divider">
+         <div class="form-row">
+             <label>Departure:</label>
+             <textarea class="small-input"></textarea>
+         </div>
+         <div class="form-row">
+             <label>Arrival:</label>
+             <textarea class="small-input"></textarea>
+         </div>
+         <div class="form-row">
+             <label>Waypoints:</label>
+             <textarea class="large-input"></textarea>
+         </div>
+     </div>     
       <div class="footer">24SPY | <span id="version"></span> | © Made by tiaguinho_2009</div>
-      <!-- Container do mapa -->
+
       <div id="map-container">
          <canvas id="map"></canvas>
       </div>
