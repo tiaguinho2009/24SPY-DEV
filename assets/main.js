@@ -223,87 +223,101 @@ function createAirportUI(airport) {
 	}	
 
 	function showInfoMenu(badge) {
-		const position =
-			badge.classList.contains('C') ? (airport.ctr && airport.oceanic ? 'Oceanic' : 'Control') :
-			badge.classList.contains('A') ? 'Approach' :
-			badge.classList.contains('T') ? 'Tower' :
-			badge.classList.contains('G') ? 'Ground' :
-			badge.classList.contains('D') ? 'Delivery' :
-			'Unknown';
-	
-		const atcName = (position === 'Control' || position === 'Oceanic' || position === 'Approach' || position === 'Tower') ?
-			airport.towerAtc :
-			(position === 'Ground' || position === 'Delivery') ?
-			airport.groundAtc :
-			null;
-	
-		const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
-	
-		let atcName2 = atcName;
-		if (atcName.includes("|")) {
-			atcName2 = atcName.split("|")[0].trim();
-		}
-		let roleText = "";
-		let roleIndex = "role2";
-		if (specialUsers[atcName2]) {
-			roleText = specialUsers[atcName2][0].Role;
-			roleIndex = "role1";
-		}
-	
-		airportInfoMenu.style.display = 'block';
-		airportInfoMenu.innerHTML = `
-			<div class="title">
-				${airport.real_name} ${position}
-				<div class="${roleIndex}">${roleText}</div>
-			</div>
-			<hr class="menu-divider">
-			<div class="controller-info-section">
-				<p><strong>Controller:</strong> ${atcName}</p>
-				<p><strong>Frequency:</strong> ${frequency} <strong>Time Online:</strong> ${getTimeOnline()}</p>
-			</div>
-		`;
-	
-		const [x, y] = transformCoordinates(airport.coordinates);
-		airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
-		airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
-	}
-	
-	function hideInfoMenu() {
-		document.querySelectorAll('.airport-info-menu').forEach(menu => {
-			menu.style.display = 'none';
-		});
-	}
-	
-	function loadStartTime() {
-		const savedTime = localStorage.getItem('startTime');
-		if (savedTime) {
-			startTime = new Date(savedTime);
-		} else {
-			resetTimer();
-		}
-	}
-	
-	function getTimeOnline() {
-		let currentTime = new Date();
-		let timeDiff = Math.abs(currentTime - startTime);
-		let hours = Math.floor(timeDiff / 3600000);
-		let minutes = Math.floor((timeDiff % 3600000) / 60000);
-		return `${hours}:${minutes.toString().padStart(2, '0')}`;
-	}
-	
-	function resetTimer() {
-		startTime = new Date();
-		localStorage.setItem('startTime', startTime.toISOString());
-	}
-	
-	function onATCConnectionEvent() {
-		resetTimer();
-	}
-	
-	setTimeout(onATCConnectionEvent, 5000);
-	
-	let startTime;
-	loadStartTime();
+    const position =
+        badge.classList.contains('C') ? (airport.ctr && airport.oceanic ? 'Oceanic' : 'Control') :
+        badge.classList.contains('A') ? 'Approach' :
+        badge.classList.contains('T') ? 'Tower' :
+        badge.classList.contains('G') ? 'Ground' :
+        badge.classList.contains('D') ? 'Delivery' :
+        'Unknown';
+
+    const atcName = (position === 'Control' || position === 'Oceanic' || position === 'Approach' || position === 'Tower') ?
+        airport.towerAtc :
+        (position === 'Ground' || position === 'Delivery') ?
+        airport.groundAtc :
+        null;
+
+    const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
+
+    let atcName2 = atcName;
+    if (atcName.includes("|")) {
+        atcName2 = atcName.split("|")[0].trim();
+    }
+    let roleText = "";
+    let roleIndex = "role2";
+    if (specialUsers[atcName2]) {
+        roleText = specialUsers[atcName2][0].Role;
+        roleIndex = "role1";
+    }
+
+    airportInfoMenu.style.display = 'block';
+    airportInfoMenu.innerHTML = `
+        <div class="title">
+            ${airport.real_name} ${position}
+            <div class="${roleIndex}">${roleText}</div>
+        </div>
+        <hr class="menu-divider">
+        <div class="controller-info-section">
+            <p><strong>Controller:</strong> ${atcName}</p>
+            <p><strong>Frequency:</strong> ${frequency} <strong>Time Online:</strong> ${getTimeOnline()}</p>
+        </div>
+    `;
+
+    const [x, y] = transformCoordinates(airport.coordinates);
+    airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
+    airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
+}
+
+function hideInfoMenu() {
+    document.querySelectorAll('.airport-info-menu').forEach(menu => {
+        menu.style.display = 'none';
+    });
+}
+
+function loadStartTime() {
+    const savedTime = localStorage.getItem('startTime');
+    if (savedTime) {
+        startTime = new Date(savedTime);
+    } else {
+        resetTimer();  // Set start time to the current time if not available
+    }
+}
+
+function getTimeOnline() {
+    let currentTime = new Date();
+    let timeDiff = Math.abs(currentTime - startTime);
+    let hours = Math.floor(timeDiff / 3600000);
+    let minutes = Math.floor((timeDiff % 3600000) / 60000);
+    return `${hours}:${minutes.toString().padStart(2, '0')}`;
+}
+
+function resetTimer() {
+    startTime = new Date();
+    localStorage.setItem('startTime', startTime.toISOString());
+}
+
+function onATCConnectionEvent() {
+    resetTimer();
+}
+
+// Assume these functions detect ATC log on/log off events
+function detectATCLogon() {
+    // Example function body
+    onATCConnectionEvent();
+}
+
+function detectATCLogoff() {
+    // Example function body
+    onATCConnectionEvent();
+}
+
+// Example event listeners for ATC logon/logoff
+document.addEventListener('ATCLogon', detectATCLogon);
+document.addEventListener('ATCLogoff', detectATCLogoff);
+
+let startTime;
+loadStartTime();
+
 	
 	
 	
