@@ -664,11 +664,19 @@ function saveFlp() {
     }
 
 	flightRoute = flightPlanPoints;
-    drawFlightPlan(flightRoute);
+    draw();
 }
 
 function resetFlp() {
+    // Limpa os valores das text areas
+    document.querySelector('.small-input[placeholder="IRFD"]').value = '';
+    document.querySelector('.small-input[placeholder="ILAR"]').value = '';
+    document.querySelector('.large-input[placeholder="MOGTA, TRN, CAN"]').value = '';
 
+    // Reseta a rota de voo
+    flightRoute = [];
+	draw();
+    console.log("Plano de voo resetado!");
 }
 
 function resetHighlights() {
