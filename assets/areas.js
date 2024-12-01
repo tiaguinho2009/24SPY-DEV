@@ -1196,8 +1196,44 @@ const controlAreas = [
 
 const Waypoints = [
     ////EXAMPLES
+    //Waypoints
     //{ name: "WAYPO", type: "Waypoint", coordinates: [, ] },
+    //VORs
     //{ name: "VOR", type: "VOR", coordinates: [, ] },
+
+    ////IRFD FIR
+    //Waypoints
+    { name: "ENDER", type: "Waypoint", coordinates: [401.64, 593.26] },
+    { name: "KENED", type: "Waypoint", coordinates: [492.85, 622.96] },
+    { name: "SETHR", type: "Waypoint", coordinates: [651.95, 663.27] },
+    { name: "SUNST", type: "Waypoint", coordinates: [345.07, 637.81] },
+    { name: "BUCFA", type: "Waypoint", coordinates: [407.29, 673.17] },
+    { name: "KUNAV", type: "Waypoint", coordinates: [493.56, 681.65] },
+    { name: "HAWFA", type: "Waypoint", coordinates: [531.74, 701.45] },
+    { name: "QUEEN", type: "Waypoint", coordinates: [591.85, 743.17] },
+    { name: "LAVNO", type: "Waypoint", coordinates: [639.93, 762.97] },
+    { name: "ATPEV", type: "Waypoint", coordinates: [673.17, 750.24] },
+    { name: "SAWPE", type: "Waypoint", coordinates: [320.32, 694.38] },
+    { name: "ICTAM", type: "Waypoint", coordinates: [473.05, 710.64] },
+    { name: "BEANS", type: "Waypoint", coordinates: [325.98, 775.70] },
+    { name: "LOGAN", type: "Waypoint", coordinates: [400.22, 791.25] },
+    { name: "MOGTA", type: "Waypoint", coordinates: [494.97, 819.54] },
+    { name: "JAMSI", type: "Waypoint", coordinates: [709.23, 810.34] },
+    { name: "EXMOR", type: "Waypoint", coordinates: [413.66, 853.48] },
+    { name: "PEPUL", type: "Waypoint", coordinates: [524.67, 873.98] },
+    { name: "GODLU", type: "Waypoint", coordinates: [651.95, 859.13] },
+    { name: "LAZER", type: "Waypoint", coordinates: [702.16, 879.64] },
+    { name: "EMJAY", type: "Waypoint", coordinates: [457.50, 946.82] },
+    { name: "ODOKU", type: "Waypoint", coordinates: [574.88, 946.82] },
+    { name: "DEATH", type: "Waypoint", coordinates: [412.24, 1063.43] },
+    { name: "TRELN", type: "Waypoint", coordinates: [506.29, 1041.57] },
+    { name: "REAPR", type: "Waypoint", coordinates: [601.04, 1026.01] },
+    //VORs
+    { name: "MLR", type: "VOR", coordinates: [409.41, 733.98] },
+    { name: "BLA", type: "VOR", coordinates: [533.16, 736.81] },
+    { name: "RFD", type: "VOR", coordinates: [576.29, 789.13] },
+    { name: "GRY", type: "VOR", coordinates: [444.77, 819.54] },
+    { name: "TRN", type: "VOR", coordinates: [591.14, 887.42] },
 
     ////ILAR FIR
     //Waypoints
