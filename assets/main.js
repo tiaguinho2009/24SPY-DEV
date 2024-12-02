@@ -42,7 +42,8 @@ function draw() {
 	ctx.drawImage(mapImage, offsetX, offsetY, mapWidth, mapHeight);
 	drawControlAreas();
 	drawFlightPlan(flightRoute);
-	resetChartsMenu()
+	resetChartsMenu();
+	drawNavaids();
 }
 
 // Função para desenhar áreas de controle
@@ -189,6 +190,35 @@ function drawFlightPlan(points) {
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "14px Arial";
         ctx.fillText(point.name, x + 5, y - 5);
+    });
+}
+
+function drawNavaids() {
+	if (!settingsValues.showNavaids) {return};
+	const navaids = Waypoints;
+
+    navaids.forEach(navaid => {
+        // Filtra apenas os tipos VOR e Waypoint
+        if (navaid.type !== "VOR" && navaid.type !== "Waypoint") {
+            return;
+        }
+
+        // Transforma as coordenadas
+        const [x, y] = transformCoordinates(navaid.coordinates);
+
+        // Define a cor baseada no tipo
+        const color = navaid.type === "VOR" ? "#66B2FF" : "#FFFF66"; // VOR azul claro, Waypoint amarelo claro
+
+        // Desenha a bolinha
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        // Adiciona a label
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "14px Arial";
+        ctx.fillText(navaid.name, x + 5, y - 5);
     });
 }
 

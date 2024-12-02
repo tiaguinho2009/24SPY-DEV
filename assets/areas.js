@@ -1235,6 +1235,24 @@ const Waypoints = [
     { name: "GRY", type: "VOR", coordinates: [444.77, 819.54] },
     { name: "TRN", type: "VOR", coordinates: [591.14, 887.42] },
 
+    ////ITKO FIR
+    //Waypoints
+    { name: "SHELL", type: "Waypoint", coordinates: [341.00, 161.50] },
+    { name: "KIKON", type: "Waypoint", coordinates: [494.00, 142.50] },
+    { name: "CHILY", type: "Waypoint", coordinates: [661.50, 159.00] },
+    { name: "SHIBA", type: "Waypoint", coordinates: [427.50, 188.00] },
+    { name: "LETSE", type: "Waypoint", coordinates: [573.00, 214.00] },
+    { name: "HONDA", type: "Waypoint", coordinates: [692.00, 214.00] },
+    { name: "ASTRO", type: "Waypoint", coordinates: [456.50, 258.50] },
+    { name: "GULEG", type: "Waypoint", coordinates: [387.00, 307.50] },
+    { name: "PIPER", type: "Waypoint", coordinates: [479.00, 314.50] },
+    { name: "ONDER", type: "Waypoint", coordinates: [561.50, 335.00] },
+    { name: "KNIFE", type: "Waypoint", coordinates: [637.00, 317.50] },
+    { name: "TUDEP", type: "Waypoint", coordinates: [449.50, 383.00] },
+    { name: "ALLRY", type: "Waypoint", coordinates: [690.00, 383.50] },
+    //VORs
+    { name: "HME", type: "VOR", coordinates: [534.00, 246.50] },
+
     ////ILAR FIR
     //Waypoints
     { name: "FORIA", type: "Waypoint", coordinates: [683.25, 1010.62] },
@@ -1267,13 +1285,30 @@ const Waypoints = [
     { name: "PACKT", type: "Waypoint", coordinates: [107.00, 911.00] },
     { name: "STACK", type: "Waypoint", coordinates: [207.50, 946.00] },
     { name: "ALDER", type: "Waypoint", coordinates: [329.50, 922.50] },
-    { name: "WASTE", type: "Waypoint", coordinates: [101.00, 944.50] },
+    { name: "WASTE", type: "Waypoint", coordinates: [101.00, 995.50] },
     { name: "HOGGS", type: "Waypoint", coordinates: [314.50, 986.00] },
     { name: "ROBUX", type: "Waypoint", coordinates: [268.50, 1067.50] },
     //VORs
     { name: "KRT", type: "VOR", coordinates: [82.50, 834.00] },
     { name: "SAU", type: "VOR", coordinates: [136.50, 860.50] },
     { name: "BAR", type: "VOR", coordinates: [222.50, 891.50] },
+
+    ////IBTH FIR
+    //Waypoints
+    { name: "GERLD", type: "Waypoint", coordinates: [443.50, 422.50] },
+    { name: "RENDR", type: "Waypoint", coordinates: [487.00, 432.00] },
+    { name: "JOOPY", type: "Waypoint", coordinates: [589.50, 421.50] },
+    { name: "PROBE", type: "Waypoint", coordinates: [530.50, 471.00] },
+    { name: "DINER", type: "Waypoint", coordinates: [654.00, 476.50] },
+    { name: "WELSH", type: "Waypoint", coordinates: [486.50, 531.50] },
+    { name: "INDEX", type: "Waypoint", coordinates: [545.50, 569.50] },
+    { name: "GAVIN", type: "Waypoint", coordinates: [679.00, 590.00] },
+    { name: "SILVA", type: "Waypoint", coordinates: [798.00, 592.00] },
+    { name: "OCEEN", type: "Waypoint", coordinates: [735.00, 628.50] },
+    //VORs
+    { name: "ROM", type: "VOR", coordinates: [710.50, 468.50] },
+    { name: "RES", type: "VOR", coordinates: [612.00, 535.50] },
+    { name: "VOX", type: "VOR", coordinates: [737.50, 532.00] },
 
     ////ISKP FIR
     //Waypoints
@@ -1325,6 +1360,7 @@ const settings = [
     'showFIRlines',
     'showAPPlines',
     'showOnlineATC',
+    'showNavaids',
 ];
 
 const settingsValues = {
@@ -1333,6 +1369,7 @@ const settingsValues = {
     showFIRlines: true,
     showAPPlines: false,
     showOnlineATC: true,
+    showNavaids: false,
 };
 
 const websiteInfo = {
