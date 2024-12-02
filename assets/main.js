@@ -683,7 +683,7 @@ function saveFlp() {
     // Obtém os valores das text areas
     const departure = document.querySelector('.small-input[placeholder="IRFD"]').value.trim().toUpperCase();
     const arrival = document.querySelector('.small-input[placeholder="ILAR"]').value.trim().toUpperCase();
-    const waypoints = document.querySelector('.large-input[placeholder="MOGTA, TRN, CAN"]').value.trim().toUpperCase();
+    const waypoints = document.querySelector('.large-input[placeholder="MOGTA TRN CAN"]').value.trim().toUpperCase();
 
     // Divide os waypoints em uma lista
     const inputPoints = [departure, ...waypoints.split(' ').map(wp => wp.trim()), arrival];
@@ -721,7 +721,7 @@ function resetFlp() {
     // Limpa os valores das text areas
     document.querySelector('.small-input[placeholder="IRFD"]').value = '';
     document.querySelector('.small-input[placeholder="ILAR"]').value = '';
-    document.querySelector('.large-input[placeholder="MOGTA, TRN, CAN"]').value = '';
+    document.querySelector('.large-input[placeholder="MOGTA TRN CAN"]').value = '';
 
     // Reseta a rota de voo
     flightRoute = [];
