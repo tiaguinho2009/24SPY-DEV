@@ -1267,6 +1267,26 @@ const Waypoints = [
     //VORs
     { name: "HME", type: "VOR", coordinates: [534.00, 246.50] },
 
+    ////IPPH FIR
+    //Waypoints
+    { name: "CRAZY", type: "Waypoint", coordinates: [812.11, 218.53] },
+    { name: "WOTAN", type: "Waypoint", coordinates: [979.68, 236.94] },
+    { name: "WAGON", type: "Waypoint", coordinates: [1082.81, 269.47] },
+    { name: "WELLS", type: "Waypoint", coordinates: [880.24, 307.53] },
+    { name: "SQUID", type: "Waypoint", coordinates: [1003.62, 309.37] },
+    { name: "ZESTA", type: "Waypoint", coordinates: [1111.66, 335.77] },
+    { name: "TINDR", type: "Waypoint", coordinates: [726.17, 345.59] },
+    { name: "NOONU", type: "Waypoint", coordinates: [927.51, 378.74] },
+    { name: "KELLA", type: "Waypoint", coordinates: [980.91, 382.42] },
+    { name: "STRAX", type: "Waypoint", coordinates: [744.58, 396.54] },
+    { name: "SISTA", type: "Waypoint", coordinates: [960.04, 442.58] },
+    { name: "TALIS", type: "Waypoint", coordinates: [890.68, 453.63] },
+    //VORs
+    { name: "COC", type: "VOR", coordinates: [778.35, 297.71] },
+    { name: "PER", type: "VOR", coordinates: [786.94, 362.78] },
+    { name: "BTM", type: "VOR", coordinates: [874.10, 371.99] },
+    { name: "ORG", type: "VOR", coordinates: [815.79, 418.02] },
+
     ////ILAR FIR
     //Waypoints
     { name: "FORIA", type: "Waypoint", coordinates: [683.25, 1010.62] },
@@ -1289,6 +1309,28 @@ const Waypoints = [
     { name: "KIN", type: "VOR", coordinates: [929.50, 868.50] },
     { name: "PFO", type: "VOR", coordinates: [936.50, 935.25] },
     { name: "HUT", type: "VOR", coordinates: [931.00, 985.75] },
+    
+    ////IZOL FIR
+    //Waypoints
+    { name: "CAMEL", type: "Waypoint", coordinates: [831.75, 515.62] },
+    { name: "DUNKS", type: "Waypoint", coordinates: [907.87, 518.69] },
+    { name: "ROSMO", type: "Waypoint", coordinates: [1031.86, 483.09] },
+    { name: "UDMUG", type: "Waypoint", coordinates: [1147.88, 437.05] },
+    { name: "CYRIL", type: "Waypoint", coordinates: [889.45, 584.37] },
+    { name: "MORRD", type: "Waypoint", coordinates: [1147.88, 558.59] },
+    { name: "LLIME", type: "Waypoint", coordinates: [1181.64, 495.37] },
+    { name: "DOGGO", type: "Waypoint", coordinates: [990.73, 652.51] },
+    { name: "ABSRS", type: "Waypoint", coordinates: [1197.60, 646.37] },
+    { name: "BILLO", type: "Waypoint", coordinates: [1110.43, 691.79] },
+    { name: "JUSTY", type: "Waypoint", coordinates: [1016.51, 740.90] },
+    { name: "CHAIN", type: "Waypoint", coordinates: [1196.98, 769.14] },
+    //VORs
+    { name: "HOT", type: "VOR", coordinates: [987.05, 534.04] },
+    { name: "NJF", type: "VOR", coordinates: [1095.09, 582.53] },
+    { name: "IZO", type: "VOR", coordinates: [1084.04, 621.20] },
+    { name: "DIZ", type: "VOR", coordinates: [1127.01, 626.11] },
+    { name: "TRE", type: "VOR", coordinates: [981.53, 587.44] },
+    { name: "DET", type: "VOR", coordinates: [1107.98, 760.54] },
 
     ////IGRV FIR
     //Waypoints
