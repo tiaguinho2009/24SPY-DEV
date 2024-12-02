@@ -168,17 +168,24 @@ function drawFlightPlan(points) {
     transformedPoints.forEach((point, index) => {
         const [x, y] = point.transformedCoordinates;
 
-        // Desenha as "bolas" para todos os pontos
-        const pointColor = point.type === "VOR" ? "#66B2FF" : "#FFFF66"; // VOR azul claro, Waypoint amarelo claro
+        let pointColor;
+        if (index === 0) {
+            pointColor = "#00FF00"; // Verde para o primeiro ponto
+        } else if (index === transformedPoints.length - 1) {
+            pointColor = "#FF0000"; // Vermelho para o último ponto
+        } else {
+            pointColor = point.type === "VOR" ? "#66B2FF" : "#FFFF66";
+        }
+
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, 2 * Math.PI);
         ctx.fillStyle = pointColor;
         ctx.fill();
 
-        // Pula a label do primeiro e último ponto
-        if (index === 0 || index === transformedPoints.length - 1) return;
+        if ((index === 0 || index === transformedPoints.length - 1) && point.type === "Airport") {
+            return;
+        }
 
-        // Desenha as labels para os outros pontos
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "14px Arial";
         ctx.fillText(point.name, x + 5, y - 5);

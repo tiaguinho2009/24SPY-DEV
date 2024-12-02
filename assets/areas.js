@@ -1258,6 +1258,23 @@ const Waypoints = [
     { name: "PFO", type: "VOR", coordinates: [936.50, 935.25] },
     { name: "HUT", type: "VOR", coordinates: [931.00, 985.75] },
 
+    ////ISAU FIR
+    //Waypoints
+    { name: "HACKE", type: "Waypoint", coordinates: [53.00, 791.00] },
+    { name: "GEORG", type: "Waypoint", coordinates: [143.00, 816.50] },
+    { name: "SEEKS", type: "Waypoint", coordinates: [237.00, 847.00] },
+    { name: "HECKS", type: "Waypoint", coordinates: [31.00, 890.50] },
+    { name: "PACKT", type: "Waypoint", coordinates: [107.00, 911.00] },
+    { name: "STACK", type: "Waypoint", coordinates: [207.50, 946.00] },
+    { name: "ALDER", type: "Waypoint", coordinates: [329.50, 922.50] },
+    { name: "WASTE", type: "Waypoint", coordinates: [101.00, 944.50] },
+    { name: "HOGGS", type: "Waypoint", coordinates: [314.50, 986.00] },
+    { name: "ROBUX", type: "Waypoint", coordinates: [268.50, 1067.50] },
+    //VORs
+    { name: "KRT", type: "VOR", coordinates: [82.50, 834.00] },
+    { name: "SAU", type: "VOR", coordinates: [136.50, 860.50] },
+    { name: "BAR", type: "VOR", coordinates: [222.50, 891.50] },
+
     ////ISKP FIR
     //Waypoints
     { name: "ANYMS", type: "Waypoint", coordinates: [768.00, 764.50] },

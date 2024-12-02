@@ -14,7 +14,9 @@
 | ![status: Done](https://img.shields.io/badge/status-Done-brightgreen) | Add User Settings |
 | ![status: Done](https://img.shields.io/badge/status-Done-brightgreen) | Have a menu with the ground charts of each Airport.|
 | ![status: In-Progress](https://img.shields.io/badge/status-In_Progress-orange) | Buy a mini pc to be a backhand server for the website |
-| ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Show the Waypoints on the map and be able to put the FPL on the map.|
+| ![status: In-Progress](https://img.shields.io/badge/status-In_Progress-orange) | Show the Waypoints on the map and be able to put the FPL on the map.|
+| ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Make the Labels of the Waypoints interactive.|
+| ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Add Airways to the FLP System.|
 | ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Refactor code for better organization and otimization |
 | ![status: Idea](https://img.shields.io/badge/status-Idea-lightgrey) | "Mobile friendly" version |
 | ![status: Idea](https://img.shields.io/badge/status-Idea-lightgrey) | Show the ATIS |
