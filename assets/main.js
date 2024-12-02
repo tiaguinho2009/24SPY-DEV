@@ -194,13 +194,21 @@ function drawFlightPlan(points) {
 }
 
 function drawNavaids() {
-	if (!settingsValues.showNavaids) {return};
-	const navaids = Waypoints;
+    if (!settingsValues.showNavaids) {
+        return;
+    }
+    const navaids = Waypoints;
 
     navaids.forEach(navaid => {
         // Filtra apenas os tipos VOR e Waypoint
         if (navaid.type !== "VOR" && navaid.type !== "Waypoint") {
             return;
+        }
+
+        // Verifica se o navaid está na flightRoute
+        const isInFlightRoute = flightRoute.some(routePoint => routePoint.name === navaid.name);
+        if (isInFlightRoute) {
+            return; // Não desenha se estiver na rota
         }
 
         // Transforma as coordenadas
@@ -216,7 +224,7 @@ function drawNavaids() {
         ctx.fill();
 
         // Adiciona a label
-        ctx.fillStyle = "#FFFFFF";
+        ctx.fillStyle = "#bbbbbb";
         ctx.font = "14px Arial";
         ctx.fillText(navaid.name, x + 5, y - 5);
     });
@@ -675,7 +683,7 @@ function saveFlp() {
     const waypoints = document.querySelector('.large-input[placeholder="MOGTA, TRN, CAN"]').value.trim().toUpperCase();
 
     // Divide os waypoints em uma lista
-    const inputPoints = [departure, ...waypoints.split(',').map(wp => wp.trim()), arrival];
+    const inputPoints = [departure, ...waypoints.split(' ').map(wp => wp.trim()), arrival];
 
     // Junta os dados de aeroportos e waypoints
     const allPoints = [

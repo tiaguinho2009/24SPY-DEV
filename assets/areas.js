@@ -1192,6 +1192,20 @@ const controlAreas = [
             "Waterloo Tower",
         ],
     },
+    {
+        name: "TVO",
+        real_name: "Tavaro Seabase",
+        type: "Airport",
+        originalscale: 2,
+        scale: 2,
+        coordinates: [170.76, 568.00],
+        towerfreq: "None",
+        tower: false,
+        towerATC: "",
+        atcs: [
+            "Tavaro Tower",
+        ],
+    },
 ];
 
 const Waypoints = [
@@ -1210,7 +1224,7 @@ const Waypoints = [
     { name: "BUCFA", type: "Waypoint", coordinates: [407.29, 673.17] },
     { name: "KUNAV", type: "Waypoint", coordinates: [493.56, 681.65] },
     { name: "HAWFA", type: "Waypoint", coordinates: [531.74, 701.45] },
-    { name: "QUEEN", type: "Waypoint", coordinates: [591.85, 743.17] },
+    { name: "QUEEN", type: "Waypoint", coordinates: [588.11, 739.51] },
     { name: "LAVNO", type: "Waypoint", coordinates: [639.93, 762.97] },
     { name: "ATPEV", type: "Waypoint", coordinates: [673.17, 750.24] },
     { name: "SAWPE", type: "Waypoint", coordinates: [320.32, 694.38] },
@@ -1231,7 +1245,7 @@ const Waypoints = [
     //VORs
     { name: "MLR", type: "VOR", coordinates: [409.41, 733.98] },
     { name: "BLA", type: "VOR", coordinates: [533.16, 736.81] },
-    { name: "RFD", type: "VOR", coordinates: [576.29, 789.13] },
+    { name: "RFD", type: "VOR", coordinates: [574.31, 787.01] },
     { name: "GRY", type: "VOR", coordinates: [444.77, 819.54] },
     { name: "TRN", type: "VOR", coordinates: [591.14, 887.42] },
 
@@ -1276,6 +1290,28 @@ const Waypoints = [
     { name: "PFO", type: "VOR", coordinates: [936.50, 935.25] },
     { name: "HUT", type: "VOR", coordinates: [931.00, 985.75] },
 
+    ////IGRV FIR
+    //Waypoints
+    { name: "BULLY", type: "Waypoint", coordinates: [273.77, 279.30] },
+    { name: "FROOT", type: "Waypoint", coordinates: [206.25, 354.18] },
+    { name: "EURAD", type: "Waypoint", coordinates: [340.68, 375.05] },
+    { name: "BOBOS", type: "Waypoint", coordinates: [136.27, 415.57] },
+    { name: "BLANK", type: "Waypoint", coordinates: [368.92, 433.37] },
+    { name: "THENR", type: "Waypoint", coordinates: [204.41, 449.33] },
+    { name: "ACRES", type: "Waypoint", coordinates: [ 86.55, 469.59] },
+    { name: "YOUTH", type: "Waypoint", coordinates: [282.98, 488.00] },
+    { name: "UWAIS", type: "Waypoint", coordinates: [ 32.53, 518.08] },
+    { name: "EZYDB", type: "Waypoint", coordinates: [373.21, 533.42] },
+    { name: "FRANK", type: "Waypoint", coordinates: [ 38.67, 596.04] },
+    { name: "CELAR", type: "Waypoint", coordinates: [229.58, 628.57] },
+    { name: "THAGC", type: "Waypoint", coordinates: [ 38.06, 681.36] },
+    { name: "SHREK", type: "Waypoint", coordinates: [133.82, 688.73] },
+    { name: "SPACE", type: "Waypoint", coordinates: [234.49, 707.75] },
+    //VORs
+    { name: "GOL", type: "VOR", coordinates: [112.95, 553.68] },
+    { name: "GVK", type: "VOR", coordinates: [160.21, 544.47] },
+    { name: "HAW", type: "VOR", coordinates: [203.79, 517.47] },
+
     ////ISAU FIR
     //Waypoints
     { name: "HACKE", type: "Waypoint", coordinates: [53.00, 791.00] },
@@ -1318,7 +1354,7 @@ const Waypoints = [
     { name: "CLR", type: "VOR", coordinates: [829.87, 731.75] },
     { name: "DEL", type: "VOR", coordinates: [912.12, 696.25] },
 
-    
+
 ];
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
