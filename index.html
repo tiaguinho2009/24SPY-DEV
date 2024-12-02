@@ -94,6 +94,10 @@
                <input type="checkbox" onchange="onCheckBoxChange(this)" id="showNavaids" checked>
                <label for="showNavaids">Show Navaids</label>
             </div>
+            <div class="map-option">
+               <input type="checkbox" onchange="onCheckBoxChange(this)" id="showNavaidsLabels" checked>
+               <label for="showNavaidsLabels">Show Navaids Labels</label>
+            </div>
          </div>
       </div>
       <div class="flp-menu" id="FlpMenu">
@@ -109,7 +113,7 @@
          </div>
          <div class="form-row">
              <label>Waypoints:</label>
-             <textarea class="large-input" placeholder="MOGTA, TRN, CAN"></textarea>
+             <textarea class="large-input" placeholder="MOGTA TRN CAN"></textarea>
          </div>
          <div class="Buttons">
             <button class="Save" onclick="saveFlp()">Save</button>

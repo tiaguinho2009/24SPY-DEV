@@ -215,7 +215,7 @@ function drawNavaids() {
         const [x, y] = transformCoordinates(navaid.coordinates);
 
         // Define a cor baseada no tipo
-        const color = navaid.type === "VOR" ? "#66B2FF" : "#FFFF66"; // VOR azul claro, Waypoint amarelo claro
+        const color = navaid.type === "VOR" ? "#477bb3" : "#BDBD4C"; // VOR azul claro, Waypoint amarelo claro
 
         // Desenha a bolinha
         ctx.beginPath();
@@ -223,6 +223,9 @@ function drawNavaids() {
         ctx.fillStyle = color;
         ctx.fill();
 
+		if (!settingsValues.showNavaidsLabels) {
+			return;
+		}
         // Adiciona a label
         ctx.fillStyle = "#bbbbbb";
         ctx.font = "14px Arial";

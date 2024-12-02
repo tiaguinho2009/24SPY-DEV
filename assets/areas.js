@@ -1397,6 +1397,7 @@ const settings = [
     'showAPPlines',
     'showOnlineATC',
     'showNavaids',
+    'showNavaidsLabels',
 ];
 
 const settingsValues = {
@@ -1406,6 +1407,7 @@ const settingsValues = {
     showAPPlines: false,
     showOnlineATC: true,
     showNavaids: false,
+    showNavaidsLabels: false,
 };
 
 const websiteInfo = {
