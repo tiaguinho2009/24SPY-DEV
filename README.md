@@ -18,7 +18,7 @@
 | ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Make the Labels of the Waypoints interactive.|
 | ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Add Airways to the FLP System.|
 | ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Refactor code for better organization and otimization |
-| ![status: Idea](https://img.shields.io/badge/status-Idea-lightgrey) | Make a FLP Generator. |
+| ![status: Idea](https://img.shields.io/badge/status-Idea-lightgrey) | Make a FLP Generator with A*. |
 | ![status: Idea](https://img.shields.io/badge/status-Idea-lightgrey) | "Mobile friendly" version |
 | ![status: Idea](https://img.shields.io/badge/status-Idea-lightgrey) | Show the ATIS |
 | ![status: Idea](https://img.shields.io/badge/status-Idea-lightgrey) | Show the Planes |
