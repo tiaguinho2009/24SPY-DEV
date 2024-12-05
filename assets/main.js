@@ -414,12 +414,6 @@ document.addEventListener('ATCLogoff', detectATCLogoff);
 
 let startTime;
 loadStartTime();
-
-	
-	
-	
-	
-
 	const controlBadge = airportUI.querySelector('.badge.C');
 	const approachBadge = airportUI.querySelector('.badge.A');
 	const towerBadge = airportUI.querySelector('.badge.T');
