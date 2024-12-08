@@ -525,40 +525,54 @@ loadStartTime();
 }
 
 function resetAllAirportsUI() {
-	// Percorre todas as áreas de controle e reseta apenas as do tipo 'Airport'
-	controlAreas.forEach(area => {
-		if (area.type === 'Airport') {
-			// Busca o elemento correspondente à interface do aeroporto
-			const airportUIs = document.querySelectorAll(`.airport-ui`); // Seleciona todos os aeroportos
+	// Selecionar todos os elementos de interface de aeroporto
+	const airportUIs = document.querySelectorAll(`.airport-ui`);
 
-			airportUIs.forEach(airportUI => {
-				// Remove event listeners dos badges
-				const controlBadge = airportUI.querySelector('.badge.C');
-				const towerBadge = airportUI.querySelector('.badge.T');
-				const groundBadge = airportUI.querySelector('.badge.G');
+	airportUIs.forEach(airportUI => {
+		// Remover event listeners dos badges
+		const controlBadge = airportUI.querySelector('.badge.C');
+		const approachBadge = airportUI.querySelector('.badge.A');
+		const towerBadge = airportUI.querySelector('.badge.T');
+		const groundBadge = airportUI.querySelector('.badge.G');
+		const icaoCodeButton = airportUI.querySelector('.icao-code');
 
-				if (controlBadge) {
-					controlBadge.removeEventListener('mouseenter', showInfoMenu);
-					controlBadge.removeEventListener('mouseleave', hideInfoMenu);
-				}
-				if (towerBadge) {
-					towerBadge.removeEventListener('mouseenter', showInfoMenu);
-					towerBadge.removeEventListener('mouseleave', hideInfoMenu);
-				}
-				if (groundBadge) {
-					groundBadge.removeEventListener('mouseenter', showInfoMenu);
-					groundBadge.removeEventListener('mouseleave', hideInfoMenu);
-				}
-
-				// Remove o elemento da interface do DOM
-				airportUI.remove();
-			});
+		if (controlBadge) {
+			controlBadge.removeEventListener('mouseenter', showInfoMenu);
+			controlBadge.removeEventListener('mouseleave', hideInfoMenu);
 		}
+		if (approachBadge) {
+			approachBadge.removeEventListener('mouseenter', showInfoMenu);
+			approachBadge.removeEventListener('mouseleave', hideInfoMenu);
+		}
+		if (towerBadge) {
+			towerBadge.removeEventListener('mouseenter', showInfoMenu);
+			towerBadge.removeEventListener('mouseleave', hideInfoMenu);
+		}
+		if (groundBadge) {
+			groundBadge.removeEventListener('mouseenter', showInfoMenu);
+			groundBadge.removeEventListener('mouseleave', hideInfoMenu);
+		}
+
+		// Remover event listener do botão ICAO
+		if (icaoCodeButton) {
+			icaoCodeButton.removeEventListener('click', toggleIcaoMenu);
+		}
+
+		// Remover o elemento da interface do DOM
+		airportUI.remove();
 	});
 
-	// Remove event listeners globais (opcional, pode ser gerido caso tenha múltiplos aeroportos)
+	// Remover menus adicionais
+	const airportInfoMenus = document.querySelectorAll('.airport-info-menu');
+	airportInfoMenus.forEach(menu => menu.remove());
+
+	const icaoMenus = document.querySelectorAll('.icao-menu');
+	icaoMenus.forEach(menu => menu.remove());
+
+	// Remover event listeners globais
 	window.removeEventListener('resize', updatePosition);
 	canvas.removeEventListener('mousemove', updatePosition);
+	canvas.removeEventListener('wheel', updatePosition);
 }
 
 function displayAirports() {
