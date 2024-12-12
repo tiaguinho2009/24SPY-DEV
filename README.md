@@ -30,6 +30,7 @@
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance.
 
-## [DEV 0.1.5.0.3] - 08/12/2024
+## [DEV 0.1.5.0.4] - 12/12/2024
 ### Added
-- More optimization to the website!
+- Changed the cursor type to "grab" when the cursor is over the map.
+- Now the footer is clickable and it will redirect to the License of the Website.

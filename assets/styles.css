@@ -745,17 +745,17 @@ canvas {
     position: absolute;
     bottom: 5px;
     right: 5px;
-    color: #bdbdbd; /* Cor cinza clara */
+    color: #bdbdbd;
     font-size: 0.7em;
     z-index: 1000;
     user-select: none;
 }
 
 .footer-link {
-    color: #bdbdbd; /* Mantém a mesma cor do texto */
-    text-decoration: none; /* Remove o sublinhado */
+    color: #bdbdbd;
+    text-decoration: none;
 }
 
 .footer-link:hover {
-    text-decoration: underline; /* Adiciona sublinhado ao passar o rato */
+    text-decoration: underline;
 }
