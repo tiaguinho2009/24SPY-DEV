@@ -619,24 +619,69 @@ function displayAirports() {
 // Exibe os aeroportos na inicialização
 displayAirports();
 
-// Evento para arrastar o mapa
+let velocityX = 0, velocityY = 0; // Velocidade do movimento
+let friction = 0.9; // Fator de atrito para desaceleração
+
+// Adiciona o evento mousedown para iniciar o movimento
 canvas.addEventListener('mousedown', (e) => {
-	isDragging = true;
-	startX = e.clientX - offsetX;
-	startY = e.clientY - offsetY;
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    velocityX = 0;
+    velocityY = 0;
 });
 
+// Evento mousemove para calcular o movimento e a velocidade
 canvas.addEventListener('mousemove', (e) => {
-	if (isDragging) {
-		offsetX = e.clientX - startX;
-		offsetY = e.clientY - startY;
-		draw();
-	}
+    if (isDragging) {
+        const currentX = e.clientX;
+        const currentY = e.clientY;
+
+        // Calcula o deslocamento
+        const dx = currentX - startX;
+        const dy = currentY - startY;
+
+        // Atualiza a posição do mapa
+        offsetX += dx;
+        offsetY += dy;
+
+        // Calcula a velocidade do movimento
+        velocityX = dx;
+        velocityY = dy;
+
+        // Atualiza o ponto inicial
+        startX = currentX;
+        startY = currentY;
+
+        // Redesenha o canvas
+        draw();
+    }
 });
 
+// Evento mouseup para parar o drag e iniciar o movimento inercial
 canvas.addEventListener('mouseup', () => {
-	isDragging = false;
+    isDragging = false;
+    applyInertia();
 });
+
+// Função de inércia para continuar o movimento
+function applyInertia() {
+    if (!isDragging && (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1)) {
+        // Aplica o deslocamento com base na velocidade atual
+        offsetX += velocityX;
+        offsetY += velocityY;
+
+        // Aplica atrito para reduzir a velocidade gradualmente
+        velocityX *= friction;
+        velocityY *= friction;
+
+        // Redesenha o canvas
+        draw();
+
+        // Chama recursivamente até a velocidade ser insignificante
+        requestAnimationFrame(applyInertia);
+    }
+}
 
 let isZooming = false;
 
