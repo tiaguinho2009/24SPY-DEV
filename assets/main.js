@@ -175,13 +175,45 @@ function drawFlightPlan(points) {
     );
 
     for (let i = 1; i < transformedPoints.length; i++) {
-        ctx.lineTo(
-            transformedPoints[i].transformedCoordinates[0],
-            transformedPoints[i].transformedCoordinates[1]
-        );
+        const current = transformedPoints[i - 1].transformedCoordinates;
+        const next = transformedPoints[i].transformedCoordinates;
+
+        // Desenha a linha
+        ctx.lineTo(next[0], next[1]);
+
+        // Calcula o HDG
+        const dx = next[0] - current[0];
+        const dy = next[1] - current[1];
+        const hdg = Math.round((Math.atan2(dx, -dy) * (180 / Math.PI) + 360) % 360);
+
+        // Calcula a posição para exibir as labels (meio do segmento)
+        const midX = (current[0] + next[0]) / 2;
+        const midY = (current[1] + next[1]) / 2;
+
+        // Rotaciona o contexto para alinhar com o ângulo da rota
+        ctx.save();
+        ctx.translate(midX, midY);
+        let angle = Math.atan2(dy, dx);
+        if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+            angle += Math.PI; // Inverte para evitar que fique de cabeça para baixo
+        }
+        ctx.rotate(angle);
+
+        // Desenha o HDG
+        ctx.fillStyle = "#bbbbbb";
+        ctx.font = "12px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(`${hdg}°`, 0, -5);
+
+        // Future Distance Label
+        ctx.fillText(" ", 0, 15);
+
+        // Restaura o contexto
+        ctx.restore();
     }
     ctx.stroke();
 
+    // Desenha os pontos transformados
     transformedPoints.forEach((point, index) => {
         const [x, y] = point.transformedCoordinates;
 
