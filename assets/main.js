@@ -164,6 +164,11 @@ function drawFlightPlan(points) {
     ctx.strokeStyle = "#cc4265";
     ctx.lineWidth = 2;
 
+    // Fator de escala calculado a partir da referência dada
+    const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
+    const referenceDistanceNM = 1478 / 1852; // 1478 metros em NM (1 NM = 1852 metros)
+    const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
+
     const transformedPoints = points.map(point => ({
         ...point,
         transformedCoordinates: transformCoordinates(point.coordinates),
@@ -176,20 +181,29 @@ function drawFlightPlan(points) {
     );
 
     for (let i = 1; i < transformedPoints.length; i++) {
-        const current = transformedPoints[i - 1].transformedCoordinates;
-        const next = transformedPoints[i].transformedCoordinates;
+        const current = transformedPoints[i - 1];
+        const next = transformedPoints[i];
+
+        const currentTrans = current.transformedCoordinates;
+        const nextTrans = next.transformedCoordinates;
 
         // Desenha a linha
-        ctx.lineTo(next[0], next[1]);
+        ctx.lineTo(nextTrans[0], nextTrans[1]);
 
         // Calcula o HDG
-        const dx = next[0] - current[0];
-        const dy = next[1] - current[1];
+        const dx = nextTrans[0] - currentTrans[0];
+        const dy = nextTrans[1] - currentTrans[1];
         const hdg = Math.round((Math.atan2(dx, -dy) * (180 / Math.PI) + 360) % 360);
 
+        // Calcula a distância diretamente das coordenadas sem transformá-las
+        const dxRaw = next.coordinates[0] - current.coordinates[0];
+        const dyRaw = next.coordinates[1] - current.coordinates[1];
+        const distanceEuclidean = Math.sqrt(dxRaw ** 2 + dyRaw ** 2);
+        const distanceNM = (distanceEuclidean * scaleFactor).toFixed(2);
+
         // Calcula a posição para exibir as labels (meio do segmento)
-        const midX = (current[0] + next[0]) / 2;
-        const midY = (current[1] + next[1]) / 2;
+        const midX = (currentTrans[0] + nextTrans[0]) / 2;
+        const midY = (currentTrans[1] + nextTrans[1]) / 2;
 
         // Rotaciona o contexto para alinhar com o ângulo da rota
         ctx.save();
@@ -206,8 +220,11 @@ function drawFlightPlan(points) {
         ctx.textAlign = "center";
         ctx.fillText(`${hdg}°`, 0, -5);
 
-        // Future Distance Label
-        ctx.fillText(" ", 0, 15);
+        // Desenha a Distância em NM
+        ctx.fillStyle = "#bbbbbb";
+        ctx.font = "12px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(`${distanceNM} NM`, 0, 15);
 
         // Restaura o contexto
         ctx.restore();
@@ -304,7 +321,6 @@ function updateAllAirportsUI() {
         if (area.type === 'Airport') {
             const airportUI = document.querySelector(`.airport-ui[id="${area.name}"]`);
             if (airportUI) {
-				console.log('2')
                 updatePosition(airportUI, area);
             }
         }
