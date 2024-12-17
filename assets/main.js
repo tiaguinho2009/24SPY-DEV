@@ -60,6 +60,7 @@ function draw() {
 	drawFlightPlan(flightRoute);
 	resetChartsMenu();
 	drawNavaids();
+	updateAllAirportsUI();
 }
 
 // Função para desenhar áreas de controle
@@ -298,12 +299,25 @@ function updatePosition(airportUI, airport) {
 	airportUI.style.top = `${y + uiHeight / 2}px`;
 }
 
+function updateAllAirportsUI() {
+    controlAreas.forEach(area => {
+        if (area.type === 'Airport') {
+            const airportUI = document.querySelector(`.airport-ui[id="${area.name}"]`);
+            if (airportUI) {
+				console.log('2')
+                updatePosition(airportUI, area);
+            }
+        }
+    });
+}
+
 const icaoMenuCount = 0;
 
 function createAirportUI(airport) {
 	if (settingsValues.showAirportUI === false) {return};
 	const airportUI = document.createElement('div');
 	airportUI.className = 'airport-ui';
+	airportUI.id = airport.name
 	airportUI.style.zIndex = 10 + (3 - airport.originalscale);
 	airportUI.innerHTML = `
 		<button class="icao-code">${airport.name}</button>
@@ -550,10 +564,6 @@ loadStartTime();
 	}		
 
 	updatePosition(airportUI, airport);
-
-	window.addEventListener('resize', () => updatePosition(airportUI, airport));
-	canvas.addEventListener('mousemove', () => updatePosition(airportUI, airport));
-	canvas.addEventListener('wheel', () => updatePosition(airportUI, airport));
 }
 
 function resetAllAirportsUI() {
