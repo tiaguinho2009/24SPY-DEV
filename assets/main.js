@@ -645,10 +645,10 @@ function displayAirports() {
 // Exibe os aeroportos na inicialização
 displayAirports();
 
-let velocityX = 0, velocityY = 0; // Velocidade do movimento
-let friction = 0.9; // Fator de atrito para desaceleração
+let velocityX = 0, velocityY = 0;
+let friction = 0.85;
+const MIN_VELOCITY_THRESHOLD = 0.1;
 
-// Adiciona o evento mousedown para iniciar o movimento
 canvas.addEventListener('mousedown', (e) => {
     isDragging = true;
     startX = e.clientX;
@@ -657,7 +657,6 @@ canvas.addEventListener('mousedown', (e) => {
     velocityY = 0;
 });
 
-// Evento mousemove para calcular o movimento e a velocidade
 canvas.addEventListener('mousemove', (e) => {
     if (isDragging) {
         const currentX = e.clientX;
@@ -671,9 +670,14 @@ canvas.addEventListener('mousemove', (e) => {
         offsetX += dx;
         offsetY += dy;
 
-        // Calcula a velocidade do movimento
-        velocityX = dx;
-        velocityY = dy;
+        // Calcula a velocidade apenas se houver movimento significativo
+        if (Math.abs(dx) > MIN_VELOCITY_THRESHOLD || Math.abs(dy) > MIN_VELOCITY_THRESHOLD) {
+            velocityX = dx;
+            velocityY = dy;
+        } else {
+            velocityX = 0; // Considera que o rato está parado
+            velocityY = 0;
+        }
 
         // Atualiza o ponto inicial
         startX = currentX;
@@ -684,16 +688,18 @@ canvas.addEventListener('mousemove', (e) => {
     }
 });
 
-// Evento mouseup para parar o drag e iniciar o movimento inercial
 canvas.addEventListener('mouseup', () => {
     isDragging = false;
-    applyInertia();
+
+    // Só aplica inércia se a velocidade for significativa
+    if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
+        applyInertia();
+    }
 });
 
-// Função de inércia para continuar o movimento
 function applyInertia() {
-    if (!isDragging && (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1)) {
-        // Aplica o deslocamento com base na velocidade atual
+    // Aplica a inércia até que a velocidade seja insignificante
+    if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
         offsetX += velocityX;
         offsetY += velocityY;
 
@@ -701,11 +707,14 @@ function applyInertia() {
         velocityX *= friction;
         velocityY *= friction;
 
-        // Redesenha o canvas
         draw();
 
-        // Chama recursivamente até a velocidade ser insignificante
+        // Continua a aplicar inércia
         requestAnimationFrame(applyInertia);
+    } else {
+        // Zera as velocidades quando a inércia para
+        velocityX = 0;
+        velocityY = 0;
     }
 }
 
