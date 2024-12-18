@@ -1453,7 +1453,7 @@ const settingsValues = {
 };
 
 const websiteInfo = {
-    version: "ALPHA 0.1.5.1",
+    version: "DEV 0.1.5.1",
 };
 
 const localInfo = {};
