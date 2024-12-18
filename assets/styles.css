@@ -412,6 +412,7 @@ header h1 {
     text-align: left;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     padding: 2px;
+    text-transform: uppercase;
 }
 
 .small-input {
