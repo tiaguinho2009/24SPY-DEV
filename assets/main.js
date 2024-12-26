@@ -981,39 +981,79 @@ ATCOnlinefuncion(PTFSAPI);
 
 // Função para buscar dados do endpoint e atualizar o estado de ATC
 function fetchATCDataAndUpdate() {
-	function toggleUpdateClass() {
-		const mapUpdateTime = document.getElementById('mapUpdateTime');
-		const originalColor = 'rgba(32, 32, 36, 1)'
-	
-		mapUpdateTime.style.backgroundColor = '#ff7a00';
-	
-		setTimeout(() => {
-			mapUpdateTime.style.backgroundColor = originalColor;
-		}, 150);
-	}
-	
-    fetch('https://ptfs.xyz/api/controllers')
+    function toggleUpdateClass() {
+        const mapUpdateTime = document.getElementById('mapUpdateTime');
+        const originalColor = 'rgba(32, 32, 36, 1)';
+    
+        mapUpdateTime.style.backgroundColor = '#ff7a00';
+    
+        setTimeout(() => {
+            mapUpdateTime.style.backgroundColor = originalColor;
+        }, 150);
+    }
+
+    // URL padrão caso a URL dinâmica falhe
+    const defaultURL = 'https://ptfs.xyz/api/controllers';
+    const dynamicURLRepository = 'https://raw.githubusercontent.com/tiaguinho2009/24SPY-Backend/main/backend';
+
+    // Busca a URL dinâmica do repositório GitHub
+    fetch(dynamicURLRepository)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Erro ao buscar dados: ${response.status}`);
+                throw new Error(`Erro ao buscar repositório: ${response.status}`);
             }
-            return response.json();
+            return response.text();
+        })
+        .then(repositoryContent => {
+            // Extração da URL dinâmica do repositório
+            const dynamicURLMatch = repositoryContent.match(/https?:\/\/[\w.-]+\.trycloudflare\.com/g);
+            if (dynamicURLMatch && dynamicURLMatch.length > 0) {
+                const dynamicURL = dynamicURLMatch[0] + '/api/controllers';
+
+                // Tenta buscar dados do endpoint dinâmico
+                return fetch(dynamicURL)
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error(`Erro ao buscar URL dinâmica: ${response.status}`);
+                        }
+                    });
+            } else {
+                throw new Error('Nenhuma URL dinâmica encontrada no repositório.');
+            }
         })
         .then(data => {
             PTFSAPI = data;
-
             ATCOnlinefuncion(PTFSAPI);
-			toggleUpdateClass();
+            toggleUpdateClass();
         })
         .catch(error => {
-            console.error('Erro ao buscar os dados ATC:', error);
-			PTFSAPI = PTFSAPIError
-			ATCOnlinefuncion(PTFSAPI);
-			toggleUpdateClass();
+            console.error('Erro ao usar a URL dinâmica, fallback para a URL padrão:', error);
+
+            // Fallback para a URL padrão
+            fetch(defaultURL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro ao buscar dados na URL padrão: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    PTFSAPI = data;
+                    ATCOnlinefuncion(PTFSAPI);
+                    toggleUpdateClass();
+                })
+                .catch(err => {
+                    console.error('Erro ao buscar dados na URL padrão:', err);
+                    PTFSAPI = PTFSAPIError;
+                    ATCOnlinefuncion(PTFSAPI);
+                    toggleUpdateClass();
+                });
         });
 
-		const time = getTime()
-		document.querySelector('.mapUpdateTime .time').textContent = ` ${time}`;
+    const time = getTime();
+    document.querySelector('.mapUpdateTime .time').textContent = ` ${time}`;
 }
 
 setInterval(fetchATCDataAndUpdate, 30000);
