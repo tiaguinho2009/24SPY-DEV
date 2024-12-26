@@ -435,6 +435,7 @@ function createAirportUI(airport) {
         <div class="controller-info-section">
             <p><strong>Controller:</strong> ${atcName}</p>
             <p><strong>Frequency:</strong> ${frequency} </p>
+			<p><strong>Online:</strong> ${airport.uptime} </p>
         </div>
     `;//<strong>Time Online:</strong> ${getTimeOnline()}
 
@@ -923,25 +924,27 @@ function ATCOnlinefuncion(atcList) {
 			area.ground = false;
 			area.towerAtc = '';
 			area.groundAtc = '';
+			area.uptime = ''; // Inicializa a propriedade uptime
 			area.scale = area.originalscale;
 		} else if (area.type === 'polygon') {
 			area.active = false; // Desativa TMAs/CTRs inicialmente
 		}
 	});
 
-	if (settingsValues.showOnlineATC === false) {updateATCCount(); refreshUI(); return};
+	if (settingsValues.showOnlineATC === false) {updateATCCount(); refreshUI(); return;}
 
 	// Processa cada objeto da lista ATC
 	atcList.forEach(atcData => {
-		const { holder, claimable, airport, position } = atcData;
-		
+		const { holder, claimable, airport, position, uptime } = atcData;
+
 		if (claimable) return;
-		
+
 		// Encontra a área correspondente ao aeroporto
 		controlAreas.forEach(area => {
-			
 			if (area.type === 'Airport' && area.real_name === airport) {
 				area.scale = 0; // Reduz o scale ao ativar uma posição no aeroporto
+				area.uptime = uptime || 'error'; // Armazena o uptime se disponível
+
 				if (position === "tower") {
 					area.tower = true;
 					area.towerAtc = holder;
@@ -976,8 +979,6 @@ function ATCOnlinefuncion(atcList) {
 	updateATCCount();
 	refreshUI();
 }
-
-ATCOnlinefuncion(PTFSAPI);
 
 // Função para buscar dados do endpoint e atualizar o estado de ATC
 function fetchATCDataAndUpdate() {
