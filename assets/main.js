@@ -48,6 +48,7 @@ function showMessage(title, message) {
 
 showMessage("Test", "Test Message").then(() => {
     console.log("The close button was pressed!");
+	showMessage("Test", "Test Message2")
 });
 
 // Configuração do tamanho do canvas
@@ -871,13 +872,15 @@ function saveFlp() {
         if (matchedPoint) {
             flightPlanPoints.push(matchedPoint);
         } else {
-            console.error(`Ponto "${input}" não encontrado em controlAreas ou Waypoints!`);
+			if (input === "") {} else {
+				showMessage('Flight Plan Error',`Waypoint "${input}" not found!`);
+			}
         }
     });
 
     // Verifica se há pelo menos dois pontos válidos
     if (flightPlanPoints.length < 2) {
-        console.error("É necessário pelo menos dois pontos válidos para desenhar o plano de voo!");
+		showMessage('Flight Plan Error',`It is necessary at least two valid points to draw the flight plan!`);
         return;
     }
 
@@ -894,7 +897,6 @@ function resetFlp() {
     // Reseta a rota de voo
     flightRoute = [];
 	draw();
-    console.log("Plano de voo resetado!");
 }
 
 function resetHighlights() {
@@ -1147,7 +1149,6 @@ function redirectToWiki() {
 function saveToLocalStorage() {
     localStorage.setItem('settingsValues', JSON.stringify(settingsValues));
     localStorage.setItem('websiteInfo', JSON.stringify(websiteInfo));
-    console.log('Dados salvos no localStorage.');
 }
 
 function loadFromLocalStorage() {
