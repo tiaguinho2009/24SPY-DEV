@@ -1,29 +1,4 @@
-let PTFSAPIError = [
-    {
-        "holder": "Tiaguinho_2009 | ERROR",
-        "claimable": false,
-        "airport": "Skopelos",
-        "position": "tower"
-    },
-    {
-        "holder": "aaronandethan123 | ERROR",
-        "claimable": false,
-        "airport": "Saint Barthélemy",
-        "position": "tower"
-    },
-    {
-        "holder": "AvatarRoblox2018 | ERROR",
-        "claimable": false,
-        "airport": "Sauthemptona",
-        "position": "tower"
-    },
-    {
-        "holder": "BEANZBURGERBEANZ | ERROR",
-        "claimable": false,
-        "airport": "McConnell",
-        "position": "tower"
-    },
-]
+let PTFSAPIError = []
 
 let PTFSAPI = [
     //example
@@ -761,7 +736,16 @@ const controlAreas = [
             ["AeroNav", "https://drive.google.com/file/d/1a8ZqQjxqUC99J5oSskeH6dmsBeDTRUb9/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1_g0U7Zf4VtxZSkpNLzIEAaU4rEW0m-Uma1jnO_BoCvU/edit?usp=sharing"],
         ],
+        runways: [
+            { number: "07L", length: 3408, hdg:  67, glideslope: 3.00},
+            { number: "25R", length: 3308, hdg: 247, glideslope: 3.00},
+            { number: "07C", length: 3680, hdg:  67, glideslope: 3.00},
+            { number: "25C", length: 3680, hdg: 247, glideslope: 3.00},
+            { number: "07R", length: 3917, hdg:  67, glideslope: 3.00},
+            { number: "25R", length: 3917, hdg: 247, glideslope: 3.00}
+         ]
     },
+
     {
         name: "IPPH",
         real_name: "Perth",
@@ -786,6 +770,12 @@ const controlAreas = [
             ["AeroNav", "https://drive.google.com/file/d/1Qhg6zRsIBAjeC_iidsy39FVt5UZhdi5o/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1s4xXrrKYt5BMCcXUvx5RF-wo76cAQ0ot6XVZEQvNiIc/edit?usp=sharing"],
         ],
+        runways: [
+            { number: "15", length: 3281, hdg: 151, glideslope: 3.00},
+            { number: "33", length: 3281, hdg: 151, glideslope: 3.00},
+            { number: "11", length: 4314, hdg: 111, glideslope: 3.00},
+            { number: "2C", length: 4314, hdg: 111, glideslope: 3.00},
+         ]
     },
     {
         name: "IZOL",
@@ -809,6 +799,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IZOL%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "28", length: 3281, hdg: 288, glideslope: 3.00},
+            { number: "10", length: 3281, hdg: 151, glideslope: 3.00},
+         ]
     },
     {
         name: "ITKO",
@@ -834,6 +828,12 @@ const controlAreas = [
             ["AeroNav", "https://drive.google.com/file/d/1iYxp9qz4f7C6o5DaMVQQufx9rInLcmJh/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1MleQXy5h_2zbMrS6Iu0hUmH8W3qgtK7lCWtkHwVkxFI/edit?usp=sharing"],
         ],
+        runways: [
+            { number: "13", length: 4850, hdg: 127, glideslope: 3.00},
+            { number: "31", length: 4850, hdg: 307, glideslope: 3.00},
+            { number: "02", length: 3754, hdg:  20, glideslope: 3.00},
+            { number: "20", length: 3754, hdg: 200, glideslope: 3.00},
+         ]
     },
     {
         name: "ILAR",
@@ -859,6 +859,10 @@ const controlAreas = [
             ["TUGACHARTS", "https://drive.google.com/file/d/1ofmuravfpMXW1d4B9M43MyOGbc1RORCs/view"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
+        runways: [
+            { number: "24", length: 3355, hdg: 244, glideslope: 3.00},
+            { number: "06", length: 3355, hdg:  64, glideslope: 3.00},
+         ]
     },
     {
         name: "IGRV",
@@ -880,6 +884,10 @@ const controlAreas = [
             ["Official", "https://ptfs.xyz/charts/dark/IGRV%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1G4M1CGxjXO688x-l7WBnD8UfhiLq2yrB/view?usp=sharing"],
         ],
+        runways: [
+            { number: "06", length: 2391, hdg:  62, glideslope: 3.00},
+            { number: "24", length: 2391, hdg: 242, glideslope: 3.00},
+         ]
     },
     {
         name: "IBTH",
@@ -904,6 +912,10 @@ const controlAreas = [
             ["Oceanic", "https://drive.google.com/file/d/1eKfj9PNM5WKTHHXzHvvyEGtfmsngWyY7/view?usp=sharing"],
             
         ],
+        runways: [
+            { number: "09", length: 1547, hdg:  90, glideslope: 3.00},
+            { number: "33", length: 1547, hdg: 270, glideslope: 3.00},
+         ]
     },
     {
         name: "ISAU",
@@ -925,6 +937,10 @@ const controlAreas = [
             ["Official", "https://ptfs.xyz/charts/dark/ISAU%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1m18kxQhwlVMXoY4T8FSIHtmz_ohooGbI/view?usp=sharing"],
         ],
+        runways: [
+            { number: "08", length: 2554, hdg:  81, glideslope: 3.00},
+            { number: "26", length: 2554, hdg: 261, glideslope: 3.00},
+         ]
     },
     //1
     {
@@ -946,6 +962,10 @@ const controlAreas = [
             ["AeroNav", "https://drive.google.com/file/d/1Ckwrvr93OBZxEfpSwTzc75ALkCmjqsqr/view?usp=sharing"],
             ["AeroNav ILAR SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
+        runways: [
+            { number: "17", length: 3404, hdg: 174, glideslope: 3.00},
+            { number: "37", length: 3404, hdg: 354, glideslope: 3.00},
+         ]
     },
     {
         name: "IMLR",
@@ -967,6 +987,10 @@ const controlAreas = [
             ["AeroNav", "https://drive.google.com/file/d/1iJ-5He0OgX4FMW6Y32DRKr9rAh4hgQ4R/view"],
             ["AeroNav IRFD SOP", "https://docs.google.com/document/d/1_g0U7Zf4VtxZSkpNLzIEAaU4rEW0m-Uma1jnO_BoCvU/edit?usp=sharing"],
         ],
+        runways: [
+            { number: "07", length: 2997, hdg:  66, glideslope: 3.00},
+            { number: "25", length: 2997, hdg: 246, glideslope: 3.00},
+         ]
     },
     {
         name: "IDCS",
@@ -985,6 +1009,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IDCS%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "25", length: 750, hdg: 251, glideslope: 3.00},
+            { number: "07", length: 750, hdg:  71, glideslope: 3.00},
+         ]
     },
     {
         name: "IGAR",
@@ -1003,6 +1031,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IGAR%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "04", length: 2980, hdg:  42, glideslope: 3.00},
+            { number: "22", length: 2980, hdg: 222, glideslope: 3.00},
+         ]
     },
     {
         name: "IIAB",
@@ -1023,6 +1055,10 @@ const controlAreas = [
             ["AeroNav", "https://drive.google.com/file/d/1opJg195YF73dI5t-tsQ88hyoIC9eoBde/view?usp=sharing"],
             ["AeroNav ILAR SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
+        runways: [
+            { number: "04", length: 2980, hdg:  42, glideslope: 3.00},
+            { number: "22", length: 2980, hdg: 222, glideslope: 3.00},
+         ]
     },
     {
         name: "ISCM",
@@ -1041,6 +1077,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ISCM%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "13", length: 1812, hdg: 126, glideslope: 3.00},
+            { number: "31", length: 1812, hdg: 306, glideslope: 3.00},
+         ]
     },
     //2
     {
@@ -1059,6 +1099,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IBLT%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "01", length: 1378, hdg:  14, glideslope: 3.00},
+            { number: "19", length: 1378, hdg: 194, glideslope: 3.00},
+         ]
     },
     {
         name: "ILKL",
@@ -1076,6 +1120,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ILKL%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "09", length: 1303, hdg:  89, glideslope: 3.00},
+            { number: "27", length: 1303, hdg: 269, glideslope: 3.00},
+         ]
     },
     {
         name: "ITRN",
@@ -1093,6 +1141,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ITRN%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "18", length: 1286, hdg: 180, glideslope: 3.00},
+            { number: "36", length: 1286, hdg: 360, glideslope: 3.00},
+         ]
     },
     {
         name: "IJAF",
@@ -1110,6 +1162,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IJAF%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "07", length: 2278, hdg: 251, glideslope: 3.00},
+            { number: "25", length: 2278, hdg:  71, glideslope: 3.00},
+         ]
     },
     {
         name: "IHEN",
@@ -1127,6 +1183,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IHEN%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "17", length: 1170, hdg: 172, glideslope: 3.00},
+            { number: "35", length: 1170, hdg: 352, glideslope: 3.00},
+         ]
     },
     {
         name: "IBAR",
@@ -1144,6 +1204,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IBAR%20Ground%20Chart.png"],
         ],
+        runways: [
+            { number: "06", length: 1320, hdg:  66, glideslope: 3.00},
+            { number: "24", length: 1320, hdg: 246, glideslope: 3.00},
+        ]
     },
     {
         name: "ISKP",
@@ -1186,6 +1250,10 @@ const controlAreas = [
         charts: [
             ["Official", "https://github.com/Treelon/ptfs-charts/blob/main/Perth/Sea%20Haven/SHV%20Ground%20Chart.svg"]
         ],
+        runways: [
+            { number:"18W", length:1000, hdg: 180, glideslope: 3.00},
+            { number:"36W", length:1000, hdg: 360, glideslope: 3.00},
+        ]
     },
     {
         name: "OWO",
@@ -1200,6 +1268,10 @@ const controlAreas = [
         atcs: [
             "Waterloo Tower",
         ],
+        runways: [
+            { number:"14W", length:1000, hdg: 140, glideslope: 3.00},
+            { number:"32W", length:1000, hdg: 320, glideslope: 3.00},
+        ]
     },
     {
         name: "TVO",
@@ -1214,6 +1286,13 @@ const controlAreas = [
         atcs: [
             "Tavaro Tower",
         ],
+        charts: [
+            ["Official", "https://github.com/Treelon/ptfs-charts/blob/main/Grindavik/Tavaro%20Seabase/TVO%20Ground%20Chart.svg"]
+        ],
+        runways: [
+            { number:"04W", length:1000, hdg:  40, glideslope: 3.00},
+            { number:"21W", length:1000, hdg: 210, glideslope: 3.00},
+        ]
     },
 ];
 
@@ -1482,6 +1561,10 @@ const specialUsers = {
     "AvatarRoblox2018": [{
         "Role": "24SPY Helper",
         "DiscordNick": "noah_the_plane_guy",
+    }],
+    "GalaxyON_1": [{
+        "Role": "24SPY Helper",
+        "DiscordNick": "rafa_tugapt",
     }],
     "BEANZBURGERBEANZ": [{
         "Role": "24SPY First User",
