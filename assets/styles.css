@@ -407,23 +407,23 @@ header h1 {
     height: 2px;
     width: 100%;
     background-color: #3b6cec;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .form-row {
     display: flex;
-    align-items: flex-start;
-    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .form-row label {
     font-size: 1rem;
     color: #bdbdbd;
-    width: 30%;
-    text-align: left;
-    line-height: 1.5;
+    width: 35%;
+    text-align: right;
+    padding-right: 10px;
 }
 
 .form-row textarea {
@@ -433,16 +433,15 @@ header h1 {
     color: #fff;
     font-size: 1rem;
     resize: none;
-    text-align: left;
+    text-align: center;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     padding: 2px;
     text-transform: uppercase;
 }
 
 .small-input {
-    width: 70px;
+    width: 60px;
     height: 20px;
-    text-align: center;
 }
 
 .large-input {
@@ -456,7 +455,14 @@ textarea:focus, textarea:hover {
     box-shadow: 0 0 5px rgba(59, 108, 236, 0.7);
 }
 
-.flp-menu .Buttons button {
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.buttons button {
     background-color: #3b6cec;
     color: #fff;
     font-size: 1rem;
@@ -465,39 +471,40 @@ textarea:focus, textarea:hover {
     padding: 10px 15px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 48%;
 }
 
-.Buttons button:hover {
+.buttons button:hover {
     background-color: #0048ff;
     transform: scale(1.05);
 }
 
-.Buttons button:active {
+.buttons button:active {
     background-color: #002d99;
     transform: scale(0.95);
 }
 
-.Buttons button.Save {
-    background-color: #28a745; /* Verde para salvar */
+.buttons .save {
+    background-color: #28a745;
 }
 
-.Buttons button.Save:hover {
+.buttons .save:hover {
     background-color: #218838;
 }
 
-.Buttons button.Save:active {
+.buttons .save:active {
     background-color: #1e7e34;
 }
 
-.Buttons button.Reset {
-    background-color: #dc3545; /* Vermelho para reset */
+.buttons .reset {
+    background-color: #dc3545;
 }
 
-.Buttons button.Reset:hover {
+.buttons .reset:hover {
     background-color: #c82333;
 }
 
-.Buttons button.Reset:active {
+.buttons .reset:active {
     background-color: #bd2130;
 }
 
