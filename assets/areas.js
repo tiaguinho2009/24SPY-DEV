@@ -901,6 +901,8 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IBTH%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1OSWgKHBnu8ch3sP68erv8_nVcAFIY7CQ/view?usp=sharing"],
+            ["Oceanic", "https://drive.google.com/file/d/1eKfj9PNM5WKTHHXzHvvyEGtfmsngWyY7/view?usp=sharing"],
+            
         ],
     },
     {
@@ -1160,7 +1162,8 @@ const controlAreas = [
         oceanic: true,
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ISKP%20Ground%20Chart.png"],
-            ["TUGACHARTS", "https://drive.google.com/file/d/1BEaoKLa9hvXCPPKdkc4IGa9Wc22OXr0s/view"]
+            ["TUGACHARTS", "https://drive.google.com/file/d/1BEaoKLa9hvXCPPKdkc4IGa9Wc22OXr0s/view"],
+            ["Oceanic", "https://drive.google.com/file/d/1eKfj9PNM5WKTHHXzHvvyEGtfmsngWyY7/view?usp=sharing"],
         ],
     },
     {

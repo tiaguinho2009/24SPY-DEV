@@ -994,7 +994,7 @@ function fetchATCDataAndUpdate() {
     }
 
     // URL padrão caso a URL dinâmica falhe
-    const defaultURL = 'https://backendtest-wulh.onrender.com/api/controllers';
+    const defaultURL = 'https://ptfs.xyz/api/controllers';
     const dynamicURLRepository = 'https://raw.githubusercontent.com/tiaguinho2009/24SPY-Backend/main/backend';
 
     // Busca a URL dinâmica do repositório GitHub
