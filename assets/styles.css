@@ -475,7 +475,7 @@ textarea:focus, textarea:hover {
 }
 
 .buttons button:hover {
-    background-color: #0048ff;
+    background-color: #4b7eff;
     transform: scale(1.05);
 }
 
@@ -489,7 +489,7 @@ textarea:focus, textarea:hover {
 }
 
 .buttons .save:hover {
-    background-color: #218838;
+    background-color: #4b7eff;
 }
 
 .buttons .save:active {
@@ -501,7 +501,7 @@ textarea:focus, textarea:hover {
 }
 
 .buttons .reset:hover {
-    background-color: #c82333;
+    background-color: #4b7eff;
 }
 
 .buttons .reset:active {
@@ -771,6 +771,79 @@ canvas {
     margin: 4px 0;
     color: #ddd;
     font-size: 0.9em;
+}
+
+.message-menu {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #131316;
+    color: #ffffff;
+    width: 60%;
+    max-width: 400px;
+    max-height: 350px;
+    min-height: 150px;
+    position: fixed;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 101;
+    display: none;
+    flex-direction: column;
+}
+
+.message-menu .title {
+    background-color: #202024;
+    padding: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: 1px solid #444;
+    position: relative;
+}
+
+.message-menu .content {
+    margin: 0px 0px 0px 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    text-align: left;
+    max-height: 150px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.message-menu .close-button {
+    background-color: #3b6cec;
+    color: #fff;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    width: calc(100% - 20px);
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    padding: 15px;
+    margin: 0 10px 10px 10px;
+    align-self: flex-end;
+}
+
+.message-menu .close-button:hover {
+    background-color: #4b7eff;
+}
+
+.message-menu .content::-webkit-scrollbar {
+    width: 8px;
+}
+.message-menu .content::-webkit-scrollbar-track {
+    background: none;
+}
+.message-menu .content::-webkit-scrollbar-thumb {
+    background-color: #3b6cec;
+    border-radius: 4px;
+}
+
+.message-menu .content {
+    scrollbar-color: #3b6cec transparent;
+    scrollbar-width: thin;
 }
 
 .footer {

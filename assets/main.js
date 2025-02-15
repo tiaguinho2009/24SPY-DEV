@@ -26,6 +26,30 @@ mapImageSmallScale.src = mapImages.smallScale;
 // Imagem atualmente utilizada
 let currentMapImage = mapImageNormal;
 
+function showMessage(title, message) {
+    return new Promise((resolve) => {
+        const menu = document.getElementById("MessageMenu");
+        const titleElement = menu.querySelector(".title");
+        const contentElement = menu.querySelector(".content p");
+        const closeButton = menu.querySelector(".close-button");
+
+        titleElement.textContent = title;
+        contentElement.textContent = message;
+
+        menu.style.display = "flex";
+
+        // Evento de fechar
+        closeButton.onclick = () => {
+            menu.style.display = "none";
+            resolve();
+        };
+    });
+}
+
+showMessage("Test", "Test Message").then(() => {
+    console.log("The close button was pressed!");
+});
+
 // Configuração do tamanho do canvas
 function resizeCanvas() {
 	canvas.width = window.innerWidth;
