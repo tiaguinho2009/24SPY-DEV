@@ -1165,6 +1165,10 @@ const controlAreas = [
             ["TUGACHARTS", "https://drive.google.com/file/d/1BEaoKLa9hvXCPPKdkc4IGa9Wc22OXr0s/view"],
             ["Oceanic", "https://drive.google.com/file/d/1eKfj9PNM5WKTHHXzHvvyEGtfmsngWyY7/view?usp=sharing"],
         ],
+        runways: [
+            { number: "05", length: 194, hdg:  51, glideslope: 3.00},
+            { number: "23", length: 194, hdg: 231, glideslope: 3.00},
+        ]
     },
     {
         name: "SHV",
