@@ -977,7 +977,7 @@ function createList(textareaId, options) {
                     // Adiciona o valor selecionado ao valor existente na textarea de waypoints
                     const words = textarea.value.split(' ');
                     words[words.length - 1] = option;
-                    textarea.value = words.join(' ');
+                    textarea.value = words.join(' ') + ' ';
                 } else {
                     // Substitui o valor da textarea com o valor selecionado
                     textarea.value = option;
