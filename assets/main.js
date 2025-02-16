@@ -26,7 +26,7 @@ mapImageSmallScale.src = mapImages.smallScale;
 // Imagem atualmente utilizada
 let currentMapImage = mapImageNormal;
 
-function showMessage(title, message) {
+function showMessage(title, message, button) {
     return new Promise((resolve) => {
         const menu = document.getElementById("MessageMenu");
         const titleElement = menu.querySelector(".title");
@@ -35,6 +35,7 @@ function showMessage(title, message) {
 
         titleElement.textContent = title;
         contentElement.textContent = message;
+		if (button) {closeButton.textContent = button}
 
         menu.style.display = "flex";
 
@@ -46,10 +47,9 @@ function showMessage(title, message) {
     });
 }
 
-showMessage("Test", "Test Message").then(() => {
-    console.log("The close button was pressed!");
-	showMessage("Test", "Test Message2")
-});
+//showMessage("Test", "Test Message").then(() => {
+//	showMessage("Test", "OMG U PRESSED THE CLOSE BUTTON")
+//});
 
 // Configuração do tamanho do canvas
 function resizeCanvas() {
@@ -72,7 +72,7 @@ function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	// Alterna entre as imagens com base na escala
-	currentMapImage = scale < 3 ? mapImageSmallScale : mapImageNormal;
+	currentMapImage = scale < 4 ? mapImageSmallScale : mapImageNormal;
 
 	// Calcula tamanho ajustado do mapa
 	const mapWidth = 1200 * scale;
@@ -849,10 +849,11 @@ function repositionFlpMenu() {
 repositionFlpMenu()
 
 function saveFlp() {
-    // Obtém os valores das text areas
-    const departure = document.querySelector('.small-input[placeholder="IRFD"]').value.trim().toUpperCase();
-    const arrival = document.querySelector('.small-input[placeholder="ILAR"]').value.trim().toUpperCase();
-    const waypoints = document.querySelector('.large-input[placeholder="MOGTA TRN CAN"]').value.trim().toUpperCase();
+    const departure = document.getElementById('departure').value.trim().toUpperCase();
+    const departureRwy = document.getElementById('departureRwy').value.trim().toUpperCase();
+    const arrival = document.getElementById('arrival').value.trim().toUpperCase();
+    const arrivalRwy = document.getElementById('arrivalRwy').value.trim().toUpperCase();
+    const waypoints = document.getElementById('waypoints').value.trim().toUpperCase();
 
     // Divide os waypoints em uma lista
     const inputPoints = [departure, ...waypoints.split(' ').map(wp => wp.trim()), arrival];
@@ -865,6 +866,28 @@ function saveFlp() {
 
     const flightPlanPoints = [];
 
+    // Fator de escala calculado a partir da referência dada
+    const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
+    const referenceDistanceNM = 1478 / 1852; // 1478 metros em NM (1 NM = 1852 metros)
+    const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
+
+    function calculateAlignmentPoint(airport, runwayNumber, rotate) {
+        const runway = airport.runways.find(rwy => rwy.number === runwayNumber);
+        if (!runway) return null;
+
+        const hdgRad = (runway.hdg - (rotate ? 180 : 0)) * (Math.PI / 180);
+        const distanceNM = 1.5;
+        const distanceEuclidean = distanceNM / scaleFactor; // Converte NM para a distância euclidiana
+
+        // Usa as coordenadas da pista se disponíveis, caso contrário, usa as coordenadas do aeroporto
+        const baseCoordinates = runway.coordinates || airport.coordinates;
+
+        const x = baseCoordinates[0] + distanceEuclidean * Math.sin(hdgRad);
+        const y = baseCoordinates[1] - distanceEuclidean * Math.cos(hdgRad);
+
+        return { name: `${runwayNumber}`, coordinates: [x, y], type: "Waypoint" };
+    }
+
     // Procura cada ponto na lista de dados
     inputPoints.forEach(input => {
         const matchedPoint = allPoints.find(point => point.name === input);
@@ -872,31 +895,71 @@ function saveFlp() {
         if (matchedPoint) {
             flightPlanPoints.push(matchedPoint);
         } else {
-			if (input === "") {} else {
-				showMessage('Flight Plan Error',`Waypoint "${input}" not found!`);
-			}
+            if (input !== "") {
+                showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
+            }
         }
     });
 
     // Verifica se há pelo menos dois pontos válidos
     if (flightPlanPoints.length < 2) {
-		showMessage('Flight Plan Error',`It is necessary at least two valid points to draw the flight plan!`);
+        showMessage('Flight Plan Error', `It is necessary at least two valid points to draw the flight plan!`);
         return;
     }
 
-	flightRoute = flightPlanPoints;
+    // Adiciona os pontos de alinhamento e as pistas ao plano de voo
+    const departureAirport = allPoints.find(point => point.name === departure && point.type === "Airport");
+    const arrivalAirport = allPoints.find(point => point.name === arrival && point.type === "Airport");
+	if (!departureAirport) {
+		showMessage('Flight Plan Error', `Departure airport "${departure}" not found!`);
+	}
+	if (!arrivalAirport) {
+		showMessage('Flight Plan Error', `Arrival airport "${arrival}" not found!`);
+	}
+
+    if (departureAirport && departureRwy) {
+        const departureRunway = departureAirport.runways.find(rwy => rwy.number === departureRwy);
+        if (departureRunway && departureRunway.coordinates) {
+			flightPlanPoints.splice(0, 1);
+			flightPlanPoints.splice(0, 0, { name: "", coordinates: departureRunway.coordinates, type: "Runway" })
+            const alignmentPoint = calculateAlignmentPoint(departureAirport, departureRwy, false);
+            if (alignmentPoint) {
+                flightPlanPoints.splice(1, 0, alignmentPoint); // Insere como o segundo ponto
+            }
+        } else {
+            showMessage('Flight Plan Error', `Departure runway "${departureRwy}" not found at airport "${departure}"!`);
+        }
+    }
+
+    if (arrivalAirport && arrivalRwy) {
+		const arrivalRunway = arrivalAirport.runways.find(rwy => rwy.number === arrivalRwy);
+		if (arrivalRunway && arrivalRunway.coordinates) {
+			const alignmentPoint = calculateAlignmentPoint(arrivalAirport, arrivalRwy, true);
+			if (alignmentPoint) {
+				flightPlanPoints.splice(flightPlanPoints.length - 1, 0, alignmentPoint); // Insere como o penúltimo ponto
+			}
+			flightPlanPoints.splice(flightPlanPoints.length - 1, 1); // Remove o último ponto (aeroporto)
+			flightPlanPoints.push({ name: "", coordinates: arrivalRunway.coordinates, type: "Runway" });
+		} else {
+			showMessage('Flight Plan Error', `Arrival runway "${arrivalRwy}" not found at airport "${arrival}"!`);
+		}
+	}
+
+    flightRoute = flightPlanPoints;
     draw();
 }
 
 function resetFlp() {
-    // Limpa os valores das text areas
-    document.querySelector('.small-input[placeholder="IRFD"]').value = '';
-    document.querySelector('.small-input[placeholder="ILAR"]').value = '';
-    document.querySelector('.large-input[placeholder="MOGTA TRN CAN"]').value = '';
+    // Limpa os valores das text areas pelos seus IDs
+    document.getElementById('departure').value = '';
+    document.getElementById('departureRwy').value = '';
+    document.getElementById('arrival').value = '';
+    document.getElementById('arrivalRwy').value = '';
+    document.getElementById('waypoints').value = '';
 
     // Reseta a rota de voo
     flightRoute = [];
-	draw();
+    draw();
 }
 
 function resetHighlights() {
@@ -1072,6 +1135,9 @@ function fetchATCDataAndUpdate() {
                     toggleUpdateClass();
                 })
                 .catch(err => {
+					showMessage('Server Error', 'Couldnt get the info from the Server, please check your internet connection.','Reload').then(() => {
+						fetchATCDataAndUpdate();
+					})
                     console.error('Erro ao buscar dados na URL padrão:', err);
                     PTFSAPI = PTFSAPIError;
                     ATCOnlinefuncion(PTFSAPI);
@@ -1133,18 +1199,6 @@ function generateATCsListFromAreas() {
 }
 
 generateATCsListFromAreas()
-
-function redirectToDiscord() {
-	window.open('https://discord.gg/8cQAguPjkh');
-}
-
-function redirectToGitHub() {
-	window.open('https://github.com/tiaguinho2009/24SPY');
-}
-
-function redirectToWiki() {
-	window.open('https://github.com/tiaguinho2009/24SPY/wiki');
-}
 
 function saveToLocalStorage() {
     localStorage.setItem('settingsValues', JSON.stringify(settingsValues));

@@ -262,6 +262,29 @@ header h1 {
     scrollbar-width: thin;
 }
 
+.header-button2 {
+    background-color: rgba(32, 32, 36, 1);
+    border: none;
+    border-radius: 5px;
+    padding: 5px; /* Espaçamento interno para centralizar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 25px;
+    width: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.header-button2:hover {
+    background-color: rgba(50, 50, 55, 1);
+}
+
+.header-button2 .icon {
+    width: 18px;
+    height: 18px;
+}
+
 /* Estilo do botão de configurações */
 .settings-button,
 .close-button {
