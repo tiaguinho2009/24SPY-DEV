@@ -235,33 +235,10 @@ function drawFlightPlan(points) {
         const distanceEuclidean = Math.sqrt(dxRaw ** 2 + dyRaw ** 2);
         const distanceNM = (distanceEuclidean * scaleFactor).toFixed(2);
 
-        // Calcula a posição para exibir as labels (meio do segmento)
-        const midX = (currentTrans[0] + nextTrans[0]) / 2;
-        const midY = (currentTrans[1] + nextTrans[1]) / 2;
-
-        // Rotaciona o contexto para alinhar com o ângulo da rota
-        ctx.save();
-        ctx.translate(midX, midY);
-        let angle = Math.atan2(dy, dx);
-        if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
-            angle += Math.PI; // Inverte para evitar que fique de cabeça para baixo
+        // Chama a função para desenhar as labels secundárias se o zoom for maior que 1
+        if (scale > 0.5) {
+            drawSecondaryLabels(currentTrans, nextTrans, hdg, distanceNM);
         }
-        ctx.rotate(angle);
-
-        // Desenha o HDG
-        ctx.fillStyle = "#bbbbbb";
-        ctx.font = "12px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(`${hdg}°`, 0, -5);
-
-        // Desenha a Distância em NM
-        ctx.fillStyle = "#bbbbbb";
-        ctx.font = "12px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(`${distanceNM} NM`, 0, 15);
-
-        // Restaura o contexto
-        ctx.restore();
     }
     ctx.stroke();
 
@@ -291,6 +268,36 @@ function drawFlightPlan(points) {
         ctx.font = "14px Arial";
         ctx.fillText(point.name, x + 5, y - 5);
     });
+}
+
+function drawSecondaryLabels(currentTrans, nextTrans, hdg, distanceNM) {
+    // Calcula a posição para exibir as labels (meio do segmento)
+    const midX = (currentTrans[0] + nextTrans[0]) / 2;
+    const midY = (currentTrans[1] + nextTrans[1]) / 2;
+
+    // Rotaciona o contexto para alinhar com o ângulo da rota
+    ctx.save();
+    ctx.translate(midX, midY);
+    let angle = Math.atan2(nextTrans[1] - currentTrans[1], nextTrans[0] - currentTrans[0]);
+    if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+        angle += Math.PI; // Inverte para evitar que fique de cabeça para baixo
+    }
+    ctx.rotate(angle);
+
+    // Desenha o HDG
+    ctx.fillStyle = "#bbbbbb";
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(`${hdg}°`, 0, -5);
+
+    // Desenha a Distância em NM
+    ctx.fillStyle = "#bbbbbb";
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(`${distanceNM} NM`, 0, 15);
+
+    // Restaura o contexto
+    ctx.restore();
 }
 
 function drawNavaids() {
@@ -1021,19 +1028,33 @@ document.getElementById('arrival').addEventListener('focus', () => {
 document.getElementById('departureRwy').addEventListener('focus', () => {
     const departureAirport = document.getElementById('departure').value.trim().toUpperCase();
     const airport = controlAreas.find(area => area.name === departureAirport && area.type === "Airport");
-    if (airport) {
+    const departureInput = document.getElementById('departure');
+    if (!airport) {
+        departureInput.style.borderColor = 'red';
+    } else {
         const runways = airport.runways.map(rwy => rwy.number);
         createList('departureRwy', runways);
     }
 });
 
+document.getElementById('departureRwy').addEventListener('blur', () => {
+    document.getElementById('departure').style.borderColor = ''; // Reseta a cor da borda
+});
+
 document.getElementById('arrivalRwy').addEventListener('focus', () => {
     const arrivalAirport = document.getElementById('arrival').value.trim().toUpperCase();
     const airport = controlAreas.find(area => area.name === arrivalAirport && area.type === "Airport");
-    if (airport) {
+    const arrivalInput = document.getElementById('arrival');
+    if (!airport) {
+        arrivalInput.style.borderColor = 'red';
+    } else {
         const runways = airport.runways.map(rwy => rwy.number);
         createList('arrivalRwy', runways);
     }
+});
+
+document.getElementById('arrivalRwy').addEventListener('blur', () => {
+    document.getElementById('arrival').style.borderColor = ''; // Reseta a cor da borda
 });
 
 document.getElementById('waypoints').addEventListener('focus', () => {

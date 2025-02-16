@@ -1249,7 +1249,7 @@ const controlAreas = [
             "Sea Haven Tower",
         ],
         charts: [
-            ["Official", "https://github.com/Treelon/ptfs-charts/blob/main/Perth/Sea%20Haven/SHV%20Ground%20Chart.svg"]
+            ["Github", "https://github.com/Treelon/ptfs-charts/blob/main/Perth/Sea%20Haven/SHV%20Ground%20Chart.svg"]
         ],
         runways: [
             { number:"18W", length:1000, hdg: 180, glideslope: 3.00, coordinates: [860.00, 357.00]},
@@ -1288,7 +1288,7 @@ const controlAreas = [
             "Tavaro Tower",
         ],
         charts: [
-            ["Official", "https://github.com/Treelon/ptfs-charts/blob/main/Grindavik/Tavaro%20Seabase/TVO%20Ground%20Chart.svg"]
+            ["Github", "https://github.com/Treelon/ptfs-charts/blob/main/Grindavik/Tavaro%20Seabase/TVO%20Ground%20Chart.svg"]
         ],
         runways: [
             { number:"04W", length:1000, hdg:  40, glideslope: 3.00, coordinates: [172.28, 570.96]},
