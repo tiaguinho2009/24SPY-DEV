@@ -30,8 +30,7 @@
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance.
 
-## [DEV 0.1.5.3A BETA] - 16/02/2025
-### STILL IN TESTS
+## [DEV 0.1.5.3] - 16/02/2025
 ### Changed
 - New message log system. (So when some error happens u know that)
 - Updated the Fligh Plan System with Runways.
