@@ -531,6 +531,56 @@ textarea:focus, textarea:hover {
     background-color: #bd2130;
 }
 
+/* Estilo para o container da lista */
+.list-container {
+    position: absolute;
+    max-height: 150px; /* Limite de altura para tornar a lista rolável */
+    overflow-y: auto;
+    border: 1px solid #3b6cec;
+    background-color: #131316;
+    z-index: 101;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+
+/* Estilo para os botões de opções */
+.list-container button {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    background-color: #2d2d2d;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.list-container button:hover {
+    background-color: #3b6cec;
+    color: #fff;
+}
+
+.list-container::-webkit-scrollbar {
+    width: 1px;
+}
+
+.list-container::-webkit-scrollbar-track {
+    background: none;
+}
+
+.list-container::-webkit-scrollbar-thumb {
+    background-color: #3b6cec;
+    border-radius: 2px;
+}
+
+/* Compatibilidade com navegadores que suportam scrollbar não-Webkit */
+.list-container {
+    scrollbar-width: thin;
+    scrollbar-color: #3b6cec transparent;
+}
+
 /* Container principal para o mapa */
 #map-container {
     position: absolute;

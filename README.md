@@ -30,10 +30,11 @@
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance.
 
-## [DEV 0.1.5.3 BETA] - 16/02/2025
+## [DEV 0.1.5.3A BETA] - 16/02/2025
 ### STILL IN TESTS
 ### Changed
 - New message log system. (So when some error happens u know that)
-- Updated the Fligh Plan System with Runways. (Only works for IRFD for now)
+- Updated the Fligh Plan System with Runways.
+- New system in the Flight Plan menu to help you select the correct options!
 - More optimization!
 - More charts!

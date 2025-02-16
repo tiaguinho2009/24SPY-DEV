@@ -55,12 +55,13 @@
             </button>
          </span>
          <div class="content">
-            <h2>[DEV 0.1.5.3 BETA] - 16/02/2025</h2>
+            <h2>[DEV 0.1.5.3A BETA] - 16/02/2025</h2>
             <h3>STILL IN TESTS</h3>
             <h3>Changed</h3>
             <ul>
                <li>New message log system. (So when some error happens u know that)</li>
-               <li>Updated the Fligh Plan System with Runways. (Only works for IRFD for now)</li>
+               <li>Updated the Fligh Plan System with Runways.</li>
+               <li>New system in the Flight Plan menu to help you select the correct options!</li>
                <li>More optimization!</li>
                <li>More charts!</li>
             </ul>
@@ -108,15 +109,15 @@
          <hr class="menu-divider">
          <div class="form-row">
              <label for="departure">Departure:</label>
-             <textarea id="departure" class="small-input" placeholder="IRFD"></textarea>
+             <textarea id="departure" class="small-input" placeholder="IRFD" maxlength="4"></textarea>
              <label for="departureRwy">RWY:</label>
-             <textarea id="departureRwy" class="small-input" placeholder="07R"></textarea>
+             <textarea id="departureRwy" class="small-input" placeholder="07R" maxlength="3"></textarea>
          </div>
          <div class="form-row">
              <label for="arrival">Arrival:</label>
-             <textarea id="arrival" class="small-input" placeholder="ILAR"></textarea>
+             <textarea id="arrival" class="small-input" placeholder="ILAR" maxlength="4"></textarea>
              <label for="arrivalRwy">RWY:</label>
-             <textarea id="arrivalRwy" class="small-input" placeholder="06"></textarea>
+             <textarea id="arrivalRwy" class="small-input" placeholder="06" maxlength="3"></textarea>
          </div>
          <div class="form-row">
              <label for="waypoints">Waypoints:</label>
@@ -126,7 +127,7 @@
              <button class="save" onclick="saveFlp()">Save</button>
              <button class="reset" onclick="resetFlp()">Reset</button>
          </div>
-     </div>
+      </div>
       <div class="message-menu" id="MessageMenu">
          <div class="title">Error</div>
          <div class="content">

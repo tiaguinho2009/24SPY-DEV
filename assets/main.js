@@ -13,6 +13,15 @@ let startX, startY;
 let onlineATC = 0;
 let flightRoute = [];
 
+const sortedAirports = controlAreas
+    .filter(area => area.type === "Airport")
+    .map(area => area.name)
+    .sort();
+
+const sortedWaypoints = Waypoints
+    .map(wp => wp.name)
+    .sort();
+
 // Imagens do mapa
 const mapImages = {
 	normal: 'PTFS-Map-Grey.png',
@@ -48,7 +57,7 @@ function showMessage(title, message, button) {
 }
 
 //showMessage("Test", "Test Message").then(() => {
-//	showMessage("Test", "OMG U PRESSED THE CLOSE BUTTON")
+//	showMessage("Test", "OMG U PRESSED THE CLOSE BUTTON", "DON'T PRESS ME AGAIN")
 //});
 
 // Configuração do tamanho do canvas
@@ -423,101 +432,58 @@ function createAirportUI(airport) {
 	}	
 
 	function showInfoMenu(badge) {
-    const position =
-        badge.classList.contains('C') ? (airport.ctr && airport.oceanic ? 'Oceanic' : 'Control') :
-        badge.classList.contains('A') ? 'Approach' :
-        badge.classList.contains('T') ? 'Tower' :
-        badge.classList.contains('G') ? 'Ground' :
-        badge.classList.contains('D') ? 'Delivery' :
-        'Unknown';
+		const position =
+			badge.classList.contains('C') ? (airport.ctr && airport.oceanic ? 'Oceanic' : 'Control') :
+			badge.classList.contains('A') ? 'Approach' :
+			badge.classList.contains('T') ? 'Tower' :
+			badge.classList.contains('G') ? 'Ground' :
+			badge.classList.contains('D') ? 'Delivery' :
+			'Unknown';
 
-    const atcName = (position === 'Control' || position === 'Oceanic' || position === 'Approach' || position === 'Tower') ?
-        airport.towerAtc :
-        (position === 'Ground' || position === 'Delivery') ?
-        airport.groundAtc :
-        null;
+		const atcName = (position === 'Control' || position === 'Oceanic' || position === 'Approach' || position === 'Tower') ?
+			airport.towerAtc :
+			(position === 'Ground' || position === 'Delivery') ?
+			airport.groundAtc :
+			null;
 
-    const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
+		const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
 
-    let atcName2 = atcName;
-    if (atcName.includes("|")) {
-        atcName2 = atcName.split("|")[0].trim();
-    }
-    let roleText = "";
-    let roleIndex = "role2";
-    if (specialUsers[atcName2]) {
-        roleText = specialUsers[atcName2][0].Role;
-        roleIndex = "role1";
-    }
+		let atcName2 = atcName;
+		if (atcName.includes("|")) {
+			atcName2 = atcName.split("|")[0].trim();
+		}
+		let roleText = "";
+		let roleIndex = "role2";
+		if (specialUsers[atcName2]) {
+			roleText = specialUsers[atcName2][0].Role;
+			roleIndex = "role1";
+		}
 
-    airportInfoMenu.style.display = 'block';
-    airportInfoMenu.innerHTML = `
-        <div class="title">
-            ${airport.real_name} ${position}
-            <div class="${roleIndex}">${roleText}</div>
-        </div>
-        <hr class="menu-divider">
-        <div class="controller-info-section">
-            <p><strong>Controller:</strong> ${atcName}</p>
-            <p><strong>Frequency:</strong> ${frequency} </p>
-			<p><strong>Online:</strong> ${airport.uptime} </p>
-        </div>
-    `;//<strong>Time Online:</strong> ${getTimeOnline()}
+		airportInfoMenu.style.display = 'block';
+		airportInfoMenu.innerHTML = `
+			<div class="title">
+				${airport.real_name} ${position}
+				<div class="${roleIndex}">${roleText}</div>
+			</div>
+			<hr class="menu-divider">
+			<div class="controller-info-section">
+				<p><strong>Controller:</strong> ${atcName}</p>
+				<p><strong>Frequency:</strong> ${frequency} </p>
+				<p><strong>Online:</strong> ${airport.uptime} </p>
+			</div>
+		`;//<strong>Time Online:</strong> ${getTimeOnline()}
 
-    const [x, y] = transformCoordinates(airport.coordinates);
-    airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
-    airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
-}
+		const [x, y] = transformCoordinates(airport.coordinates);
+		airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
+		airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
+	}
 
-function hideInfoMenu() {
-    document.querySelectorAll('.airport-info-menu').forEach(menu => {
-        menu.style.display = 'none';
-    });
-}
+	function hideInfoMenu() {
+		document.querySelectorAll('.airport-info-menu').forEach(menu => {
+			menu.style.display = 'none';
+		});
+	}
 
-function loadStartTime() {
-    const savedTime = localStorage.getItem('startTime');
-    if (savedTime) {
-        startTime = new Date(savedTime);
-    } else {
-        resetTimer();  // Set start time to the current time if not available
-    }
-}
-
-function getTimeOnline() {
-    let currentTime = new Date();
-    let timeDiff = Math.abs(currentTime - startTime);
-    let hours = Math.floor(timeDiff / 3600000);
-    let minutes = Math.floor((timeDiff % 3600000) / 60000);
-    return `${hours}:${minutes.toString().padStart(2, '0')}`;
-}
-
-function resetTimer() {
-    startTime = new Date();
-    localStorage.setItem('startTime', startTime.toISOString());
-}
-
-function onATCConnectionEvent() {
-    resetTimer();
-}
-
-// Assume these functions detect ATC log on/log off events
-function detectATCLogon() {
-    // Example function body
-    onATCConnectionEvent();
-}
-
-function detectATCLogoff() {
-    // Example function body
-    onATCConnectionEvent();
-}
-
-// Example event listeners for ATC logon/logoff
-document.addEventListener('ATCLogon', detectATCLogon);
-document.addEventListener('ATCLogoff', detectATCLogoff);
-
-let startTime;
-loadStartTime();
 	const controlBadge = airportUI.querySelector('.badge.C');
 	const approachBadge = airportUI.querySelector('.badge.A');
 	const towerBadge = airportUI.querySelector('.badge.T');
@@ -961,6 +927,128 @@ function resetFlp() {
     flightRoute = [];
     draw();
 }
+
+function createList(textareaId, options) {
+    const textarea = document.getElementById(textareaId);
+    if (!textarea) {
+        console.error(`Textarea with ID "${textareaId}" not found!`);
+        return;
+    }
+
+    // Ordena as opções alfabeticamente
+    options.sort();
+
+    // Cria o container da lista
+    const listContainer = document.createElement('div');
+    listContainer.className = 'list-container';
+    listContainer.style.width = `${textarea.offsetWidth}px`;
+
+    // Posiciona o container da lista abaixo da textarea
+    const rect = textarea.getBoundingClientRect();
+    listContainer.style.left = `${rect.left + window.scrollX}px`;
+    listContainer.style.top = `${rect.bottom + window.scrollY}px`;
+
+    // Função para calcular a proximidade da correspondência
+    function calculateMatchScore(option, filter) {
+        if (option.startsWith(filter)) {
+            return 0; // Melhor correspondência
+        } else if (option.includes(filter)) {
+            return 1; // Boa correspondência
+        } else {
+            return 2; // Correspondência menos relevante
+        }
+    }
+
+    // Função para atualizar a lista com base no filtro
+    function updateList(filter) {
+        listContainer.innerHTML = ''; // Limpa a lista atual
+
+        const filteredOptions = options
+            .filter(option => option.toLowerCase().includes(filter.toLowerCase()))
+            .sort((a, b) => calculateMatchScore(a.toLowerCase(), filter.toLowerCase()) - calculateMatchScore(b.toLowerCase(), filter.toLowerCase()));
+
+        filteredOptions.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option;
+
+            // Evento de clique para preencher a textarea com a opção selecionada
+            button.addEventListener('click', () => {
+                if (textareaId === 'waypoints') {
+                    // Adiciona o valor selecionado ao valor existente na textarea de waypoints
+                    const words = textarea.value.split(' ');
+                    words[words.length - 1] = option;
+                    textarea.value = words.join(' ');
+                } else {
+                    // Substitui o valor da textarea com o valor selecionado
+                    textarea.value = option;
+                }
+                document.body.removeChild(listContainer); // Remove a lista após a seleção
+            });
+
+            listContainer.appendChild(button);
+        });
+    }
+
+    // Adiciona os botões de opções à lista inicialmente
+    updateList('');
+
+    // Adiciona o container da lista ao corpo do documento
+    document.body.appendChild(listContainer);
+
+    // Adiciona evento de input para filtrar a lista
+    textarea.addEventListener('input', () => {
+        const filter = textareaId === 'waypoints' ? textarea.value.split(' ').pop() : textarea.value;
+        updateList(filter);
+    });
+
+    // Remove a lista se clicar fora dela
+    document.addEventListener('click', function handleClickOutside(event) {
+        if (!listContainer.contains(event.target) && event.target !== textarea) {
+            document.body.removeChild(listContainer);
+            document.removeEventListener('click', handleClickOutside);
+        }
+    });
+}
+
+document.getElementById('departure').addEventListener('focus', () => {
+    createList('departure', sortedAirports);
+});
+
+document.getElementById('arrival').addEventListener('focus', () => {
+    createList('arrival', sortedAirports);
+});
+
+document.getElementById('departureRwy').addEventListener('focus', () => {
+    const departureAirport = document.getElementById('departure').value.trim().toUpperCase();
+    const airport = controlAreas.find(area => area.name === departureAirport && area.type === "Airport");
+    if (airport) {
+        const runways = airport.runways.map(rwy => rwy.number);
+        createList('departureRwy', runways);
+    }
+});
+
+document.getElementById('arrivalRwy').addEventListener('focus', () => {
+    const arrivalAirport = document.getElementById('arrival').value.trim().toUpperCase();
+    const airport = controlAreas.find(area => area.name === arrivalAirport && area.type === "Airport");
+    if (airport) {
+        const runways = airport.runways.map(rwy => rwy.number);
+        createList('arrivalRwy', runways);
+    }
+});
+
+document.getElementById('waypoints').addEventListener('focus', () => {
+    createList('waypoints', sortedWaypoints);
+});
+
+// Adiciona evento de blur para fechar a lista ao perder o foco
+['departure', 'arrival', 'departureRwy', 'arrivalRwy', 'waypoints'].forEach(id => {
+    document.getElementById(id).addEventListener('blur', () => {
+        const listContainer = document.querySelector('.list-container');
+        if (listContainer) {
+            document.body.removeChild(listContainer);
+        }
+    });
+});
 
 function resetHighlights() {
     controlAreas.forEach(area =>{
