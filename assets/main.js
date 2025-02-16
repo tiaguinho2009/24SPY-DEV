@@ -1040,16 +1040,6 @@ document.getElementById('waypoints').addEventListener('focus', () => {
     createList('waypoints', sortedWaypoints);
 });
 
-// Adiciona evento de blur para fechar a lista ao perder o foco
-['departure', 'arrival', 'departureRwy', 'arrivalRwy', 'waypoints'].forEach(id => {
-    document.getElementById(id).addEventListener('blur', () => {
-        const listContainer = document.querySelector('.list-container');
-        if (listContainer) {
-            document.body.removeChild(listContainer);
-        }
-    });
-});
-
 function resetHighlights() {
     controlAreas.forEach(area =>{
 		if (area.type === "polygon") {
