@@ -1341,7 +1341,7 @@ const Waypoints = [
     ////ITKO FIR
     //Waypoints
     { name: "SHELL", type: "Waypoint", coordinates: [341.00, 161.50] },
-    { name: "KIKON", type: "Waypoint", coordinates: [494.00, 142.50] },
+    { name: "NIKON", type: "Waypoint", coordinates: [494.00, 142.50] },
     { name: "CHILY", type: "Waypoint", coordinates: [661.50, 159.00] },
     { name: "SHIBA", type: "Waypoint", coordinates: [427.50, 188.00] },
     { name: "LETSE", type: "Waypoint", coordinates: [573.00, 214.00] },
@@ -1435,7 +1435,7 @@ const Waypoints = [
     { name: "EZYDB", type: "Waypoint", coordinates: [373.21, 533.42] },
     { name: "FRANK", type: "Waypoint", coordinates: [ 38.67, 596.04] },
     { name: "CELAR", type: "Waypoint", coordinates: [229.58, 628.57] },
-    { name: "THAGC", type: "Waypoint", coordinates: [ 38.06, 681.36] },
+    { name: "THACC", type: "Waypoint", coordinates: [ 38.06, 681.36] },
     { name: "SHREK", type: "Waypoint", coordinates: [133.82, 688.73] },
     { name: "SPACE", type: "Waypoint", coordinates: [234.49, 707.75] },
     //VORs
