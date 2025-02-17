@@ -771,9 +771,9 @@ const controlAreas = [
         ],
         runways: [
             { number: "15", length: 3281, hdg: 151, glideslope: 3.00, coordinates: [791.40, 352.06]},
-            { number: "33", length: 3281, hdg: 151, glideslope: 3.00, coordinates: [800.20, 369.06]},
+            { number: "33", length: 3281, hdg: 331, glideslope: 3.00, coordinates: [800.20, 369.06]},
             { number: "11", length: 4314, hdg: 111, glideslope: 3.00, coordinates: [788.50, 359.46]},
-            { number: "29", length: 4314, hdg: 111, glideslope: 3.00, coordinates: [812.23, 367.80]},
+            { number: "29", length: 4314, hdg: 291, glideslope: 3.00, coordinates: [812.23, 367.80]},
         ]
     },
     {
