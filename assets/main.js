@@ -791,8 +791,16 @@ canvas.addEventListener('mousemove', (e) => {
 });
 
 function toggleSettingsMenu() {
-	const settingsMenu = document.getElementById('settingsMenu');
-	settingsMenu.style.display = settingsMenu.style.display === 'none' || settingsMenu.style.display === '' ? 'block' : 'none';
+    const settingsMenu = document.getElementById('settingsMenu');
+    const settingsButton = document.querySelector('.settings-button');
+
+    if (settingsMenu.style.display === 'none' || settingsMenu.style.display === '') {
+        settingsMenu.style.display = 'block';
+        settingsButton.classList.add('on'); // Adiciona a classe "on" ao botão
+    } else {
+        settingsMenu.style.display = 'none';
+        settingsButton.classList.remove('on'); // Remove a classe "on" do botão
+    }
 }
 
 function toggleChangeLogMenu() {

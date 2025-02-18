@@ -84,33 +84,46 @@ header h1 {
     background-color: #323237; 
 }
 
+.fpl-button:active {
+    background-color: #3b6cec;
+    color: #ffffff;
+}
+
 .atc-left-button {
     font-size: 16px;
-    color: #919191; /*#ffffff*/
+    color: #e2e2e2;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #19191d; /*#202024*/
+    background-color: #202024;
     height: 40px;
-    width: 100px;
+    width: 110px;
     margin-left: 5px;
     border: none;
     border-radius: 5px;
-    /*cursor: pointer;*/
-    transition: background-color 0.3s ease-in-out;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    text-decoration: none;
+    user-select: none;
 }
 
 .atc-left-button .atc-left-icon {
     height: 30px;
     width: 30px;
     margin-right: 7px;
-    filter: brightness(0.3);
+    filter: brightness(0.8);
+    transition: filter 0.2s ease-in-out;
 }
 
-/*.atc-left-button:hover {
+.atc-left-button:hover {
     background-color: #323237; 
-}*/
+}
+
+.atc-left-button:active {
+    background-color: #3b6cec;
+    color: #ffffff;
+}
 
 .atc-online {
     font-size: 15px;
@@ -310,6 +323,14 @@ header a {
 
 .settings-button:hover {
     background-color: rgba(50, 50, 55, 1);
+}
+
+.settings-button:active {
+    background-color: #3b6cec;
+}
+
+.settings-button.on {
+    background-color: #3b6cec; /* Cor ativa */
 }
 
 .close-button:hover {
