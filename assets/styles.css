@@ -152,9 +152,16 @@ header h1 {
     margin-left: 5px;
 }
 
+header a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
 .SPY-logo {
     width: 150px;
     height: auto;
+    align-self: center;
 }
 
 .Changelog-menu {
