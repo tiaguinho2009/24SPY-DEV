@@ -70,7 +70,7 @@
     z-index: 1000;
     opacity: 0;
     max-height: 0;
-    overflow: hidden;
+    overflow: auto;
     transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 

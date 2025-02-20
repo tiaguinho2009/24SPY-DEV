@@ -743,6 +743,15 @@ const controlAreas = [
             { number: "25C", length: 3680, hdg: 247, glideslope: 3.00, coordinates: [597.17, 777.82]},
             { number: "07R", length: 3917, hdg:  67, glideslope: 3.00, coordinates: [568.56, 793.36]},
             { number: "25R", length: 3917, hdg: 247, glideslope: 3.00, coordinates: [583.64, 779.67]},
+        ],
+        SIDs: [
+            { name: "EXIDA 1N", rwy: ["07L", "07C", "07R"], waypoints: ["AOIJH", "OAIJD", "EXIDA"]},
+        ],
+        STARs: [
+            { name: "EXIDA 1N", rwy: ["07L", "07C", "07R"], waypoints: ["AOIJH", "OAIJD", "EXIDA"]},
+        ],
+        APPs: [
+            { name: "ILS", rwy: ["07L"], waypoints: ["AOIJH", "OAIJD", "EXIDA"]},
         ]
     },
     {
@@ -1295,6 +1304,10 @@ const controlAreas = [
             { number:"21W", length:1000, hdg: 210, glideslope: 3.00, coordinates: [174.08, 568.06]},
         ]
     },
+];
+
+const CustomWaypoints = [
+    { name: "ENDER", type: "Waypoint", coordinates: [401.64, 593.26] },
 ];
 
 const Waypoints = [
