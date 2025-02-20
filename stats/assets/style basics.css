@@ -110,7 +110,7 @@ header a {
 }
 
 .header-button2 {
-    background-color: rgba(32, 32, 36, 1);
+    background-color: #202024;
     border: none;
     border-radius: 5px;
     padding: 5px; /* Espaçamento interno para centralizar */
@@ -125,6 +125,10 @@ header a {
 
 .header-button2:hover {
     background-color: rgba(50, 50, 55, 1);
+}
+
+.header-button2:active {
+    background-color: #3b6cec;
 }
 
 .header-button2 .icon {
@@ -231,6 +235,19 @@ header a {
 
 
 
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(29, 29, 29, 0.7);
+    z-index: 101;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
 .message-menu {
     top: 50%;
     left: 50%;
@@ -244,7 +261,7 @@ header a {
     position: fixed;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    z-index: 101;
+    z-index: 102;
     display: none;
     flex-direction: column;
 }

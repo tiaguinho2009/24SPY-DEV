@@ -56,10 +56,48 @@
          </div>
 
          <div class="graphs">
+            <div class="graph-options">
+                <button class="option-button" onclick="toggleDropdown('time-options', this)">
+                    Time
+                    <img src="../assets/Icons/arrow-open-up-svgrepo-com.svg" class="arrow-icon">
+                </button>
+                <button class="option-button" onclick="toggleDropdown('data-options', this)">
+                    Data
+                    <img src="../assets/Icons/arrow-open-up-svgrepo-com.svg" class="arrow-icon">
+                </button>
+                <button class="option-button" onclick="toggleDropdown('view-options', this)">
+                    View
+                    <img src="../assets/Icons/arrow-open-up-svgrepo-com.svg" class="arrow-icon">
+                </button>
+    
+                <div class="dropdown" id="time-options">
+                    <ul>
+                        <li>Last 24 hours</li>
+                        <li>Last 7 days</li>
+                        <li>Last 30 days</li>
+                    </ul>
+                </div>
+                <div class="dropdown" id="data-options">
+                    <ul>
+                        <li>ATCs</li>
+                        <li>Flights</li>
+                        <li>Delays</li>
+                    </ul>
+                </div>
+                <div class="dropdown" id="view-options">
+                    <ul>
+                        <li>Line Chart</li>
+                        <li>Bar Chart</li>
+                        <li>Pie Chart</li>
+                    </ul>
+                </div>
+            </div>
             <div class="graph-container">
                 <canvas class="canvas" id="canvas"></canvas>
             </div>
         </div>
+        
+        <div id="overlay"></div>
 
         <script src="assets/main.js"></script>
     </body>
