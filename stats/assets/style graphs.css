@@ -1,0 +1,27 @@
+.graphs {
+    background-color: #18181b;
+    display: flex;
+    justify-content: space-between;
+    width: 99%;
+    height: calc(100% - 80px);
+    border-radius: 20px;
+    margin: 70px auto 10px auto; /* Centraliza horizontalmente e mantém o espaçamento superior */
+    z-index: 1;
+    align-self: center;
+}
+
+.graph-container {
+    background-color: #202024;
+    width: 98%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto auto 1% auto; /* Centraliza horizontalmente e mantém o espaçamento inferior */
+    border-radius: 20px;
+}
+
+.graph-container canvas {
+    width: 90%;
+    height: 80%;
+}

@@ -894,7 +894,7 @@ canvas {
 
 .message-menu .title {
     background-color: #202024;
-    padding: 10px;
+    padding: 10px 15px 10px 15px;
     font-size: 1.5em;
     font-weight: bold;
     border-top-left-radius: 10px;

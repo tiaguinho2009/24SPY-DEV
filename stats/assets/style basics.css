@@ -3,7 +3,7 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: Arial, sans-serif;
-    background-color: #2d2d2d;
+    background-color: #131316;
     color: #fff;
     overflow: hidden;
 }
@@ -186,13 +186,13 @@ header a {
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     z-index: 101;
-    display: flex;
+    display: none;
     flex-direction: column;
 }
 
 .message-menu .title {
     background-color: #202024;
-    padding: 10px;
+    padding: 10px 15px 10px 15px;
     font-size: 1.5em;
     font-weight: bold;
     border-top-left-radius: 10px;
@@ -211,23 +211,34 @@ header a {
     flex-grow: 1;
 }
 
-.message-menu .close-button {
+.message-menu .buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.message-menu .buttons .close-button {
     background-color: #3b6cec;
     color: #fff;
     font-size: 1.2rem;
     border: none;
     cursor: pointer;
-    width: calc(100% - 20px);
+    width: calc(100% - 10px);
     border-radius: 10px;
     transition: background-color 0.3s ease;
-    padding: 15px;
-    margin: 0 10px 10px 10px;
+    padding: 10px;
+    margin: 0 5px 0 5px;
+    text-align: center;
     align-self: flex-end;
 }
 
-.message-menu .close-button:hover {
-    background-color: #4b7eff;
-    transform: scale(1.0);
+.message-menu .buttons .button-half {
+    width: calc(50% - 10px);
+    margin: 0 5px 0 5px;
+}
+
+.message-menu .buttons .close-button:hover {
+    background-color: #3e75ff;
 }
 
 .message-menu .content::-webkit-scrollbar {

@@ -5,7 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>24SPY</title>
         <link rel="icon" href="../assets/Icons/24SPY-logo.png" type="Image.png">
-        <link rel="stylesheet" href="assets/style.css" >
+        <link rel="stylesheet" href="assets/style basics.css" >
+        <link rel="stylesheet" href="assets/style graphs.css" >
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body>
         <header>
@@ -52,6 +54,12 @@
                <button class="close-button" id="message-button2" style="display: none;">Secondary</button>
             </div>
          </div>
+
+         <div class="graphs">
+            <div class="graph-container">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
 
         <script src="assets/main.js"></script>
     </body>
