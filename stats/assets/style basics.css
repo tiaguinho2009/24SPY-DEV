@@ -171,6 +171,65 @@ header a {
 }
 
 
+@media (max-width: 768px) {
+    .header-left-buttons {
+        display: none; /* Oculta os botões do lado esquerdo em telas pequenas */
+    }
+
+    .header-buttons {
+        gap: 10px; /* Reduz o espaço entre os botões do lado direito */
+    }
+
+    .SPY-logo {
+        width: 100px; /* Reduz o tamanho do logo */
+    }
+
+    header {
+        height: 50px; /* Reduz a altura do cabeçalho */
+        padding: 0 10px; /* Reduz o padding do cabeçalho */
+    }
+
+    .settings-button,
+    .close-button {
+        height: 30px; /* Reduz a altura dos botões de configurações e fechar */
+        width: 30px; /* Reduz a largura dos botões de configurações e fechar */
+    }
+
+    .settings-icon,
+    .close-icon {
+        width: 16px; /* Reduz o tamanho dos ícones */
+        height: 16px; /* Reduz o tamanho dos ícones */
+    }
+}
+
+@media (max-width: 480px) {
+    .header-buttons {
+        gap: 5px; /* Reduz ainda mais o espaço entre os botões do lado direito */
+    }
+
+    .SPY-logo {
+        width: 80px; /* Reduz ainda mais o tamanho do logo */
+    }
+
+    header {
+        height: 40px; /* Reduz ainda mais a altura do cabeçalho */
+        padding: 0 5px; /* Reduz ainda mais o padding do cabeçalho */
+    }
+
+    .settings-button,
+    .close-button {
+        height: 25px; /* Reduz ainda mais a altura dos botões de configurações e fechar */
+        width: 25px; /* Reduz ainda mais a largura dos botões de configurações e fechar */
+    }
+
+    .settings-icon,
+    .close-icon {
+        width: 14px; /* Reduz ainda mais o tamanho dos ícones */
+        height: 14px; /* Reduz ainda mais o tamanho dos ícones */
+    }
+}
+
+
 
 .message-menu {
     top: 50%;
