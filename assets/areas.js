@@ -3,22 +3,22 @@ let PTFSAPIError = []
 let PTFSAPI = [
     //example
     {
-      "holder": "Test",
-      "claimable": true,
-      "airport": "Tokyo",
-      "position": "tower"
+    "holder": "Test",
+    "claimable": true,
+    "airport": "Tokyo",
+    "position": "tower"
     },
     {
-      "holder": "",
-      "claimable": true,
-      "airport": "Tokyo",
-      "position": "ground"
+    "holder": "",
+    "claimable": true,
+    "airport": "Tokyo",
+    "position": "ground"
     },
     {
-      "holder": "",
-      "claimable": true,
-      "airport": "Barra",
-      "position": "tower"
+    "holder": "",
+    "claimable": true,
+    "airport": "Barra",
+    "position": "tower"
     }
 ]
 
@@ -801,7 +801,7 @@ const controlAreas = [
         runways: [
             { number: "28", length: 3281, hdg: 288, glideslope: 3.00, coordinates: [1087.90, 613.69]},
             { number: "10", length: 3281, hdg: 151, glideslope: 3.00, coordinates: [1061.90, 606.49]},
-         ]
+        ]
     },
     {
         name: "ITKO",
@@ -832,7 +832,7 @@ const controlAreas = [
             { number: "31", length: 4850, hdg: 307, glideslope: 3.00, coordinates: [534.31, 243.66]},
             { number: "02", length: 3754, hdg:  20, glideslope: 3.00, coordinates: [538.31, 256.66]},
             { number: "20", length: 3754, hdg: 200, glideslope: 3.00, coordinates: [545.21, 237.76]},
-         ]
+        ]
     },
     {
         name: "ILAR",
@@ -861,7 +861,7 @@ const controlAreas = [
         runways: [
             { number: "24", length: 3355, hdg: 244, glideslope: 3.00, coordinates: [841.10, 907.97]},
             { number: "06", length: 3355, hdg:  64, glideslope: 3.00, coordinates: [823.00, 916.67]},
-         ]
+        ]
     },
     {
         name: "IGRV",
@@ -886,7 +886,7 @@ const controlAreas = [
         runways: [
             { number: "06", length: 2391, hdg:  62, glideslope: 3.00, coordinates: [155.72, 550.01]},
             { number: "24", length: 2391, hdg: 242, glideslope: 3.00, coordinates: [169.02, 542.81]},
-         ]
+        ]
     },
     {
         name: "IBTH",
@@ -914,7 +914,7 @@ const controlAreas = [
         runways: [
             { number: "09", length: 1547, hdg:  90, glideslope: 3.00, coordinates: [666.46, 529.74]},
             { number: "33", length: 1547, hdg: 270, glideslope: 3.00, coordinates: [674.56, 529.24]},
-         ]
+        ]
     },
     {
         name: "ISAU",
@@ -939,7 +939,7 @@ const controlAreas = [
         runways: [
             { number: "08", length: 2554, hdg:  81, glideslope: 3.00, coordinates: [125.28, 862.53]},
             { number: "26", length: 2554, hdg: 261, glideslope: 3.00, coordinates: [139.18, 861.03]},
-         ]
+        ]
     },
     //1
     {
@@ -964,7 +964,7 @@ const controlAreas = [
         runways: [
             { number: "17", length: 3404, hdg: 174, glideslope: 3.00, coordinates: [939.10, 922.89]},
             { number: "35", length: 3404, hdg: 354, glideslope: 3.00, coordinates: [941.00, 941.29]},
-         ]
+        ]
     },
     {
         name: "IMLR",
@@ -989,7 +989,7 @@ const controlAreas = [
         runways: [
             { number: "07", length: 2997, hdg:  66, glideslope: 3.00, coordinates: [401.12, 733.76]},
             { number: "25", length: 2997, hdg: 246, glideslope: 3.00, coordinates: [416.92, 726.76]},
-         ]
+        ]
     },
     {
         name: "IDCS",
@@ -1011,7 +1011,7 @@ const controlAreas = [
         runways: [
             { number: "25", length: 750, hdg: 251, glideslope: 3.00, coordinates: [556.96, 110.11]},
             { number: "07", length: 750, hdg:  71, glideslope: 3.00, coordinates: [563.16, 108.51]},
-         ]
+        ]
     },
     {
         name: "IGAR",
@@ -1031,9 +1031,9 @@ const controlAreas = [
             ["Official", "https://ptfs.xyz/charts/dark/IGAR%20Ground%20Chart.png"],
         ],
         runways: [
-            { number: "04", length: 2980, hdg:  42, glideslope: 3.00},
-            { number: "22", length: 2980, hdg: 222, glideslope: 3.00},
-         ]
+            { number: "04", length: 2980, hdg:  42, glideslope: 3.00, coordinates: [435.48, 828.25]},
+            { number: "22", length: 2980, hdg: 222, glideslope: 3.00, coordinates: [446.98, 815.62]},
+        ]
     },
     {
         name: "IIAB",
@@ -1059,7 +1059,7 @@ const controlAreas = [
             { number: "27L", length: 4329, hdg: 275, glideslope: 3.00, coordinates: [866.02, 999.63]},
             { number: "09R", length: 4329, hdg:  95, glideslope: 3.00, coordinates: [838.27, 997.63]},
             { number: "27R", length: 4329, hdg: 275, glideslope: 3.00, coordinates: [864.77, 996.13]},
-         ]
+        ]
     },
     {
         name: "ISCM",
@@ -1081,7 +1081,7 @@ const controlAreas = [
         runways: [
             { number: "13", length: 1812, hdg: 126, glideslope: 3.00, coordinates: [980.56, 521.01]},
             { number: "31", length: 1812, hdg: 306, glideslope: 3.00, coordinates: [989.36, 527.21]},
-         ]
+        ]
     },
     //2
     {
@@ -1103,7 +1103,7 @@ const controlAreas = [
         runways: [
             { number: "01", length: 1378, hdg:  14, glideslope: 3.00, coordinates: [493.50, 761.77]},
             { number: "19", length: 1378, hdg: 194, glideslope: 3.00, coordinates: [494.90, 753.67]},
-         ]
+        ]
     },
     {
         name: "ILKL",
@@ -1124,7 +1124,7 @@ const controlAreas = [
         runways: [
             { number: "09", length: 1303, hdg:  89, glideslope: 3.00, coordinates: [842.26, 404.35]},
             { number: "27", length: 1303, hdg: 269, glideslope: 3.00, coordinates: [844.66, 407.65]},
-         ]
+        ]
     },
     {
         name: "ITRN",
@@ -1145,7 +1145,7 @@ const controlAreas = [
         runways: [
             { number: "18", length: 1286, hdg: 180, glideslope: 3.00, coordinates: [588.72, 887.83]},
             { number: "36", length: 1286, hdg: 360, glideslope: 3.00, coordinates: [588.62, 895.13]},
-         ]
+        ]
     },
     {
         name: "IJAF",
@@ -1166,7 +1166,7 @@ const controlAreas = [
         runways: [
             { number: "07", length: 2278, hdg: 251, glideslope: 3.00, coordinates: [1083.60, 580.97]},
             { number: "25", length: 2278, hdg:  71, glideslope: 3.00, coordinates: [1096.00, 576.87]},
-         ]
+        ]
     },
     {
         name: "IHEN",
@@ -1187,7 +1187,7 @@ const controlAreas = [
         runways: [
             { number: "17", length: 1170, hdg: 172, glideslope: 3.00, coordinates: [788.34, 1000.24]},
             { number: "35", length: 1170, hdg: 352, glideslope: 3.00, coordinates: [788.34, 1000.24]},
-         ]
+        ]
     },
     {
         name: "IBAR",
@@ -1556,7 +1556,7 @@ const specialUsers = {
         "DiscordNick": "tiaguinho_2009",
     }],
     "aaronandethan123": [{
-        "Role": "Developer",
+        "Role": "Contributor",
         "DiscordNick": "awdev_",
     }],
     "AvatarRoblox2018": [{
