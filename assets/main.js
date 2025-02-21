@@ -713,6 +713,10 @@ canvas.addEventListener('mouseup', () => {
 	}
 });
 
+canvas.addEventListener('mouseleave', () => {
+    isDragging = false;
+});
+
 function applyInertia() {
 	// Aplica a inércia até que a velocidade seja insignificante
 	if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
@@ -795,6 +799,7 @@ canvas.addEventListener('wheel', (e) => {
             } else {
                 isZooming = false;
             }
+			console.log(scale);
         });
     }
 });
