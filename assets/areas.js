@@ -745,13 +745,81 @@ const controlAreas = [
             { number: "25R", length: 3917, hdg: 247, glideslope: 3.00, coordinates: [583.64, 779.67]},
         ],
         SIDs: [
-            { name: "EXIDA 1N", rwy: ["07L", "07C", "07R"], waypoints: ["AOIJH", "OAIJD", "EXIDA"]},
-        ],
+            //DARRK 3 DEP TRANSITIONS
+            { name: "DARRK 3 RNAV DEP (SPACE TRANS - 25C/R)", rwy: ["25C", "25R"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "RIZIN", "SPACE"]},
+            { name: "DARRK 3 RNAV DEP (SEEKS TRANS - 25C/R)", rwy: ["25L", "25C", "25R"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "DINTY", "SEEKS"]},
+            { name: "DARRK 3 RNAV DEP (SPACE TRANS - 25L)", rwy: ["25L"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "RIZIN", "SPACE"]},
+            { name: "DARRK 3 RNAV DEP (SEEKS TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "EXMOR", "DARRK", "BEANS", "DINTY", "SEEKS"]},
+            
+            // KENED 3 DEP TRANSITIONS
+            { name: "KENED 2 RNAV DEP (RENDR TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "RENDR"]},
+            { name: "KENED 2 RNAV DEP (JOOPY TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "JOOPY"]},
+            { name: "KENED 2 RNAV DEP (DINER TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "INDEX", "NKITA", "DINER"]},
+            
+            // LOGAN 4 DEP TRANSITIONS
+            { name: "LOGAN 4 RNAV DEP (RENDR TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "DAALE", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
+            { name: "LOGAN 4 RNAV DEP (DINER TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "DAALE", "LOGAN", "BUCFA", "SKYDV", "WELSH", "MDWAY", "DINER"]},
+            { name: "LOGAN 4 RNAV DEP (RENDR TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "QURAN", "EXMOR", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
+            { name: "LOGAN 4 RNAV DEP (DINER TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "QURAN", "EXMOR", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
+        
+            //OSHNN 1 DEP TRANSITIONS
+            { name: "OSHNN 1 RNAV DEP (SILVA TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "SILVA"]},
+            { name: "OSHNN 1 RNAV DEP (CYRIL TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "GOOSE", "CYRIL"]},
+            { name: "OSHNN 1 RNAV DEP (GRASS TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "JAMSI", "PMPKN", "GRASS"]},
+            { name: "OSHNN 1 RNAV DEP (SILVA TRANS - 25L)", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "SILVA"]},
+            { name: "OSHNN 1 RNAV DEP (CYRIL TRANS - 25L)", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "GOOSE", "CYRIL"]},
+            { name: "OSHNN 1 RNAV DEP (GRASS TRANS - 25L)", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "JAMSI", "PMPKN", "GRASS"]},
+        
+            //ROCKFORD 5 DEP (VER DPS PQ SIM)
+
+            //TRAINING 1 DEP TRANSITIONS
+            { name: "TRAINING 1 RNAV DEP (SILVA TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "MDWST", "ATPEV", "OCEEN", "SILVA"]},
+            { name: "TRAINING 1 RNAV DEP (CYRIL TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "MDWST", "ATPEV", "OCEEN", "CYRIL"]},
+            { name: "TRAINING 1 RNAV DEP (GRASS TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "GODLU", "JAMSI", "GRASS"]},
+            { name: "TRAINING 1 RNAV DEP (SILVA TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "MDWST", "ATPEV", "OCEEN", "SILVA"]},
+            { name: "TRAINING 1 RNAV DEP (CYRIL TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "MDWST", "ATPEV", "OCEEN", "CYRIL"]},
+            { name: "TRAINING 1 RNAV DEP (GRASS TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "GODLU", "JAMSI", "GRASS"]},
+
+            //WINDY 3 DEP TRANSITIONS
+            { name: "WINDY 3 RNAV DEP (SILVA TRANS)", rwy: ["07R", "07C", "07L"], waypoints: ["MJSTY", "WNNDY", "OCEEN", "SILVA"]},
+            { name: "WINDY 3 RNAV DEP (NARXX TRANS)", rwy: ["07R", "07C", "07L"], waypoints: ["MJSTY", "WNNDY", "GREEK", "NARXX"]},
+        
+        ], 
+
         STARs: [
-            { name: "EXIDA 1N", rwy: ["07L", "07C", "07R"], waypoints: ["AOIJH", "OAIJD", "EXIDA"]},
+            //BEANS 1 ARR TRANSITIONS
+            { name: "BEANS 1 RNAV ARR (SEEKS TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["SEEKS", "BEANS", "LOGAN"]},
+            { name: "BEANS 1 RNAV ARR (SPACE TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["SPACE", "BEANS", "LOGAN"]},
+            { name: "BEANS 1 RNAV ARR (SEEKS TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["SEEKS", "BEANS", "BRDGE", "ICTAM", "HAWFA"]},
+            { name: "BEANS 1 RNAV ARR (SPACE TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["SPACE", "BEANS", "BRDGE", "ICTAM", "HAWFA"]},
+
+            //KUNAV 1 ARR TRANSITIONS
+            { name: "KUNAV 1 RNAV ARR (RENDR TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["RENDR", "WELSH", "KENED", "KUNAV", "BRDGE", "ALISO"]},
+            { name: "KUNAV 1 RNAV ARR (DINER TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["DINER", "SURGE", "INDEX", "KENED", "KUNAV", "BRDGE", "ALISO"]},
+            { name: "KUNAV 1 RNAV ARR (RENDR TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["RENDR", "WELSH", "KENED", "KUNAV", "HAWFA", "SWEET"]},
+            { name: "KUNAV 1 RNAV ARR (DINER TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["DINER", "SURGE", "INDEX", "KENED", "KUNAV", "HAWFA", "SWEET"]},
+
+            //POPPY 2 ARR TRANSITIONS
+            { name: "POPPY 1 RNAV ARR (NARXX TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["NARXX", "GAVIN", "SETHR", "POPPY"]},
+            { name: "POPPY 1 RNAV ARR (CYRIL TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["CYRIL", "SILVA", "OCEEN", "SETHR", "POPPY"]},
+            { name: "POPPY 1 RNAV ARR (CAWZE TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["CAWZE", "OCEEN", "SETHR", "POPPY"]},
+
+            //SUNST 2 ARR TRANSITIONS    
+            { name: "SUNST 2 RNAV ARR - 07R/C/L", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "LAAMP", "LOGAN"]},
+            { name: "SUNST 2 RNAV ARR - 07R/C/L", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "BUCFA", "HAWFA", "SWEET", "POPPY"]},
+
         ],
+        
         APPs: [
-            { name: "ILS", rwy: ["07L"], waypoints: ["AOIJH", "OAIJD", "EXIDA"]},
+            //ILS OR LOC 25R/C/L
+            { name: "ILS or LOC RWY 25L", rwy: ["25L"], waypoints: ["FISSK", "COTAF", "BACHE"]},
+            { name: "ILS or LOC RWY 25C", rwy: ["25C"], waypoints: ["PAYNZ", "DUNES", "ATPEV"]},
+            { name: "ILS or LOC RWY 25R", rwy: ["25R"], waypoints: ["ROCKY", "TORUS", "BRISK"]},
+
+            //RNAV ARR 07R/C/L
+            { name: "RNAV RWY 07L", rwy: ["07L"], waypoints: ["OTTES", "GUPPI", "REEBO"]},
+            { name: "RNAV RWY 07L", rwy: ["07C"], waypoints: ["MOGTA", "DIGGY", "TURKA"]},
+            { name: "RNAV RWY 07L", rwy: ["07R"], waypoints: ["TIMSE", "JACKI", "FUMBL"]},
         ]
     },
     {
@@ -1306,10 +1374,6 @@ const controlAreas = [
     },
 ];
 
-const CustomWaypoints = [
-    { name: "ENDER", type: "Waypoint", coordinates: [401.64, 593.26] },
-];
-
 const Waypoints = [
     ////EXAMPLES
     //Waypoints
@@ -1499,6 +1563,64 @@ const Waypoints = [
     { name: "DEL", type: "VOR", coordinates: [912.12, 696.25] },
 
 
+];
+
+const CustomWaypoints = [
+
+    ////IRFD FIR
+    //Custom Waypoints
+    { name: "DLREY", type: "Waypoint", coordinates: [538.50, 838.58] },
+    { name: "DOCKR", type: "Waypoint", coordinates: [544.17, 848.75] },
+    { name: "ALOHA", type: "Waypoint", coordinates: [440.13, 834.94] },
+    { name: "QURAN", type: "Waypoint", coordinates: [456.26, 870.57] },
+    { name: "DARRK", type: "Waypoint", coordinates: [384.93, 814.12] },
+    { name: "DINTY", type: "Waypoint", coordinates: [297.93, 802.12] },
+    { name: "RIZIN", type: "Waypoint", coordinates: [288.43, 752.12] },
+    { name: "NKITA", type: "Waypoint", coordinates: [604.43, 522.40] },
+    { name: "DAALE", type: "Waypoint", coordinates: [474.72, 845.48] },
+    { name: "SKYDV", type: "Waypoint", coordinates: [458.33, 588.14] },
+    { name: "MDWAY", type: "Waypoint", coordinates: [547.85, 513.05] },
+    { name: "FABRA", type: "Waypoint", coordinates: [503.86, 810.82] },
+    { name: "HIIPR", type: "Waypoint", coordinates: [510.86, 819.62] },
+    { name: "SHAEF", type: "Waypoint", coordinates: [473.46, 879.89] },
+    { name: "PEVEE", type: "Waypoint", coordinates: [515.72, 946.02] },
+    { name: "HOLTZ", type: "Waypoint", coordinates: [547.85, 513.05] },
+    { name: "OSHNN", type: "Waypoint", coordinates: [582.41, 949.57] },
+    { name: "CAHIL", type: "Waypoint", coordinates: [610.81, 860.77] },
+    { name: "ZOOMM", type: "Waypoint", coordinates: [620.01, 835.97] },
+    { name: "SEEBY", type: "Waypoint", coordinates: [652.00, 795.97] },
+    { name: "ARCUS", type: "Waypoint", coordinates: [705.96, 689.43] },
+    { name: "GOOSE", type: "Waypoint", coordinates: [833.16, 598.60] },
+    { name: "WEILR", type: "Waypoint", coordinates: [554.43, 874.23] },
+    { name: "HAYNK", type: "Waypoint", coordinates: [546.43, 895.03] },
+    { name: "MDWST", type: "Waypoint", coordinates: [636.43, 815.03] },
+    { name: "MJSTY", type: "Waypoint", coordinates: [662.72, 707.30] },
+    { name: "WNNDY", type: "Waypoint", coordinates: [678.08, 669.26] },
+    { name: "GREEK", type: "Waypoint", coordinates: [695.08, 601.26] },
+    { name: "FISSK", type: "Waypoint", coordinates: [636.65, 764.59] },
+    { name: "FISSK", type: "Waypoint", coordinates: [703.48, 737.03] },
+    { name: "COTAF", type: "Waypoint", coordinates: [661.81, 756.36] },
+    { name: "BACHE", type: "Waypoint", coordinates: [645.81, 760.70] },
+    { name: "PAYNZ", type: "Waypoint", coordinates: [706.48, 729.03] },
+    { name: "DUNES", type: "Waypoint", coordinates: [706.48, 729.03] },
+    { name: "ROCKY", type: "Waypoint", coordinates: [704.14, 726.03] },
+    { name: "TORUS", type: "Waypoint", coordinates: [704.14, 726.03] },
+    { name: "BRISK", type: "Waypoint", coordinates: [659.81, 747.70] },
+    { name: "JACKI", type: "Waypoint", coordinates: [518.44, 813.70] },
+    { name: "TIMSE", type: "Waypoint", coordinates: [491.61, 825.07] },
+    { name: "FUMBL", type: "Waypoint", coordinates: [542.81, 803.28] },
+    { name: "TURKA", type: "Waypoint", coordinates: [539.52, 802.28] },
+    { name: "DIGGY", type: "Waypoint", coordinates: [517.53, 813.54] },
+    { name: "OTTES", type: "Waypoint", coordinates: [490.57, 816.64] },
+    { name: "GUPPI", type: "Waypoint", coordinates: [527.04, 803.04] },
+    { name: "REEBO", type: "Waypoint", coordinates: [539.04, 797.94] },
+    { name: "LAAMP", type: "Waypoint", coordinates: [386.49, 711.37] },
+    { name: "POPPY", type: "Waypoint", coordinates: [631.85, 694.72] },
+    { name: "SWEET", type: "Waypoint", coordinates: [580.39, 709.85] },
+    { name: "NARXX", type: "Waypoint", coordinates: [717.54, 537.03] },
+    { name: "BRDGE", type: "Waypoint", coordinates: [435.68, 726.13] },
+    { name: "ALISO", type: "Waypoint", coordinates: [432.61, 796.83] },    
+    { name: "SURGE", type: "Waypoint", coordinates: [610.04, 535.60] },
 ];
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active

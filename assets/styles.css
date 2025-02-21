@@ -493,6 +493,7 @@ header a {
 .small-input {
     width: 60px;
     height: 20px;
+    overflow: hidden;
 }
 
 .large-input {

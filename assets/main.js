@@ -826,22 +826,30 @@ function toggleFlpMenu() {
 }
 
 function repositionFlpMenu() {
-	const FlpMenu = document.getElementById('FlpMenu');
-	const FlpButton = document.getElementById('FlpButton');
+    const FlpMenu = document.getElementById('FlpMenu');
+    const FlpButton = document.getElementById('FlpButton');
 
-	// Obtém as coordenadas e dimensões do botão
-	const buttonRect = FlpButton.getBoundingClientRect();
+    // Obtém as coordenadas e dimensões do botão
+    const buttonRect = FlpButton.getBoundingClientRect();
 
-	// Calcula a posição do menu
-	const menuTop = buttonRect.bottom + window.scrollY + 180 + FlpMenu.offsetHeight;
-	const menuLeft = buttonRect.right + window.scrollX + 10 - FlpMenu.offsetWidth;
+    // Calcula a posição inicial do menu
+    let menuTop = buttonRect.bottom + window.scrollY + 10;
+    let menuLeft = buttonRect.left + window.scrollX;
 
-	// Define a posição do menu
-	FlpMenu.style.position = 'absolute';
-	FlpMenu.style.top = `${menuTop}px`;
-	FlpMenu.style.left = `${menuLeft}px`;
+    // Ajusta a posição se o menu sair da tela
+    if (menuLeft + FlpMenu.offsetWidth > window.innerWidth) {
+        menuLeft = window.innerWidth - FlpMenu.offsetWidth - 10;
+    }
+    if (menuTop + FlpMenu.offsetHeight > window.innerHeight) {
+        menuTop = window.innerHeight - FlpMenu.offsetHeight - 10;
+    }
+
+    // Define a posição do menu
+    FlpMenu.style.position = 'absolute';
+    FlpMenu.style.top = `${menuTop}px`;
+    FlpMenu.style.left = `${menuLeft}px`;
 }
-repositionFlpMenu()
+//repositionFlpMenu()
 
 function saveFlp() {
 	const departure = document.getElementById('departure').value.trim().toUpperCase();
@@ -856,7 +864,8 @@ function saveFlp() {
 	// Junta os dados de aeroportos e waypoints
 	const allPoints = [
 		...controlAreas.filter(area => area.type === "Airport"),
-		...Waypoints
+		...Waypoints,
+		...CustomWaypoints
 	];
 
 	const flightPlanPoints = [];
