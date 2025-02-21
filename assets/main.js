@@ -774,7 +774,7 @@ canvas.addEventListener('wheel', (e) => {
         const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
 
         // Ajusta a escala e aumenta a taxa de zoom
-        const zoomRate = 0.0015; // Aumente o valor para um zoom mais rápido
+        const zoomRate = 0.002; // Aumente o valor para um zoom mais rápido
         const zoomFactor = e.deltaY * -zoomRate;
 
         // Define um limite de zoom out mínimo e máximo
