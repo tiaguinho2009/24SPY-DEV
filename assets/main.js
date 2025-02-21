@@ -736,56 +736,66 @@ function applyInertia() {
 
 let isZooming = false;
 
-let targetScale = scale;
-const zoomDuration = 200; // Duração da animação em milissegundos
-
-function smoothZoom() {
+// Função para animar o zoom
+function animateZoom(startScale, endScale, startX, endX, startY, endY, duration) {
     const startTime = performance.now();
-    const startScale = scale;
-    const scaleDifference = targetScale - startScale;
 
-    function animateZoom(currentTime) {
+    function animationStep(currentTime) {
         const elapsedTime = currentTime - startTime;
-        const progress = Math.min(elapsedTime / zoomDuration, 1); // Progresso da animação (0 a 1)
+        const progress = Math.min(elapsedTime / duration, 1);
 
-        // Interpola suavemente entre a escala inicial e a escala alvo
-        scale = startScale + scaleDifference * progress;
+        // Interpolação linear para a escala e coordenadas
+        scale = startScale + (endScale - startScale) * progress;
+        offsetX = startX + (endX - startX) * progress;
+        offsetY = startY + (endY - startY) * progress;
 
         draw();
 
         if (progress < 1) {
-            requestAnimationFrame(animateZoom);
+            requestAnimationFrame(animationStep);
         } else {
-            isZooming = false; // Libera o zooming para o próximo evento
+            isZooming = false;
         }
     }
 
-    requestAnimationFrame(animateZoom);
+    requestAnimationFrame(animationStep);
 }
 
+// Evento de zoom
 canvas.addEventListener('wheel', (e) => {
     e.preventDefault();
 
     if (!isZooming) {
         isZooming = true;
 
-        // Captura a posição do mouse relativa ao canvas
-        const mouseX = (e.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
-        const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
+        requestAnimationFrame(() => {
+            // Captura a posição do mouse relativa ao canvas
+            const mouseX = (e.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
+            const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
 
-        // Ajusta a escala e aumenta a taxa de zoom
-        const zoomRate = 0.002; // Aumente o valor para um zoom mais rápido
-        const zoomFactor = e.deltaY * -zoomRate;
+            // Ajusta a escala e aumenta a taxa de zoom
+            const zoomRate = 0.005; // Aumente o valor para um zoom mais rápido
+            const zoomFactor = e.deltaY * -zoomRate;
 
-        // Define um limite de zoom out mínimo e máximo
-        const minScale = 0.5; // Limite de zoom out
-        const maxScale = 10; // Limite de zoom in
+            // Define um limite de zoom out mínimo e máximo
+            const minScale = 0.5; // Limite de zoom out
+            const maxScale = 10; // Limite de zoom in
 
-        // Calcula a nova escala alvo e aplica os limites
-        targetScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
+            // Calcula a nova escala e aplica os limites
+            const newScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
 
-        // Inicia a animação de zoom suave
-        smoothZoom();
+            // Se o zoom estiver dentro dos limites, ajusta o offset; caso contrário, mantém o último offset
+            if (newScale !== scale) {
+                // Calcula o novo offset para centralizar o zoom no ponto do mouse
+                const newOffsetX = mouseX * (scale - newScale) + offsetX;
+                const newOffsetY = mouseY * (scale - newScale) + offsetY;
+
+                // Anima o zoom
+                animateZoom(scale, newScale, offsetX, newOffsetX, offsetY, newOffsetY, 200);
+            } else {
+                isZooming = false;
+            }
+        });
     }
 });
 
