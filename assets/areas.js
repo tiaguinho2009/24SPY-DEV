@@ -989,7 +989,7 @@ const controlAreas = [
         ],
         runways: [
             { number: "09", length: 1547, hdg:  90, glideslope: 3.00, coordinates: [666.46, 529.74]},
-            { number: "33", length: 1547, hdg: 270, glideslope: 3.00, coordinates: [674.56, 529.24]},
+            { number: "27", length: 1547, hdg: 270, glideslope: 3.00, coordinates: [674.56, 529.24]},
         ]
     },
     {
@@ -1678,7 +1678,7 @@ const settingsValues = {
 };
 
 const websiteInfo = {
-    version: "DEV 0.1.5.3",
+    version: "DEV 0.2 BETA",
 };
 
 const localInfo = {};

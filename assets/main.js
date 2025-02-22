@@ -955,84 +955,87 @@ function saveFlp() {
     // Adiciona a pista de decolagem
     if (departureAirport && departureRwy) {
         const departureRunway = departureAirport.runways.find(rwy => rwy.number === departureRwy);
-        if (departureRunway && departureRunway.coordinates) {
-            flightPlanPoints.push({ name: "", coordinates: departureRunway.coordinates, type: "Runway" });
-            const alignmentPoint = calculateAlignmentPoint(departureAirport, departureRwy, false);
-            if (alignmentPoint) {
-                flightPlanPoints.push(alignmentPoint); // Insere como o segundo ponto
-            }
-        } else {
+        if (!departureRunway || !departureRunway.coordinates) {
             showMessage('Flight Plan Error', `Departure runway "${departureRwy}" not found at airport "${departure}"!`);
             return;
+        }
+        flightPlanPoints.push({ name: "", coordinates: departureRunway.coordinates, type: "Runway" });
+        const alignmentPoint = calculateAlignmentPoint(departureAirport, departureRwy, false);
+        if (alignmentPoint) {
+            flightPlanPoints.push(alignmentPoint); // Insere como o segundo ponto
         }
     }
 
     // Adiciona o SID ao plano de voo
     if (departureAirport && sid) {
         const sidProcedure = departureAirport.SIDs.find(proc => proc.name === sid && proc.transition === deptrans);
-        if (sidProcedure) {
-            sidProcedure.waypoints.forEach(wp => {
-                const matchedPoint = allPoints.find(point => point.name === wp);
-                if (matchedPoint) {
-                    flightPlanPoints.push(matchedPoint);
-                }
-            });
+        if (!sidProcedure) {
+            showMessage('Flight Plan Error', `SID "${sid}" with transition "${deptrans}" not found at airport "${departure}"!`);
+            return;
         }
+        sidProcedure.waypoints.forEach(wp => {
+            const matchedPoint = allPoints.find(point => point.name === wp);
+            if (matchedPoint) {
+                flightPlanPoints.push(matchedPoint);
+            }
+        });
     }
 
     // Adiciona os waypoints fornecidos pelo usuário
     inputPoints.forEach(input => {
         const matchedPoint = allPoints.find(point => point.name === input);
+        if (!matchedPoint && input !== "") {
+            showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
+        }
         if (matchedPoint) {
             flightPlanPoints.push(matchedPoint);
-        } else {
-            if (input !== "") {
-                showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
-            }
         }
     });
 
     // Adiciona o STAR ao plano de voo
     if (arrivalAirport && star) {
         const starProcedure = arrivalAirport.STARs.find(proc => proc.name === star && proc.transition === arrtrans);
-        if (starProcedure) {
-            starProcedure.waypoints.forEach(wp => {
-                const matchedPoint = allPoints.find(point => point.name === wp);
-                if (matchedPoint) {
-                    flightPlanPoints.push(matchedPoint);
-                }
-            });
+        if (!starProcedure) {
+            showMessage('Flight Plan Error', `STAR "${star}" with transition "${arrtrans}" not found at airport "${arrival}"!`);
+            return;
         }
+        starProcedure.waypoints.forEach(wp => {
+            const matchedPoint = allPoints.find(point => point.name === wp);
+            if (matchedPoint) {
+                flightPlanPoints.push(matchedPoint);
+            }
+        });
     }
 
     // Adiciona o APP ao plano de voo
     if (arrivalAirport && app) {
         const appProcedure = arrivalAirport.APPs.find(proc => proc.name === app);
-        if (appProcedure) {
-            appProcedure.waypoints.forEach(wp => {
-                const matchedPoint = allPoints.find(point => point.name === wp);
-                if (matchedPoint) {
-                    flightPlanPoints.push(matchedPoint);
-                }
-            });
+        if (!appProcedure) {
+            showMessage('Flight Plan Error', `APP "${app}" not found at airport "${arrival}"!`);
+            return;
         }
+        appProcedure.waypoints.forEach(wp => {
+            const matchedPoint = allPoints.find(point => point.name === wp);
+            if (matchedPoint) {
+                flightPlanPoints.push(matchedPoint);
+            }
+        });
     }
 
     // Adiciona a pista de chegada
     if (arrivalAirport && arrivalRwy) {
         const arrivalRunway = arrivalAirport.runways.find(rwy => rwy.number === arrivalRwy);
-        if (arrivalRunway && arrivalRunway.coordinates) {
-            if (!app) { // Só adiciona o ponto de alinhamento se não houver APP
-                const alignmentPoint = calculateAlignmentPoint(arrivalAirport, arrivalRwy, true);
-                if (alignmentPoint) {
-                    flightPlanPoints.push(alignmentPoint); // Insere como o penúltimo ponto
-                }
-            }
-            flightPlanPoints.push({ name: "", coordinates: arrivalRunway.coordinates, type: "Runway" });
-        } else {
+        if (!arrivalRunway || !arrivalRunway.coordinates) {
             showMessage('Flight Plan Error', `Arrival runway "${arrivalRwy}" not found at airport "${arrival}"!`);
             return;
         }
+        if (!app) { // Só adiciona o ponto de alinhamento se não houver APP
+            const alignmentPoint = calculateAlignmentPoint(arrivalAirport, arrivalRwy, true);
+            if (alignmentPoint) {
+                flightPlanPoints.push(alignmentPoint); // Insere como o penúltimo ponto
+            }
+        }
+        flightPlanPoints.push({ name: "", coordinates: arrivalRunway.coordinates, type: "Runway" });
     }
 
     flightRoute = flightPlanPoints;
@@ -1564,7 +1567,8 @@ function copyCoordinatesToClipboard(x, y) {
 	navigator.clipboard.writeText(coordsText).then(() => {
 		console.log(`Coordenadas copiadas: ${coordsText}`);
 	}).catch(err => {
-		console.error('Falha ao copiar para a área de transferência', err);
+		showMessage('Clipboard Error', 'Failed to copy coordinates to clipboard.');
+		console.error('Failed to copy coordinates to clipboard.', err);
 	});
 }
 

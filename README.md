@@ -32,6 +32,7 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 
 ## [DEV 0.2 BETA] - 22/02/2025
 ### Added
+- New SIDs/STARs System! (Only works for IRFD for now...) (They are complety optional, if don't want to use it you don't need.)
 - New option called "Show a Higher Quality Map", when ur zoom is > 10 it will render a 14Kx14K image of the map for better view. (This already was working in the past but now u can turn it on or off so ur screen does not freezes for 5 seconds loading the image).
 - Now the zoom its animated (or smoother).
 - The Back-End server of 24SPY is Online again!!!
@@ -43,6 +44,13 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 - IGAR RWYs not working fixed.
 - IPPH RWYs HDGs fixed.
 - IZOL RWYs and HDGs fixed.
+- IBTH RWYs corrected.
 - IRFD RWYs corrected.
 - Some fixes Names corrected.
 - And a LOT of other bugs that i don't remember were fixed.
+
+### Comments
+- This was a BIG update so pls share the website with friends and maybe join our discord server :D
+- A big thanks for Galaxy, for helping me with the database.
+- Thanks for all the BETA Testers!
+- Enjoy the update :D
