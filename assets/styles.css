@@ -433,16 +433,24 @@ header a {
     flex-direction: column;
     align-items: flex-start;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 80px; /* Ajuste para ficar abaixo do cabeçalho */
+    left: 20px; /* Ajuste para ficar no canto superior esquerdo */
     width: 300px;
     padding: 15px;
     background-color: #131316;
+    border-radius: 10px;
     color: #fff;
     font-family: Arial, sans-serif;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     z-index: 100;
+}
+
+@media (max-width: 768px) {
+    .flp-menu {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 }
 
 .flp-menu h3 {
@@ -494,6 +502,10 @@ header a {
     width: 60px;
     height: 20px;
     overflow: hidden;
+}
+
+.form-row span {
+    width: 70px;
 }
 
 .large-input {

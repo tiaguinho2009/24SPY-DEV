@@ -737,12 +737,12 @@ const controlAreas = [
             ["AeroNav SOP", "https://docs.google.com/document/d/1_g0U7Zf4VtxZSkpNLzIEAaU4rEW0m-Uma1jnO_BoCvU/edit?usp=sharing"],
         ],
         runways: [
-            { number: "07L", length: 3408, hdg:  67, glideslope: 3.00, coordinates: [567.48, 786.74]},
-            { number: "25L", length: 3408, hdg: 247, glideslope: 3.00, coordinates: [589.02, 785.36]},
-            { number: "07C", length: 3680, hdg:  67, glideslope: 3.00, coordinates: [573.79, 787.51]},
-            { number: "25C", length: 3680, hdg: 247, glideslope: 3.00, coordinates: [597.17, 777.82]},
-            { number: "07R", length: 3917, hdg:  67, glideslope: 3.00, coordinates: [568.56, 793.36]},
-            { number: "25R", length: 3917, hdg: 247, glideslope: 3.00, coordinates: [583.64, 779.67]},
+            { number: "07L", length: 3408, hdg:  67, glideslope: 3.00, coordinates: [566.69, 786.65]},
+            { number: "25R", length: 3917, hdg: 247, glideslope: 3.00, coordinates: [584.56, 779.06]},
+            { number: "07C", length: 3680, hdg:  67, glideslope: 3.00, coordinates: [579.16, 784.66]},
+            { number: "25C", length: 3680, hdg: 247, glideslope: 3.00, coordinates: [597.36, 776.93]},
+            { number: "07R", length: 3917, hdg:  67, glideslope: 3.00, coordinates: [568.82, 793.33]},
+            { number: "25L", length: 3408, hdg: 247, glideslope: 3.00, coordinates: [588.70, 784.93]},
         ],
         SIDs: [
             //DARRK 3 DEP TRANSITIONS
