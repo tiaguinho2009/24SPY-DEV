@@ -30,10 +30,16 @@
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance.
 
-## [DEV 0.1.5.3] - 16/02/2025
-### Changed
-- New message log system. (So when some error happens u know that)
-- Updated the Fligh Plan System with Runways.
-- New system in the Flight Plan menu to help you select the correct options!
-- More optimization!
-- More charts!
+## [DEV 0.1.5.4] - 22/02/2025
+### Added
+- New option called "Show a Higher Quality Map", when ur zoom is > 10 it will render a 14Kx14K image of the map for better view. (This already was working in the past but now u can turn it on or off so ur screen does not freezes for 5 seconds loading the image).
+- Now the zoom its animated (or smoother).
+- The Back-End server of 24SPY is Online again!!!
+
+### Corrected
+- Bug of zooming in and back out leaves you at a different spot than before fixed.
+- Bug of cursor leaving the map does not stop map moving fixed.
+- IGAR RWYs not working fixed.
+- IPPH RWYs HDGs fixed.
+- Some fixes Names corrected.
+- And a LOT of other bugs that i don't remember were fixed.

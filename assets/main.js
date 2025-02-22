@@ -22,18 +22,16 @@ const sortedWaypoints = Waypoints
 	.map(wp => wp.name)
 	.sort();
 
-// Imagens do mapa
 const mapImages = {
-	normal: 'PTFS-Map-Grey.png',
-	smallScale: 'PTFS-Map-1200px.png'
+    normal: 'PTFS-Map-Grey.png',
+    smallScale: 'PTFS-Map-1200px.png'
 };
 const mapImageNormal = new Image();
 const mapImageSmallScale = new Image();
 mapImageNormal.src = mapImages.normal;
 mapImageSmallScale.src = mapImages.smallScale;
 
-// Imagem atualmente utilizada
-let currentMapImage = mapImageNormal;
+let currentMapImage = mapImageSmallScale;
 
 function showMessage(title, message, button, button2) {
 	return new Promise((resolve) => {
@@ -76,11 +74,21 @@ function showMessage(title, message, button, button2) {
 
 // Configuração do tamanho do canvas
 function resizeCanvas() {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight - 50;
-	draw();
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 50;
+    draw();
+    centerMap(); // Centraliza o mapa após redimensionar o canvas
 }
 window.addEventListener('resize', resizeCanvas);
+
+// Função para centralizar o mapa
+function centerMap() {
+    const mapWidth = 1200 * scale;
+    const mapHeight = 1200 * scale;
+    offsetX = (canvas.width - mapWidth) / 2;
+    offsetY = (canvas.height - mapHeight) / 2;
+    draw();
+}
 
 // Função de transformação das coordenadas
 function transformCoordinates(coord) {
@@ -94,8 +102,11 @@ function transformCoordinates(coord) {
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	// Alterna entre as imagens com base na escala
-	currentMapImage = scale < 4 ? mapImageSmallScale : mapImageNormal;
+	if (settingsValues.showBetterMap) {
+		currentMapImage = scale < 10 ? mapImageSmallScale : mapImageNormal;
+	} else {
+		currentMapImage = mapImageSmallScale;
+	}
 
 	// Calcula tamanho ajustado do mapa
 	const mapWidth = 1200 * scale;
@@ -320,7 +331,7 @@ function drawNavaids() {
 	}
 	const navaids = [
 		...Waypoints,
-		...CustomWaypoints
+		//...CustomWaypoints
 	];
 
 	navaids.forEach(navaid => {
@@ -759,6 +770,7 @@ function animateZoom(startScale, endScale, startX, endX, startY, endY, duration)
             requestAnimationFrame(animationStep);
         } else {
             isZooming = false;
+			console.log(scale);
         }
     }
 
@@ -777,13 +789,14 @@ canvas.addEventListener('wheel', (e) => {
             const mouseX = (e.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
             const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
 
-            // Ajusta a escala e aumenta a taxa de zoom
-            const zoomRate = 0.005; // Aumente o valor para um zoom mais rápido
+            // Ajusta a taxa de zoom dinamicamente com base na escala atual
+            const baseZoomRate = 0.0025; // Taxa de zoom base
+            const zoomRate = baseZoomRate * scale; // Ajusta a taxa de zoom conforme a escala aumenta
             const zoomFactor = e.deltaY * -zoomRate;
 
             // Define um limite de zoom out mínimo e máximo
             const minScale = 0.5; // Limite de zoom out
-            const maxScale = 10; // Limite de zoom in
+            const maxScale = 15; // Limite de zoom in
 
             // Calcula a nova escala e aplica os limites
             const newScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
@@ -799,7 +812,6 @@ canvas.addEventListener('wheel', (e) => {
             } else {
                 isZooming = false;
             }
-			console.log(scale);
         });
     }
 });
@@ -1365,37 +1377,37 @@ function saveToLocalStorage() {
 }
 
 function loadFromLocalStorage() {
-	const storedSettings = localStorage.getItem('settingsValues');
-	const storedWebsiteInfo = localStorage.getItem('websiteInfo');
+    const storedSettings = localStorage.getItem('settingsValues');
+    const storedWebsiteInfo = localStorage.getItem('websiteInfo');
 
-	if (storedSettings) {
-		Object.assign(settingsValues, JSON.parse(storedSettings));
-		console.log('settingsValues carregado do localStorage:', settingsValues);
+    if (storedSettings) {
+        Object.assign(settingsValues, JSON.parse(storedSettings));
+        console.log('settingsValues carregado do localStorage:', settingsValues);
+    } else {
+        console.log('Nenhum settingsValues encontrado no localStorage. Usando valores padrão.');
+    }
 
-		// Atualiza os checkboxes com base nos valores de settingsValues
-		for (const key in settingsValues) {
-			if (settingsValues.hasOwnProperty(key)) {
-				const checkbox = document.getElementById(key);
-				if (checkbox) {
-					checkbox.checked = settingsValues[key];
-				}
-			}
-		}
-	} else {
-		console.log('Nenhum settingsValues encontrado no localStorage. Usando valores padrão.');
-	}
+    // Atualiza os checkboxes com base nos valores de settingsValues
+    for (const key in settingsValues) {
+        if (settingsValues.hasOwnProperty(key)) {
+            const checkbox = document.getElementById(key);
+            if (checkbox) {
+                checkbox.checked = settingsValues[key];
+            }
+        }
+    }
 
-	if (storedWebsiteInfo) {
-		Object.assign(localInfo, JSON.parse(storedWebsiteInfo));
-		console.log('websiteInfo carregado do localStorage:', websiteInfo);
-	} else {
-		console.log('Nenhum websiteInfo encontrado no localStorage. Usando valores padrão.');
-	}
+    if (storedWebsiteInfo) {
+        Object.assign(localInfo, JSON.parse(storedWebsiteInfo));
+        console.log('websiteInfo carregado do localStorage:', websiteInfo);
+    } else {
+        console.log('Nenhum websiteInfo encontrado no localStorage. Usando valores padrão.');
+    }
 
-	if (websiteInfo.version !== localInfo.version) {
-		toggleChangeLogMenu()
-		saveToLocalStorage()
-	}
+    if (websiteInfo.version !== localInfo.version) {
+        toggleChangeLogMenu();
+        saveToLocalStorage();
+    }
 }
 loadFromLocalStorage();
 

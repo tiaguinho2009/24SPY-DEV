@@ -1664,6 +1664,7 @@ const settings = [
     'showOnlineATC',
     'showNavaids',
     'showNavaidsLabels',
+    'showBetterMap',
 ];
 
 const settingsValues = {
@@ -1674,6 +1675,7 @@ const settingsValues = {
     showOnlineATC: true,
     showNavaids: false,
     showNavaidsLabels: false,
+    showBetterMap: false,
 };
 
 const websiteInfo = {
