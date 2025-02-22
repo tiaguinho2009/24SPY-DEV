@@ -15,7 +15,7 @@
 | ![status: Done](https://img.shields.io/badge/status-Done-brightgreen) | Have a menu with the ground charts of each Airport.|
 | ![status: Done](https://img.shields.io/badge/status-Done-brightgreen) | Show the Waypoints on the map and be able to put the FPL on the map.|
 | ![status: Done](https://img.shields.io/badge/status-Done-brightgreen) | Buy a mini pc to be a backend server for the website |
-| ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Create the ATC Menu. |
+| ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Create the Status Menu. |
 | ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Create a tiles system for the map. |
 | ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Make the Labels of the Waypoints interactive.|
 | ![status: Planned](https://img.shields.io/badge/status-Planned-blue) | Add Airways to the FLP System.|
@@ -35,11 +35,13 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 - New option called "Show a Higher Quality Map", when ur zoom is > 10 it will render a 14Kx14K image of the map for better view. (This already was working in the past but now u can turn it on or off so ur screen does not freezes for 5 seconds loading the image).
 - Now the zoom its animated (or smoother).
 - The Back-End server of 24SPY is Online again!!!
+- New function for the "Show Navaids Labels" option, before it only worked for global rendering, now it also works in FPL.
 
 ### Corrected
 - Bug of zooming in and back out leaves you at a different spot than before fixed.
 - Bug of cursor leaving the map does not stop map moving fixed.
 - IGAR RWYs not working fixed.
 - IPPH RWYs HDGs fixed.
+- IZOL RWYs and HDGs fixed.
 - Some fixes Names corrected.
 - And a LOT of other bugs that i don't remember were fixed.

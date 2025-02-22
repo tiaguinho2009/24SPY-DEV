@@ -289,9 +289,11 @@ function drawFlightPlan(points) {
 			return;
 		}
 
-		ctx.fillStyle = "#FFFFFF";
-		ctx.font = "14px Arial";
-		ctx.fillText(point.name, x + 5, y - 5);
+		if (settingsValues.showNavaidsLabels) {
+			ctx.fillStyle = "#FFFFFF";
+			ctx.font = "14px Arial";
+			ctx.fillText(point.name, x + 5, y - 5);
+		}
 	});
 }
 
@@ -893,105 +895,148 @@ function repositionFlpMenu() {
 //repositionFlpMenu()
 
 function saveFlp() {
-	const departure = document.getElementById('departure').value.trim().toUpperCase();
-	const departureRwy = document.getElementById('departureRwy').value.trim().toUpperCase();
-	const arrival = document.getElementById('arrival').value.trim().toUpperCase();
-	const arrivalRwy = document.getElementById('arrivalRwy').value.trim().toUpperCase();
-	const waypoints = document.getElementById('waypoints').value.trim().toUpperCase();
+    const departure = document.getElementById('departure').value.trim().toUpperCase();
+    const departureRwy = document.getElementById('departureRwy').value.trim().toUpperCase();
+    const arrival = document.getElementById('arrival').value.trim().toUpperCase();
+    const arrivalRwy = document.getElementById('arrivalRwy').value.trim().toUpperCase();
+    const waypoints = document.getElementById('waypoints').value.trim().toUpperCase();
+    const sid = document.getElementById('sid').value.trim();
+    const deptrans = document.getElementById('deptrans').value.trim();
+    const star = document.getElementById('star').value.trim();
+    const arrtrans = document.getElementById('arrtrans').value.trim();
+    const app = document.getElementById('app').value.trim();
 
-	// Divide os waypoints em uma lista
-	const inputPoints = [departure, ...waypoints.split(' ').map(wp => wp.trim()), arrival];
+    // Divide os waypoints em uma lista
+    const inputPoints = waypoints.split(' ').map(wp => wp.trim());
 
-	// Junta os dados de aeroportos e waypoints
-	const allPoints = [
-		...controlAreas.filter(area => area.type === "Airport"),
-		...Waypoints,
-		...CustomWaypoints
-	];
+    // Junta os dados de aeroportos e waypoints
+    const allPoints = [
+        ...controlAreas.filter(area => area.type === "Airport"),
+        ...Waypoints,
+        ...CustomWaypoints
+    ];
 
-	const flightPlanPoints = [];
+    const flightPlanPoints = [];
 
-	// Fator de escala calculado a partir da referência dada
-	const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
-	const referenceDistanceNM = 1478 / 1852; // 1478 metros em NM (1 NM = 1852 metros)
-	const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
+    // Fator de escala calculado a partir da referência dada
+    const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
+    const referenceDistanceNM = 1478 / 1852; // 1478 metros em NM (1 NM = 1852 metros)
+    const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
 
-	function calculateAlignmentPoint(airport, runwayNumber, rotate) {
-		const runway = airport.runways.find(rwy => rwy.number === runwayNumber);
-		if (!runway) return null;
+    function calculateAlignmentPoint(airport, runwayNumber, rotate) {
+        const runway = airport.runways.find(rwy => rwy.number === runwayNumber);
+        if (!runway) return null;
 
-		const hdgRad = (runway.hdg - (rotate ? 180 : 0)) * (Math.PI / 180);
-		const distanceNM = 1.5;
-		const distanceEuclidean = distanceNM / scaleFactor; // Converte NM para a distância euclidiana
+        const hdgRad = (runway.hdg - (rotate ? 180 : 0)) * (Math.PI / 180);
+        const distanceNM = 1.5;
+        const distanceEuclidean = distanceNM / scaleFactor; // Converte NM para a distância euclidiana
 
-		// Usa as coordenadas da pista se disponíveis, caso contrário, usa as coordenadas do aeroporto
-		const baseCoordinates = runway.coordinates || airport.coordinates;
+        // Usa as coordenadas da pista se disponíveis, caso contrário, usa as coordenadas do aeroporto
+        const baseCoordinates = runway.coordinates || airport.coordinates;
 
-		const x = baseCoordinates[0] + distanceEuclidean * Math.sin(hdgRad);
-		const y = baseCoordinates[1] - distanceEuclidean * Math.cos(hdgRad);
+        const x = baseCoordinates[0] + distanceEuclidean * Math.sin(hdgRad);
+        const y = baseCoordinates[1] - distanceEuclidean * Math.cos(hdgRad);
 
-		return { name: `${runwayNumber}`, coordinates: [x, y], type: "Waypoint" };
-	}
+        return { name: `${runwayNumber}`, coordinates: [x, y], type: "Waypoint" };
+    }
 
-	// Procura cada ponto na lista de dados
-	inputPoints.forEach(input => {
-		const matchedPoint = allPoints.find(point => point.name === input);
+    // Adiciona os pontos de alinhamento e as pistas ao plano de voo
+    const departureAirport = allPoints.find(point => point.name === departure && point.type === "Airport");
+    const arrivalAirport = allPoints.find(point => point.name === arrival && point.type === "Airport");
+    if (!departureAirport) {
+        showMessage('Flight Plan Error', `Departure airport "${departure}" not found!`);
+        return;
+    }
+    if (!arrivalAirport) {
+        showMessage('Flight Plan Error', `Arrival airport "${arrival}" not found!`);
+        return;
+    }
 
-		if (matchedPoint) {
-			flightPlanPoints.push(matchedPoint);
-		} else {
-			if (input !== "") {
-				showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
-			}
-		}
-	});
+    // Adiciona a pista de decolagem
+    if (departureAirport && departureRwy) {
+        const departureRunway = departureAirport.runways.find(rwy => rwy.number === departureRwy);
+        if (departureRunway && departureRunway.coordinates) {
+            flightPlanPoints.push({ name: "", coordinates: departureRunway.coordinates, type: "Runway" });
+            const alignmentPoint = calculateAlignmentPoint(departureAirport, departureRwy, false);
+            if (alignmentPoint) {
+                flightPlanPoints.push(alignmentPoint); // Insere como o segundo ponto
+            }
+        } else {
+            showMessage('Flight Plan Error', `Departure runway "${departureRwy}" not found at airport "${departure}"!`);
+            return;
+        }
+    }
 
-	// Verifica se há pelo menos dois pontos válidos
-	if (flightPlanPoints.length < 2) {
-		showMessage('Flight Plan Error', `It is necessary at least two valid points to draw the flight plan!`);
-		return;
-	}
+    // Adiciona o SID ao plano de voo
+    if (departureAirport && sid) {
+        const sidProcedure = departureAirport.SIDs.find(proc => proc.name === sid && proc.transition === deptrans);
+        if (sidProcedure) {
+            sidProcedure.waypoints.forEach(wp => {
+                const matchedPoint = allPoints.find(point => point.name === wp);
+                if (matchedPoint) {
+                    flightPlanPoints.push(matchedPoint);
+                }
+            });
+        }
+    }
 
-	// Adiciona os pontos de alinhamento e as pistas ao plano de voo
-	const departureAirport = allPoints.find(point => point.name === departure && point.type === "Airport");
-	const arrivalAirport = allPoints.find(point => point.name === arrival && point.type === "Airport");
-	if (!departureAirport) {
-		showMessage('Flight Plan Error', `Departure airport "${departure}" not found!`);
-	}
-	if (!arrivalAirport) {
-		showMessage('Flight Plan Error', `Arrival airport "${arrival}" not found!`);
-	}
+    // Adiciona os waypoints fornecidos pelo usuário
+    inputPoints.forEach(input => {
+        const matchedPoint = allPoints.find(point => point.name === input);
+        if (matchedPoint) {
+            flightPlanPoints.push(matchedPoint);
+        } else {
+            if (input !== "") {
+                showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
+            }
+        }
+    });
 
-	if (departureAirport && departureRwy) {
-		const departureRunway = departureAirport.runways.find(rwy => rwy.number === departureRwy);
-		if (departureRunway && departureRunway.coordinates) {
-			flightPlanPoints.splice(0, 1);
-			flightPlanPoints.splice(0, 0, { name: "", coordinates: departureRunway.coordinates, type: "Runway" })
-			const alignmentPoint = calculateAlignmentPoint(departureAirport, departureRwy, false);
-			if (alignmentPoint) {
-				flightPlanPoints.splice(1, 0, alignmentPoint); // Insere como o segundo ponto
-			}
-		} else {
-			showMessage('Flight Plan Error', `Departure runway "${departureRwy}" not found at airport "${departure}"!`);
-		}
-	}
+    // Adiciona o STAR ao plano de voo
+    if (arrivalAirport && star) {
+        const starProcedure = arrivalAirport.STARs.find(proc => proc.name === star && proc.transition === arrtrans);
+        if (starProcedure) {
+            starProcedure.waypoints.forEach(wp => {
+                const matchedPoint = allPoints.find(point => point.name === wp);
+                if (matchedPoint) {
+                    flightPlanPoints.push(matchedPoint);
+                }
+            });
+        }
+    }
 
-	if (arrivalAirport && arrivalRwy) {
-		const arrivalRunway = arrivalAirport.runways.find(rwy => rwy.number === arrivalRwy);
-		if (arrivalRunway && arrivalRunway.coordinates) {
-			const alignmentPoint = calculateAlignmentPoint(arrivalAirport, arrivalRwy, true);
-			if (alignmentPoint) {
-				flightPlanPoints.splice(flightPlanPoints.length - 1, 0, alignmentPoint); // Insere como o penúltimo ponto
-			}
-			flightPlanPoints.splice(flightPlanPoints.length - 1, 1); // Remove o último ponto (aeroporto)
-			flightPlanPoints.push({ name: "", coordinates: arrivalRunway.coordinates, type: "Runway" });
-		} else {
-			showMessage('Flight Plan Error', `Arrival runway "${arrivalRwy}" not found at airport "${arrival}"!`);
-		}
-	}
+    // Adiciona o APP ao plano de voo
+    if (arrivalAirport && app) {
+        const appProcedure = arrivalAirport.APPs.find(proc => proc.name === app);
+        if (appProcedure) {
+            appProcedure.waypoints.forEach(wp => {
+                const matchedPoint = allPoints.find(point => point.name === wp);
+                if (matchedPoint) {
+                    flightPlanPoints.push(matchedPoint);
+                }
+            });
+        }
+    }
 
-	flightRoute = flightPlanPoints;
-	draw();
+    // Adiciona a pista de chegada
+    if (arrivalAirport && arrivalRwy) {
+        const arrivalRunway = arrivalAirport.runways.find(rwy => rwy.number === arrivalRwy);
+        if (arrivalRunway && arrivalRunway.coordinates) {
+            if (!app) { // Só adiciona o ponto de alinhamento se não houver APP
+                const alignmentPoint = calculateAlignmentPoint(arrivalAirport, arrivalRwy, true);
+                if (alignmentPoint) {
+                    flightPlanPoints.push(alignmentPoint); // Insere como o penúltimo ponto
+                }
+            }
+            flightPlanPoints.push({ name: "", coordinates: arrivalRunway.coordinates, type: "Runway" });
+        } else {
+            showMessage('Flight Plan Error', `Arrival runway "${arrivalRwy}" not found at airport "${arrival}"!`);
+            return;
+        }
+    }
+
+    flightRoute = flightPlanPoints;
+    draw();
 }
 
 function resetFlp() {
@@ -1001,136 +1046,217 @@ function resetFlp() {
 	document.getElementById('arrival').value = '';
 	document.getElementById('arrivalRwy').value = '';
 	document.getElementById('waypoints').value = '';
+	document.getElementById('sid').value = '';
+	document.getElementById('deptrans').value = '';
+	document.getElementById('star').value = '';
+	document.getElementById('arrtrans').value = '';
+	document.getElementById('app').value = '';
+	
 
 	// Reseta a rota de voo
 	flightRoute = [];
 	draw();
 }
 
+function getProcedures(airport, runway, type) {
+    if (!airport || !runway) return [];
+
+    const procedures = airport[type];
+    if (!procedures) return [];
+
+    return procedures.filter(proc => proc.rwy.includes(runway)).map(proc => proc.name);
+}
+
 function createList(textareaId, options) {
-	const textarea = document.getElementById(textareaId);
-	if (!textarea) {
-		console.error(`Textarea with ID "${textareaId}" not found!`);
-		return;
-	}
+    const textarea = document.getElementById(textareaId);
+    if (!textarea) {
+        console.error(`Textarea with ID "${textareaId}" not found!`);
+        return;
+    }
 
-	// Ordena as opções alfabeticamente
-	options.sort();
+    // Remove duplicatas usando um Set
+    const uniqueOptions = [...new Set(options)];
 
-	// Cria o container da lista
-	const listContainer = document.createElement('div');
-	listContainer.className = 'list-container';
-	listContainer.style.width = `${textarea.offsetWidth}px`;
+    // Ordena as opções alfabeticamente
+    uniqueOptions.sort();
 
-	// Posiciona o container da lista abaixo da textarea
-	const rect = textarea.getBoundingClientRect();
-	listContainer.style.left = `${rect.left + window.scrollX}px`;
-	listContainer.style.top = `${rect.bottom + window.scrollY}px`;
+    // Cria o container da lista
+    const listContainer = document.createElement('div');
+    listContainer.className = 'list-container';
+    listContainer.style.width = `${textarea.offsetWidth}px`;
 
-	// Função para calcular a proximidade da correspondência
-	function calculateMatchScore(option, filter) {
-		if (option.startsWith(filter)) {
-			return 0; // Melhor correspondência
-		} else if (option.includes(filter)) {
-			return 1; // Boa correspondência
-		} else {
-			return 2; // Correspondência menos relevante
-		}
-	}
+    // Posiciona o container da lista abaixo da textarea
+    const rect = textarea.getBoundingClientRect();
+    listContainer.style.left = `${rect.left + window.scrollX}px`;
+    listContainer.style.top = `${rect.bottom + window.scrollY}px`;
 
-	// Função para atualizar a lista com base no filtro
-	function updateList(filter) {
-		listContainer.innerHTML = ''; // Limpa a lista atual
+    // Função para calcular a proximidade da correspondência
+    function calculateMatchScore(option, filter) {
+        if (option.startsWith(filter)) {
+            return 0; // Melhor correspondência
+        } else if (option.includes(filter)) {
+            return 1; // Boa correspondência
+        } else {
+            return 2; // Correspondência menos relevante
+        }
+    }
 
-		const filteredOptions = options
-			.filter(option => option.toLowerCase().includes(filter.toLowerCase()))
-			.sort((a, b) => calculateMatchScore(a.toLowerCase(), filter.toLowerCase()) - calculateMatchScore(b.toLowerCase(), filter.toLowerCase()));
+    // Função para atualizar a lista com base no filtro
+    function updateList(filter) {
+        listContainer.innerHTML = ''; // Limpa a lista atual
 
-		filteredOptions.forEach(option => {
-			const button = document.createElement('button');
-			button.textContent = option;
+        const filteredOptions = uniqueOptions
+            .filter(option => option.toLowerCase().includes(filter.toLowerCase()))
+            .sort((a, b) => calculateMatchScore(a.toLowerCase(), filter.toLowerCase()) - calculateMatchScore(b.toLowerCase(), filter.toLowerCase()));
 
-			// Evento de clique para preencher a textarea com a opção selecionada
-			button.addEventListener('click', () => {
-				if (textareaId === 'waypoints') {
-					// Adiciona o valor selecionado ao valor existente na textarea de waypoints
-					const words = textarea.value.split(' ');
-					words[words.length - 1] = option;
-					textarea.value = words.join(' ') + ' ';
-				} else {
-					// Substitui o valor da textarea com o valor selecionado
-					textarea.value = option;
-				}
-				document.body.removeChild(listContainer); // Remove a lista após a seleção
-			});
+        filteredOptions.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option;
 
-			listContainer.appendChild(button);
-		});
-	}
+            // Evento de clique para preencher a textarea com a opção selecionada
+            button.addEventListener('click', () => {
+                if (textareaId === 'waypoints') {
+                    // Adiciona o valor selecionado ao valor existente na textarea de waypoints
+                    const words = textarea.value.split(' ');
+                    words[words.length - 1] = option;
+                    textarea.value = words.join(' ') + ' ';
+                } else {
+                    // Substitui o valor da textarea com o valor selecionado
+                    textarea.value = option;
+                }
+                if (document.body.contains(listContainer)) {
+                    document.body.removeChild(listContainer); // Remove a lista após a seleção
+                }
+            });
 
-	// Adiciona os botões de opções à lista inicialmente
-	updateList('');
+            listContainer.appendChild(button);
+        });
+    }
 
-	// Adiciona o container da lista ao corpo do documento
-	document.body.appendChild(listContainer);
+    // Adiciona os botões de opções à lista inicialmente
+    updateList('');
 
-	// Adiciona evento de input para filtrar a lista
-	textarea.addEventListener('input', () => {
-		const filter = textareaId === 'waypoints' ? textarea.value.split(' ').pop() : textarea.value;
-		updateList(filter);
-	});
+    // Adiciona o container da lista ao corpo do documento
+    document.body.appendChild(listContainer);
 
-	// Remove a lista se clicar fora dela
-	document.addEventListener('click', function handleClickOutside(event) {
-		if (!listContainer.contains(event.target) && event.target !== textarea) {
-			document.body.removeChild(listContainer);
-			document.removeEventListener('click', handleClickOutside);
-		}
-	});
+    // Adiciona evento de input para filtrar a lista
+    textarea.addEventListener('input', () => {
+        const filter = textareaId === 'waypoints' ? textarea.value.split(' ').pop() : textarea.value;
+        updateList(filter);
+    });
+
+    // Remove a lista se clicar fora dela
+    document.addEventListener('click', function handleClickOutside(event) {
+        if (!listContainer.contains(event.target) && event.target !== textarea) {
+            if (document.body.contains(listContainer)) {
+                document.body.removeChild(listContainer);
+            }
+            document.removeEventListener('click', handleClickOutside);
+        }
+    });
 }
 
 document.getElementById('departure').addEventListener('focus', () => {
-	createList('departure', sortedAirports);
+    createList('departure', sortedAirports);
 });
 
 document.getElementById('arrival').addEventListener('focus', () => {
-	createList('arrival', sortedAirports);
+    createList('arrival', sortedAirports);
 });
 
 document.getElementById('departureRwy').addEventListener('focus', () => {
-	const departureAirport = document.getElementById('departure').value.trim().toUpperCase();
-	const airport = controlAreas.find(area => area.name === departureAirport && area.type === "Airport");
-	const departureInput = document.getElementById('departure');
-	if (!airport) {
-		departureInput.style.borderColor = 'red';
-	} else {
-		const runways = airport.runways.map(rwy => rwy.number);
-		createList('departureRwy', runways);
-	}
+    const departureAirport = document.getElementById('departure').value.trim().toUpperCase();
+    const airport = controlAreas.find(area => area.name === departureAirport && area.type === "Airport");
+    const departureInput = document.getElementById('departure');
+    if (!airport) {
+        departureInput.style.borderColor = 'red';
+    } else {
+        const runways = airport.runways.map(rwy => rwy.number);
+        createList('departureRwy', runways);
+    }
 });
 
 document.getElementById('departureRwy').addEventListener('blur', () => {
-	document.getElementById('departure').style.borderColor = ''; // Reseta a cor da borda
+    document.getElementById('departure').style.borderColor = ''; // Reseta a cor da borda
 });
 
 document.getElementById('arrivalRwy').addEventListener('focus', () => {
-	const arrivalAirport = document.getElementById('arrival').value.trim().toUpperCase();
-	const airport = controlAreas.find(area => area.name === arrivalAirport && area.type === "Airport");
-	const arrivalInput = document.getElementById('arrival');
-	if (!airport) {
-		arrivalInput.style.borderColor = 'red';
-	} else {
-		const runways = airport.runways.map(rwy => rwy.number);
-		createList('arrivalRwy', runways);
-	}
+    const arrivalAirport = document.getElementById('arrival').value.trim().toUpperCase();
+    const airport = controlAreas.find(area => area.name === arrivalAirport && area.type === "Airport");
+    const arrivalInput = document.getElementById('arrival');
+    if (!airport) {
+        arrivalInput.style.borderColor = 'red';
+    } else {
+        const runways = airport.runways.map(rwy => rwy.number);
+        createList('arrivalRwy', runways);
+    }
 });
 
 document.getElementById('arrivalRwy').addEventListener('blur', () => {
-	document.getElementById('arrival').style.borderColor = ''; // Reseta a cor da borda
+    document.getElementById('arrival').style.borderColor = ''; // Reseta a cor da borda
 });
 
 document.getElementById('waypoints').addEventListener('focus', () => {
-	createList('waypoints', sortedWaypoints);
+    createList('waypoints', sortedWaypoints);
+});
+
+document.getElementById('sid').addEventListener('focus', () => {
+    const departureAirportName = document.getElementById('departure').value.trim().toUpperCase();
+    const departureRwy = document.getElementById('departureRwy').value.trim().toUpperCase();
+    const airport = controlAreas.find(area => area.name === departureAirportName && area.type === "Airport");
+
+    if (airport) {
+        const sids = getProcedures(airport, departureRwy, 'SIDs');
+        createList('sid', sids);
+    }
+});
+
+document.getElementById('deptrans').addEventListener('focus', () => {
+    const departureAirportName = document.getElementById('departure').value.trim().toUpperCase();
+    const departureRwy = document.getElementById('departureRwy').value.trim().toUpperCase();
+    const sidName = document.getElementById('sid').value.trim();
+    const airport = controlAreas.find(area => area.name === departureAirportName && area.type === "Airport");
+
+    if (airport) {
+        const sidProcedures = airport.SIDs.filter(proc => proc.name === sidName);
+        const transitions = sidProcedures.map(proc => proc.transition).filter(Boolean);
+        createList('deptrans', transitions);
+    }
+});
+
+document.getElementById('star').addEventListener('focus', () => {
+    const arrivalAirportName = document.getElementById('arrival').value.trim().toUpperCase();
+    const arrivalRwy = document.getElementById('arrivalRwy').value.trim().toUpperCase();
+    const airport = controlAreas.find(area => area.name === arrivalAirportName && area.type === "Airport");
+
+    if (airport) {
+        const stars = getProcedures(airport, arrivalRwy, 'STARs');
+        createList('star', stars);
+    }
+});
+
+document.getElementById('arrtrans').addEventListener('focus', () => {
+    const arrivalAirportName = document.getElementById('arrival').value.trim().toUpperCase();
+    const arrivalRwy = document.getElementById('arrivalRwy').value.trim().toUpperCase();
+    const starName = document.getElementById('star').value.trim();
+    const airport = controlAreas.find(area => area.name === arrivalAirportName && area.type === "Airport");
+
+    if (airport) {
+        const starProcedures = airport.STARs.filter(proc => proc.name === starName);
+        const transitions = starProcedures.map(proc => proc.transition).filter(Boolean);
+        createList('arrtrans', transitions);
+    }
+});
+
+document.getElementById('app').addEventListener('focus', () => {
+    const arrivalAirportName = document.getElementById('arrival').value.trim().toUpperCase();
+    const arrivalRwy = document.getElementById('arrivalRwy').value.trim().toUpperCase();
+    const airport = controlAreas.find(area => area.name === arrivalAirportName && area.type === "Airport");
+
+    if (airport) {
+        const apps = getProcedures(airport, arrivalRwy, 'APPs');
+        createList('app', apps);
+    }
 });
 
 function resetHighlights() {

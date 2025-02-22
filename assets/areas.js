@@ -746,80 +746,79 @@ const controlAreas = [
         ],
         SIDs: [
             //DARRK 3 DEP TRANSITIONS
-            { name: "DARRK 3 RNAV DEP (SPACE TRANS - 25C/R)", rwy: ["25C", "25R"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "RIZIN", "SPACE"]},
-            { name: "DARRK 3 RNAV DEP (SEEKS TRANS - 25C/R)", rwy: ["25L", "25C", "25R"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "DINTY", "SEEKS"]},
-            { name: "DARRK 3 RNAV DEP (SPACE TRANS - 25L)", rwy: ["25L"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "RIZIN", "SPACE"]},
-            { name: "DARRK 3 RNAV DEP (SEEKS TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "EXMOR", "DARRK", "BEANS", "DINTY", "SEEKS"]},
+            { name: "DARRK", transition: "SPACE", rwy: ["25C", "25R"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "RIZIN", "SPACE"]},
+            { name: "DARRK", transition: "SEEKS", rwy: ["25L", "25C", "25R"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "DINTY", "SEEKS"]},
+            { name: "DARRK", transition: "SPACE", rwy: ["25L"], waypoints: ["DLREY", "ALOHA", "DARRK", "BEANS", "RIZIN", "SPACE"]},
+            { name: "DARRK", transition: "SEEKS", rwy: ["25L"], waypoints: ["DOCKR", "EXMOR", "DARRK", "BEANS", "DINTY", "SEEKS"]},
             
             // KENED 3 DEP TRANSITIONS
-            { name: "KENED 2 RNAV DEP (RENDR TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "RENDR"]},
-            { name: "KENED 2 RNAV DEP (JOOPY TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "JOOPY"]},
-            { name: "KENED 2 RNAV DEP (DINER TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "INDEX", "NKITA", "DINER"]},
+            { name: "KENED", transition: "RENDR", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "RENDR"]},
+            { name: "KENED", transition: "JOOPY", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "JOOPY"]},
+            { name: "KENED", transition: "DINER", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "INDEX", "NKITA", "DINER"]},
             
             // LOGAN 4 DEP TRANSITIONS
-            { name: "LOGAN 4 RNAV DEP (RENDR TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "DAALE", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
-            { name: "LOGAN 4 RNAV DEP (DINER TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "DAALE", "LOGAN", "BUCFA", "SKYDV", "WELSH", "MDWAY", "DINER"]},
-            { name: "LOGAN 4 RNAV DEP (RENDR TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "QURAN", "EXMOR", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
-            { name: "LOGAN 4 RNAV DEP (DINER TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "QURAN", "EXMOR", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
+            { name: "LOGAN", transition: "RENDR", rwy: ["25R", "25C"], waypoints: ["DLREY", "DAALE", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
+            { name: "LOGAN", transition: "DINER", rwy: ["25R", "25C"], waypoints: ["DLREY", "DAALE", "LOGAN", "BUCFA", "SKYDV", "WELSH", "MDWAY", "DINER"]},
+            { name: "LOGAN", transition: "RENDR", rwy: ["25L"], waypoints: ["DOCKR", "QURAN", "EXMOR", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
+            { name: "LOGAN", transition: "DINER", rwy: ["25L"], waypoints: ["DOCKR", "QURAN", "EXMOR", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
         
             //OSHNN 1 DEP TRANSITIONS
-            { name: "OSHNN 1 RNAV DEP (SILVA TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "SILVA"]},
-            { name: "OSHNN 1 RNAV DEP (CYRIL TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "GOOSE", "CYRIL"]},
-            { name: "OSHNN 1 RNAV DEP (GRASS TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "JAMSI", "PMPKN", "GRASS"]},
-            { name: "OSHNN 1 RNAV DEP (SILVA TRANS - 25L)", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "SILVA"]},
-            { name: "OSHNN 1 RNAV DEP (CYRIL TRANS - 25L)", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "GOOSE", "CYRIL"]},
-            { name: "OSHNN 1 RNAV DEP (GRASS TRANS - 25L)", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "JAMSI", "PMPKN", "GRASS"]},
+            { name: "OSHNN", transition: "SILVA", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "SILVA"]},
+            { name: "OSHNN", transition: "CYRIL", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "GOOSE", "CYRIL"]},
+            { name: "OSHNN", transition: "GRASS", rwy: ["25R", "25C"], waypoints: ["FABRA", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "JAMSI", "PMPKN", "GRASS"]},
+            { name: "OSHNN", transition: "SILVA", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "SILVA"]},
+            { name: "OSHNN", transition: "CYRIL", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "SEBBY", "ATPEV", "ARCUS", "OCEEN", "GOOSE", "CYRIL"]},
+            { name: "OSHNN", transition: "GRASS", rwy: ["25L"], waypoints: ["HIIPR", "SHAEF", "PEVEE", "HOLTZ", "OSHNN", "CAHIL", "ZOOMM", "JAMSI", "PMPKN", "GRASS"]},
         
             //ROCKFORD 5 DEP (VER DPS PQ SIM)
 
             //TRAINING 1 DEP TRANSITIONS
-            { name: "TRAINING 1 RNAV DEP (SILVA TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "MDWST", "ATPEV", "OCEEN", "SILVA"]},
-            { name: "TRAINING 1 RNAV DEP (CYRIL TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "MDWST", "ATPEV", "OCEEN", "CYRIL"]},
-            { name: "TRAINING 1 RNAV DEP (GRASS TRANS - 25R/C)", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "GODLU", "JAMSI", "GRASS"]},
-            { name: "TRAINING 1 RNAV DEP (SILVA TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "MDWST", "ATPEV", "OCEEN", "SILVA"]},
-            { name: "TRAINING 1 RNAV DEP (CYRIL TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "MDWST", "ATPEV", "OCEEN", "CYRIL"]},
-            { name: "TRAINING 1 RNAV DEP (GRASS TRANS - 25L)", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "GODLU", "JAMSI", "GRASS"]},
+            { name: "TRAIN", transition: "SILVA", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "MDWST", "ATPEV", "OCEEN", "SILVA"]},
+            { name: "TRAIN", transition: "CYRIL", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "MDWST", "ATPEV", "OCEEN", "CYRIL"]},
+            { name: "TRAIN", transition: "GRASS", rwy: ["25R", "25C"], waypoints: ["DLREY", "PEPUL", "HAYNK", "TRN", "GODLU", "JAMSI", "GRASS"]},
+            { name: "TRAIN", transition: "SILVA", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "MDWST", "ATPEV", "OCEEN", "SILVA"]},
+            { name: "TRAIN", transition: "CYRIL", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "MDWST", "ATPEV", "OCEEN", "CYRIL"]},
+            { name: "TRAIN", transition: "GRASS", rwy: ["25L"], waypoints: ["DOCKR", "WEILR", "TRN", "GODLU", "JAMSI", "GRASS"]},
 
             //WINDY 3 DEP TRANSITIONS
-            { name: "WINDY 3 RNAV DEP (SILVA TRANS)", rwy: ["07R", "07C", "07L"], waypoints: ["MJSTY", "WNNDY", "OCEEN", "SILVA"]},
-            { name: "WINDY 3 RNAV DEP (NARXX TRANS)", rwy: ["07R", "07C", "07L"], waypoints: ["MJSTY", "WNNDY", "GREEK", "NARXX"]},
+            { name: "WINDY", transition: "SILVA", rwy: ["07R", "07C", "07L"], waypoints: ["MJSTY", "WNNDY", "OCEEN", "SILVA"]},
+            { name: "WINDY", transition: "NARXX", rwy: ["07R", "07C", "07L"], waypoints: ["MJSTY", "WNNDY", "GREEK", "NARXX"]},
         
         ], 
 
         STARs: [
             //BEANS 1 ARR TRANSITIONS
-            { name: "BEANS 1 RNAV ARR (SEEKS TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["SEEKS", "BEANS", "LOGAN"]},
-            { name: "BEANS 1 RNAV ARR (SPACE TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["SPACE", "BEANS", "LOGAN"]},
-            { name: "BEANS 1 RNAV ARR (SEEKS TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["SEEKS", "BEANS", "BRDGE", "ICTAM", "HAWFA"]},
-            { name: "BEANS 1 RNAV ARR (SPACE TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["SPACE", "BEANS", "BRDGE", "ICTAM", "HAWFA"]},
+            { name: "BEANS", transition: "SEEKS", rwy: ["07L", "07C", "07R"], waypoints: ["SEEKS", "BEANS", "LOGAN"]},
+            { name: "BEANS", transition: "SPACE", rwy: ["07L", "07C", "07R"], waypoints: ["SPACE", "BEANS", "LOGAN"]},
+            { name: "BEANS", transition: "SEEKS", rwy: ["25L", "25C", "25R"], waypoints: ["SEEKS", "BEANS", "BRDGE", "ICTAM", "HAWFA"]},
+            { name: "BEANS", transition: "SPACE", rwy: ["25L", "25C", "25R"], waypoints: ["SPACE", "BEANS", "BRDGE", "ICTAM", "HAWFA"]},
 
             //KUNAV 1 ARR TRANSITIONS
-            { name: "KUNAV 1 RNAV ARR (RENDR TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["RENDR", "WELSH", "KENED", "KUNAV", "BRDGE", "ALISO"]},
-            { name: "KUNAV 1 RNAV ARR (DINER TRANS - 07R/C/L)", rwy: ["07L", "07C", "07R"], waypoints: ["DINER", "SURGE", "INDEX", "KENED", "KUNAV", "BRDGE", "ALISO"]},
-            { name: "KUNAV 1 RNAV ARR (RENDR TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["RENDR", "WELSH", "KENED", "KUNAV", "HAWFA", "SWEET"]},
-            { name: "KUNAV 1 RNAV ARR (DINER TRANS - 25R/C/L)", rwy: ["25L", "25C", "25R"], waypoints: ["DINER", "SURGE", "INDEX", "KENED", "KUNAV", "HAWFA", "SWEET"]},
+            { name: "KUNAV", transition: "RENDR", rwy: ["07L", "07C", "07R"], waypoints: ["RENDR", "WELSH", "KENED", "KUNAV", "BRDGE", "ALISO"]},
+            { name: "KUNAV", transition: "DINER", rwy: ["07L", "07C", "07R"], waypoints: ["DINER", "SURGE", "INDEX", "KENED", "KUNAV", "BRDGE", "ALISO"]},
+            { name: "KUNAV", transition: "RENDR", rwy: ["25L", "25C", "25R"], waypoints: ["RENDR", "WELSH", "KENED", "KUNAV", "HAWFA", "SWEET"]},
+            { name: "KUNAV", transition: "DINER", rwy: ["25L", "25C", "25R"], waypoints: ["DINER", "SURGE", "INDEX", "KENED", "KUNAV", "HAWFA", "SWEET"]},
 
             //POPPY 2 ARR TRANSITIONS
-            { name: "POPPY 1 RNAV ARR (NARXX TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["NARXX", "GAVIN", "SETHR", "POPPY"]},
-            { name: "POPPY 1 RNAV ARR (CYRIL TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["CYRIL", "SILVA", "OCEEN", "SETHR", "POPPY"]},
-            { name: "POPPY 1 RNAV ARR (CAWZE TRANS)", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["CAWZE", "OCEEN", "SETHR", "POPPY"]},
+            { name: "POPPY", transition: "NARXX", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["NARXX", "GAVIN", "SETHR", "POPPY"]},
+            { name: "POPPY", transition: "CYRIL", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["CYRIL", "SILVA", "OCEEN", "SETHR", "POPPY"]},
+            { name: "POPPY", transition: "CAWZE", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["CAWZE", "OCEEN", "SETHR", "POPPY"]},
 
             //SUNST 2 ARR TRANSITIONS    
-            { name: "SUNST 2 RNAV ARR - 07R/C/L", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "LAAMP", "LOGAN"]},
-            { name: "SUNST 2 RNAV ARR - 07R/C/L", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "BUCFA", "HAWFA", "SWEET", "POPPY"]},
-
+            { name: "SUNST", transition: "LAAMP", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "LAAMP", "LOGAN"]},
+            { name: "SUNST", transition: "BUCFA", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "BUCFA", "HAWFA", "SWEET", "POPPY"]},
         ],
         
         APPs: [
             //ILS OR LOC 25R/C/L
-            { name: "ILS or LOC RWY 25L", rwy: ["25L"], waypoints: ["FISSK", "COTAF", "BACHE"]},
-            { name: "ILS or LOC RWY 25C", rwy: ["25C"], waypoints: ["PAYNZ", "DUNES", "ATPEV"]},
-            { name: "ILS or LOC RWY 25R", rwy: ["25R"], waypoints: ["ROCKY", "TORUS", "BRISK"]},
+            { name: "ILS", rwy: ["25L"], waypoints: ["FISSK", "COTAF", "BACHE"]},
+            { name: "ILS", rwy: ["25C"], waypoints: ["PAYNZ", "DUNES", "ATPEV"]},
+            { name: "ILS", rwy: ["25R"], waypoints: ["ROCKY", "TORUS", "BRISK"]},
 
             //RNAV ARR 07R/C/L
-            { name: "RNAV RWY 07L", rwy: ["07L"], waypoints: ["OTTES", "GUPPI", "REEBO"]},
-            { name: "RNAV RWY 07L", rwy: ["07C"], waypoints: ["MOGTA", "DIGGY", "TURKA"]},
-            { name: "RNAV RWY 07L", rwy: ["07R"], waypoints: ["TIMSE", "JACKI", "FUMBL"]},
+            { name: "RNAV", rwy: ["07L"], waypoints: ["OTTES", "GUPPI", "REEBO"]},
+            { name: "RNAV", rwy: ["07C"], waypoints: ["MOGTA", "DIGGY", "TURKA"]},
+            { name: "RNAV", rwy: ["07R"], waypoints: ["TIMSE", "JACKI", "FUMBL"]},
         ]
     },
     {
@@ -877,7 +876,7 @@ const controlAreas = [
         ],
         runways: [
             { number: "28", length: 3281, hdg: 288, glideslope: 3.00, coordinates: [1087.90, 613.69]},
-            { number: "10", length: 3281, hdg: 151, glideslope: 3.00, coordinates: [1061.90, 606.49]},
+            { number: "10", length: 3281, hdg: 106, glideslope: 3.00, coordinates: [1061.90, 606.49]},
         ]
     },
     {

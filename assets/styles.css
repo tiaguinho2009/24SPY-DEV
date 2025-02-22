@@ -565,6 +565,7 @@ textarea:focus, textarea:hover {
     position: absolute;
     max-height: 150px; /* Limite de altura para tornar a lista rolável */
     overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid #3b6cec;
     background-color: #131316;
     z-index: 101;
@@ -580,7 +581,7 @@ textarea:focus, textarea:hover {
     border: none;
     background-color: #2d2d2d;
     color: #fff;
-    padding: 10px;
+    padding: 8px 0px 8px 0px;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -588,26 +589,22 @@ textarea:focus, textarea:hover {
 
 .list-container button:hover {
     background-color: #3b6cec;
-    color: #fff;
+    color: #ffffff;
 }
 
 .list-container::-webkit-scrollbar {
-    width: 1px;
+    width: 5px;
 }
 
 .list-container::-webkit-scrollbar-track {
-    background: none;
+    background: #1e1e1e;
+    border-radius: 10px;
 }
 
 .list-container::-webkit-scrollbar-thumb {
     background-color: #3b6cec;
-    border-radius: 2px;
-}
-
-/* Compatibilidade com navegadores que suportam scrollbar não-Webkit */
-.list-container {
-    scrollbar-width: thin;
-    scrollbar-color: #3b6cec transparent;
+    border-radius: 10px;
+    border: 1px solid #1e1e1e;
 }
 
 /* Container principal para o mapa */
