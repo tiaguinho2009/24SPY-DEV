@@ -966,7 +966,7 @@ const controlAreas = [
     },
     {
         name: "IBTH",
-        real_name: "Saint BarthÃ©lemy",
+        real_name: "Saint Barthélemy",
         type: "Airport",
         app: "IBTH APP",
         originalscale: 0,
@@ -978,7 +978,7 @@ const controlAreas = [
         towerATC: "",
         groundATC: "",
         atcs: [
-            "Saint BarthÃ©lemy Tower",
+            "Saint Barthélemy Tower",
         ],
         oceanic: true,
         charts: [
