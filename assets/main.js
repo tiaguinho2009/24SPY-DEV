@@ -679,54 +679,56 @@ let friction = 0.85;
 const MIN_VELOCITY_THRESHOLD = 0.1;
 
 canvas.addEventListener('mousedown', (e) => {
-	isDragging = true;
-	startX = e.clientX;
-	startY = e.clientY;
-	velocityX = 0;
-	velocityY = 0;
+    if (e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    velocityX = 0;
+    velocityY = 0;
 });
 
 canvas.addEventListener('mousemove', (e) => {
-	if (isDragging) {
-		const currentX = e.clientX;
-		const currentY = e.clientY;
+    if (!isDragging || e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
+    const currentX = e.clientX;
+    const currentY = e.clientY;
 
-		// Calcula o deslocamento
-		const dx = currentX - startX;
-		const dy = currentY - startY;
+    // Calcula o deslocamento
+    const dx = currentX - startX;
+    const dy = currentY - startY;
 
-		// Atualiza a posição do mapa
-		offsetX += dx;
-		offsetY += dy;
+    // Atualiza a posição do mapa
+    offsetX += dx;
+    offsetY += dy;
 
-		// Calcula a velocidade apenas se houver movimento significativo
-		if (Math.abs(dx) > MIN_VELOCITY_THRESHOLD || Math.abs(dy) > MIN_VELOCITY_THRESHOLD) {
-			velocityX = dx;
-			velocityY = dy;
-		} else {
-			velocityX = 0; // Considera que o rato está parado
-			velocityY = 0;
-		}
+    // Calcula a velocidade apenas se houver movimento significativo
+    if (Math.abs(dx) > MIN_VELOCITY_THRESHOLD || Math.abs(dy) > MIN_VELOCITY_THRESHOLD) {
+        velocityX = dx;
+        velocityY = dy;
+    } else {
+        velocityX = 0; // Considera que o rato está parado
+        velocityY = 0;
+    }
 
-		// Atualiza o ponto inicial
-		startX = currentX;
-		startY = currentY;
+    // Atualiza o ponto inicial
+    startX = currentX;
+    startY = currentY;
 
-		// Redesenha o canvas
-		draw();
-	}
+    // Redesenha o canvas
+    draw();
 });
 
-canvas.addEventListener('mouseup', () => {
-	isDragging = false;
+canvas.addEventListener('mouseup', (e) => {
+    if (e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
+    isDragging = false;
 
-	// Só aplica inércia se a velocidade for significativa
-	if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
-		applyInertia();
-	}
+    // Só aplica inércia se a velocidade for significativa
+    if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
+        applyInertia();
+    }
 });
 
-canvas.addEventListener('mouseleave', () => {
+canvas.addEventListener('mouseleave', (e) => {
+    if (e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
     isDragging = false;
 });
 
