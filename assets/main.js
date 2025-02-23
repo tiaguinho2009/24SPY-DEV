@@ -1009,18 +1009,18 @@ function saveFlp() {
 
     // Adiciona o APP ao plano de voo
     if (arrivalAirport && app) {
-        const appProcedure = arrivalAirport.APPs.find(proc => proc.name === app);
-        if (!appProcedure) {
-            showMessage('Flight Plan Error', `APP "${app}" not found at airport "${arrival}"!`);
-            return;
-        }
-        appProcedure.waypoints.forEach(wp => {
-            const matchedPoint = allPoints.find(point => point.name === wp);
-            if (matchedPoint) {
-                flightPlanPoints.push(matchedPoint);
-            }
-        });
-    }
+		const appProcedure = arrivalAirport.APPs.find(proc => proc.name === app && proc.rwy.includes(arrivalRwy));
+		if (!appProcedure) {
+			showMessage('Flight Plan Error', `APP "${app}" for runway "${arrivalRwy}" not found at airport "${arrival}"!`);
+			return;
+		}
+		appProcedure.waypoints.forEach(wp => {
+			const matchedPoint = allPoints.find(point => point.name === wp);
+			if (matchedPoint) {
+				flightPlanPoints.push(matchedPoint);
+			}
+		});
+	}
 
     // Adiciona a pista de chegada
     if (arrivalAirport && arrivalRwy) {
