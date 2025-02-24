@@ -1469,7 +1469,7 @@ function fetchATCDataAndUpdate() {
     document.querySelector('.mapUpdateTime .time').textContent = ` ${time}`;
 	fetchATCDataAndUpdateTimesExecuted += 1;
 	if (fetchATCDataAndUpdateTimesExecuted >= 5) {
-		checkUpdate();
+		//checkUpdate();
 		fetchATCDataAndUpdateTimesExecuted = 0;
 	}
 }
