@@ -1330,7 +1330,7 @@ function fetchATCDataAndUpdate() {
     const time = getTime();
     document.querySelector('.mapUpdateTime .time').textContent = ` ${time}`;
 	fetchATCDataAndUpdateTimesExecuted += 1;
-	if (fetchATCDataAndUpdateTimesExecuted >= 0) {
+	if (fetchATCDataAndUpdateTimesExecuted >= 3) {
 		checkUpdate();
 		fetchATCDataAndUpdateTimesExecuted = 0;
 	}

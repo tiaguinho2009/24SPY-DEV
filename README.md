@@ -30,13 +30,14 @@
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance.
 
-## [DEV 0.2 BETA] - 22/02/2025
+## [DEV 0.2] - 25/02/2025
 ### Added
 - New SIDs/STARs System! (Only works for IRFD for now...) (They are complety optional, if don't want to use it you don't need.)
 - New option called "Show a Higher Quality Map", when ur zoom is > 10 it will render a 14Kx14K image of the map for better view. (This already was working in the past but now u can turn it on or off so ur screen does not freezes for 5 seconds loading the image).
 - Now the zoom its animated (or smoother).
 - The Back-End server of 24SPY is Online again!!!
 - New function for the "Show Navaids Labels" option, before it only worked for global rendering, now it also works in FPL.
+- New small system that detects when a new update is released while with the website open.
 
 ### Corrected
 - Bug of zooming in and back out leaves you at a different spot than before fixed.
@@ -47,7 +48,7 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 - IBTH RWYs corrected.
 - IRFD RWYs corrected.
 - Some fixes Names corrected.
-- Code of the Flight Plans and AirportUI was rewrited.
+- Code of the Flight Plans and AirportUI was rewrited. (No visual changes)
 - And a LOT of other bugs that i don't remember were fixed.
 
 ### Comments
