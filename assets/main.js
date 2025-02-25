@@ -1351,12 +1351,32 @@ function checkUpdate() {
 }
 
 function ActiveAllATCfunction() {
-	controlAreas.forEach(area => {
-		if (area.type === 'Airport') {
+    const allAirports = [];
 
-		}
-	})
-	ATCOnlinefuncion();
+    controlAreas.forEach(area => {
+        if (area.type === 'Airport') {
+            allAirports.push({
+                airport: area.real_name,
+                holder: '24SPY',
+                claimable: false,
+                position: "tower",
+                uptime: "00:00",
+            });
+
+            if (area.atcs && area.atcs.length > 1) {
+                allAirports.push({
+                    airport: area.real_name,
+                    holder: '24SPY',
+                    claimable: false,
+                    position: "ground",
+                    uptime: "00:00",
+                });
+            }
+        }
+    });
+
+    PTFSAPI = allAirports;
+    ATCOnlinefuncion(PTFSAPI);
 }
 
 // Function to generate the list of ATCs in the specified format
