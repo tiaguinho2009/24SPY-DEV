@@ -1095,7 +1095,11 @@ document.getElementById('deptrans').addEventListener('focus', () => {
 
     if (airport) {
         const sidProcedures = airport.SIDs.filter(proc => proc.name === sidName);
-        const transitions = sidProcedures.map(proc => proc.transition).filter(Boolean);
+        const transitions = sidProcedures
+            .filter(proc => proc.rwy.includes(departureRwy)) // Filtro por RWY
+            .map(proc => proc.transition)
+            .filter(Boolean);
+
         createList('deptrans', transitions);
     }
 });
@@ -1119,7 +1123,11 @@ document.getElementById('arrtrans').addEventListener('focus', () => {
 
     if (airport) {
         const starProcedures = airport.STARs.filter(proc => proc.name === starName);
-        const transitions = starProcedures.map(proc => proc.transition).filter(Boolean);
+        const transitions = starProcedures
+            .filter(proc => proc.rwy.includes(arrivalRwy)) // Filtro por RWY
+            .map(proc => proc.transition)
+            .filter(Boolean);
+
         createList('arrtrans', transitions);
     }
 });
