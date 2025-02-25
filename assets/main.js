@@ -1468,8 +1468,8 @@ function fetchATCDataAndUpdate() {
     const time = getTime();
     document.querySelector('.mapUpdateTime .time').textContent = ` ${time}`;
 	fetchATCDataAndUpdateTimesExecuted += 1;
-	if (fetchATCDataAndUpdateTimesExecuted >= 5) {
-		//checkUpdate();
+	if (fetchATCDataAndUpdateTimesExecuted >= 0) {
+		checkUpdate();
 		fetchATCDataAndUpdateTimesExecuted = 0;
 	}
 }
@@ -1483,8 +1483,7 @@ function checkUpdate() {
             return response.text();
         })
         .then(versionContent => {
-            console.log('Conteúdo da versão:', versionContent);
-            if (versionContent !== localInfo.version) {
+            if (versionContent.trim() !== localInfo.version.trim()) {
                 showMessage('New Version', `The version ${versionContent} its now avaible! Enjoy the update!`, 'Update').then((response) => {
                     if (response === 1) {
                         location.replace(location.href)

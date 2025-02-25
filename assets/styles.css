@@ -339,23 +339,22 @@ header a {
 
 .settings-icon,
 .close-icon {
-    width: 18px; /* Ajuste o tamanho do SVG conforme necessário */
+    width: 18px;
     height: 18px;
 }
 
 .settings-menu {
     display: none;
     position: fixed;
-    top: 50%; /* Centraliza verticalmente */
-    left: 50%; /* Centraliza horizontalmente */
-    transform: translate(-50%, -50%); /* Move o elemento para o centro exato */
+    top: 80px;
+    right: 20px;
     width: 300px;
     max-height: 90vh; /* Limita a altura ao tamanho da tela */
-    overflow-y: auto; /* Adiciona rolagem vertical */
+    overflow-y: auto;
     background-color: #131316;
     border-radius: 5px;
     padding: 20px;
-    box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.5); /* Sombra lateral */
+    box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.5);
     z-index: 101;
 }
 
@@ -449,6 +448,13 @@ header a {
     .flp-menu {
         top: 50%;
         left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .settings-menu {
+        top: 50%;
+        left: 50%;
+        right: 0;
         transform: translate(-50%, -50%);
     }
 }

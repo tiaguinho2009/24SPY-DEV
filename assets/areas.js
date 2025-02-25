@@ -1,26 +1,5 @@
 let PTFSAPIError = []
-
-let PTFSAPI = [
-    //example
-    {
-    "holder": "Test",
-    "claimable": true,
-    "airport": "Tokyo",
-    "position": "tower"
-    },
-    {
-    "holder": "",
-    "claimable": true,
-    "airport": "Tokyo",
-    "position": "ground"
-    },
-    {
-    "holder": "",
-    "claimable": true,
-    "airport": "Barra",
-    "position": "tower"
-    }
-]
+let PTFSAPI = []
 
 const controlAreas = [
     //TMA/RDR
