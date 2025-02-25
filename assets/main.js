@@ -417,275 +417,201 @@ function updateAllAirportsUI() {
 
 const icaoMenuCount = 0;
 
+function highlightCTR(ctrName) {
+	controlAreas.forEach(area => {
+		if (area.type === 'polygon' && area.name === ctrName) {
+			area.originalFillColor = area.fillColor;
+			area.fillColor = 'rgba(0, 255, 125, 0.075)';
+			draw();
+		}
+	});
+}
+
+function resetCTRHighlight(ctrName) {
+	controlAreas.forEach(area => {
+		if (area.type === 'polygon' && area.name === ctrName) {
+			area.fillColor = area.originalFillColor;
+			draw();
+		}
+	});
+}
+
+// Funções para destaque de APP
+function highlightAPP(appName) {
+	controlAreas.forEach(area => {
+		if (area.type === 'polygon' && area.name === appName) {
+			area.originalFillColor = area.fillColor;
+			area.fillColor = 'rgba(255, 122, 0, 0.1)';
+			draw();
+		}
+	});
+}
+
+function resetAPPHighlight(appName) {
+	controlAreas.forEach(area => {
+		if (area.type === 'polygon' && area.name === appName) {
+			area.fillColor = area.originalFillColor;
+			draw();
+		}
+	});
+}
+
 function createAirportUI(airport) {
-	if (settingsValues.showAirportUI === false) {return};
-	const airportUI = document.createElement('div');
-	airportUI.className = 'airport-ui';
-	airportUI.id = airport.name
-	airportUI.style.zIndex = 10 + (3 - airport.originalscale);
-	airportUI.innerHTML = `
-		<button class="icao-code">${airport.name}</button>
-		${airport.ctr && airport.tower ? '<div class="badge C">C</div>' : ''}
-		${airport.app && airport.tower && !airport.ctr ? '<div class="badge A">A</div>' : ''}
-		${!airport.ctr && !airport.app && airport.tower ? '<div class="badge T">T</div>' : ''}
-		${airport.ground ? '<div class="badge G">G</div>' : ''}
-	`;
-	document.body.appendChild(airportUI);
+    if (!settingsValues.showAirportUI) return;
 
-	const airportInfoMenu = document.createElement('div');
-	airportInfoMenu.className = 'airport-info-menu';
-	document.body.appendChild(airportInfoMenu);
+    const airportUI = createAirportElement(airport);
+    const airportInfoMenu = createAirportInfoMenu();
+    document.body.append(airportUI, airportInfoMenu);
 
-	if (airportUI.querySelector('.badge')) {
+    if (icaoMenuCount < 1) {
+        createIcaoMenu(airport, airportUI);
+    }
+
+    addBadgeEventListeners(airport, airportUI, airportInfoMenu);
+    updatePosition(airportUI, airport);
+}
+
+function createAirportElement(airport) {
+    const airportUI = document.createElement('div');
+    airportUI.className = 'airport-ui';
+    airportUI.id = airport.name;
+    airportUI.style.zIndex = 10 + (3 - airport.originalscale);
+    airportUI.innerHTML = `
+        <button class="icao-code">${airport.name}</button>
+        ${generateBadges(airport)}
+    `;
+
+    if (airportUI.querySelector('.badge')) {
 		airportUI.style.backgroundColor = "rgba(32, 47, 54, 0.5)";
 		airportUI.style.color = "#ffffff";
-	}
-
-	if (icaoMenuCount < 1) {
-		const icaoMenu = document.createElement('div');
-		icaoMenu.className = 'icao-menu';
-		icaoMenu.innerHTML = `
-			<div class="title">Charts for ${airport.name}</div>
-			<hr class="menu-divider">
-			<div class="charts-buttons"></div>
-		`;
-		document.body.appendChild(icaoMenu);
-	
-		const chartsButtonsContainer = icaoMenu.querySelector('.charts-buttons');
-		if (airport.charts) {
-			airport.charts.forEach(chart => {
-				const [chartName, chartLink] = chart;
-				const chartButton = document.createElement('button');
-				chartButton.className = 'chart-button';
-				chartButton.textContent = chartName;
-				chartButton.onclick = () => {
-					window.open(chartLink, '_blank');
-				};
-				chartsButtonsContainer.appendChild(chartButton);
-			});
-		} else {
-			chartsButtonsContainer.innerHTML = `<div class="no-charts">No charts available</div>`;
-		}
-	
-		function toggleIcaoMenu() {
-			if (icaoMenu.style.display === 'none' || !icaoMenu.style.display) {
-				resetChartsMenu()
-				icaoMenu.style.display = 'block';
 		
-				const [x, y] = transformCoordinates(airport.coordinates);
-				const menuHeight = icaoMenu.offsetHeight;
-		
-				icaoMenu.style.left = `${x - (icaoMenu.offsetWidth / 2)}px`;
-				icaoMenu.style.top = `${y - menuHeight + 15}px`;
-			} else {
-				icaoMenu.style.display = 'none';
-			}
+		const icaoButton = airportUI.querySelector('.icao-code');
+		if (icaoButton) {
+			icaoButton.classList.add('active');
 		}
-	
-		airportUI.querySelector('.icao-code').addEventListener('click', toggleIcaoMenu);
 	}	
 
-	function showInfoMenu(badge) {
-		const position =
-			badge.classList.contains('C') ? (airport.ctr && airport.oceanic ? 'Oceanic' : 'Control') :
-			badge.classList.contains('A') ? 'Approach' :
-			badge.classList.contains('T') ? 'Tower' :
-			badge.classList.contains('G') ? 'Ground' :
-			badge.classList.contains('D') ? 'Delivery' :
-			'Unknown';
+    return airportUI;
+}
 
-		const atcName = (position === 'Control' || position === 'Oceanic' || position === 'Approach' || position === 'Tower') ?
-			airport.towerAtc :
-			(position === 'Ground' || position === 'Delivery') ?
-			airport.groundAtc :
-			null;
+function generateBadges(airport) {
+    return `
+        ${airport.ctr && airport.tower ? '<div class="badge C">C</div>' : ''}
+        ${airport.app && airport.tower && !airport.ctr ? '<div class="badge A">A</div>' : ''}
+        ${!airport.ctr && !airport.app && airport.tower ? '<div class="badge T">T</div>' : ''}
+        ${airport.ground ? '<div class="badge G">G</div>' : ''}
+    `;
+}
 
-		const frequency = position === 'Ground' ? airport.groundfreq : airport.towerfreq;
+function createAirportInfoMenu() {
+    const menu = document.createElement('div');
+    menu.className = 'airport-info-menu';
+    return menu;
+}
 
-		let atcName2 = atcName;
-		if (atcName.includes("|")) {
-			atcName2 = atcName.split("|")[0].trim();
-		}
-		let roleText = "";
-		let roleIndex = "role2";
-		if (specialUsers[atcName2]) {
-			roleText = specialUsers[atcName2][0].Role;
-			roleIndex = "role1";
-		}
+function createIcaoMenu(airport, airportUI) {
+    const icaoMenu = document.createElement('div');
+    icaoMenu.className = 'icao-menu';
+    icaoMenu.innerHTML = `
+        <div class="title">Charts for ${airport.name}</div>
+        <hr class="menu-divider">
+        <div class="charts-buttons"></div>
+    `;
+    document.body.appendChild(icaoMenu);
 
-		airportInfoMenu.style.display = 'block';
-		airportInfoMenu.innerHTML = `
-			<div class="title">
-				${airport.real_name} ${position}
-				<div class="${roleIndex}">${roleText}</div>
-			</div>
-			<hr class="menu-divider">
-			<div class="controller-info-section">
-				<p><strong>Controller:</strong> ${atcName}</p>
-				<p><strong>Frequency:</strong> ${frequency} </p>
-				<p><strong>Online:</strong> ${airport.uptime} </p>
-			</div>
-		`;//<strong>Time Online:</strong> ${getTimeOnline()}
+    populateChartsMenu(airport, icaoMenu);
+    airportUI.querySelector('.icao-code').addEventListener('click', () => toggleIcaoMenu(icaoMenu, airport));
+}
 
-		const [x, y] = transformCoordinates(airport.coordinates);
-		airportInfoMenu.style.left = `${x - (airportUI.offsetWidth / 2)}px`;
-		airportInfoMenu.style.top = `${y + airportUI.offsetHeight / 2 + 60}px`;
-	}
+function populateChartsMenu(airport, menu) {
+    const chartsButtonsContainer = menu.querySelector('.charts-buttons');
+    if (airport.charts) {
+        airport.charts.forEach(([chartName, chartLink]) => {
+            const chartButton = document.createElement('button');
+            chartButton.className = 'chart-button';
+            chartButton.textContent = chartName;
+            chartButton.onclick = () => window.open(chartLink, '_blank');
+            chartsButtonsContainer.appendChild(chartButton);
+        });
+    } else {
+        chartsButtonsContainer.innerHTML = `<div class="no-charts">No charts available</div>`;
+    }
+}
 
-	function hideInfoMenu() {
-		document.querySelectorAll('.airport-info-menu').forEach(menu => {
-			menu.style.display = 'none';
-		});
-	}
+function toggleIcaoMenu(menu, airport) {
+    if (menu.style.display === 'none' || !menu.style.display) {
+        resetChartsMenu();
+        menu.style.display = 'block';
+        const [x, y] = transformCoordinates(airport.coordinates);
+        menu.style.left = `${x - menu.offsetWidth / 2}px`;
+        menu.style.top = `${y - menu.offsetHeight + 15}px`;
+    } else {
+        menu.style.display = 'none';
+    }
+}
 
-	const controlBadge = airportUI.querySelector('.badge.C');
-	const approachBadge = airportUI.querySelector('.badge.A');
-	const towerBadge = airportUI.querySelector('.badge.T');
-	const groundBadge = airportUI.querySelector('.badge.G');
+function addBadgeEventListeners(airport, airportUI, infoMenu) {
+    const badges = {
+        C: { condition: airport.ctr, highlight: highlightCTR, reset: resetCTRHighlight },
+        A: { condition: airport.app, highlight: highlightAPP, reset: resetAPPHighlight },
+        T: { condition: airport.tower },
+        G: { condition: airport.ground }
+    };
 
-	function highlightCTR(ctrName) {
-		controlAreas.forEach(area => {
-			if (area.type === 'polygon' && area.name === ctrName) {
-				area.originalFillColor = area.fillColor;
-				area.fillColor = 'rgba(0, 255, 125, 0.075)';
-				draw();
-			}
-		});
-	}
+    Object.entries(badges).forEach(([key, { condition, highlight, reset }]) => {
+        const badge = airportUI.querySelector(`.badge.${key}`);
+        if (badge && condition) {
+            badge.addEventListener('mouseenter', () => {
+                showInfoMenu(badge, airport, infoMenu, airportUI);
+                if (highlight) highlight(condition);
+            });
+            badge.addEventListener('mouseleave', () => {
+                hideInfoMenu(infoMenu);
+                if (reset) reset(condition);
+            });
+        }
+    });
+}
 
-	function resetCTRHighlight(ctrName) {
-		controlAreas.forEach(area => {
-			if (area.type === 'polygon' && area.name === ctrName) {
-				area.fillColor = area.originalFillColor;
-				draw();
-			}
-		});
-	}
+function showInfoMenu(badge, airport, menu, airportUI) {
+    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground' };
+    const position = positions[badge.classList[1]] || 'Unknown';
+    const atcName = airport.towerAtc || airport.groundAtc || 'N/A';
+    const frequency = airport.towerfreq || airport.groundfreq || 'N/A';
 
-	// Funções para destaque de APP
-	function highlightAPP(appName) {
-		controlAreas.forEach(area => {
-			if (area.type === 'polygon' && area.name === appName) {
-				area.originalFillColor = area.fillColor;
-				area.fillColor = 'rgba(255, 122, 0, 0.1)';
-				draw();
-			}
-		});
-	}
+    menu.style.display = 'block';
+    menu.innerHTML = `
+        <div class="title">${airport.real_name} ${position}</div>
+        <hr class="menu-divider">
+        <div class="controller-info-section">
+            <p><strong>Controller:</strong> ${atcName}</p>
+            <p><strong>Frequency:</strong> ${frequency}</p>
+            <p><strong>Online:</strong> ${airport.uptime}</p>
+        </div>
+    `;
+    positionInfoMenu(menu, airportUI);
+}
 
-	function resetAPPHighlight(appName) {
-		controlAreas.forEach(area => {
-			if (area.type === 'polygon' && area.name === appName) {
-				area.fillColor = area.originalFillColor;
-				draw();
-			}
-		});
-	}
+function positionInfoMenu(menu, airportUI) {
+    const rect = airportUI.getBoundingClientRect();
+    menu.style.left = `${rect.left + window.scrollX}px`;
+    menu.style.top = `${rect.bottom + window.scrollY + 10}px`;
+}
 
-	// Eventos para o badge de controle
-	if (controlBadge) {
-		controlBadge.addEventListener('mouseenter', () => {
-			showInfoMenu(controlBadge);
-			highlightCTR(airport.ctr); // Destaque CTR
-			highlightAPP(airport.app); // Destaque APP se existir
-		});
-		controlBadge.addEventListener('mouseleave', () => {
-			hideInfoMenu();
-			resetCTRHighlight(airport.ctr); // Reset CTR
-			resetAPPHighlight(airport.app); // Reset APP
-		});
-	}
-
-	// Eventos para o badge de approach
-	if (approachBadge) {
-		approachBadge.addEventListener('mouseenter', () => {
-			showInfoMenu(approachBadge);
-			highlightAPP(airport.app); // Destaque APP
-		});
-		approachBadge.addEventListener('mouseleave', () => {
-			hideInfoMenu();
-			resetAPPHighlight(airport.app); // Reset APP
-		});
-	}
-
-	// Eventos para o badge de tower
-	if (towerBadge) {
-		towerBadge.addEventListener('mouseenter', () => showInfoMenu(towerBadge));
-		towerBadge.addEventListener('mouseleave', hideInfoMenu);
-	}
-
-	// Eventos para o badge de ground
-	if (groundBadge) {
-		groundBadge.addEventListener('mouseenter', () => showInfoMenu(groundBadge));
-		groundBadge.addEventListener('mouseleave', hideInfoMenu);
-	}
-
-	if (controlBadge || approachBadge || towerBadge || groundBadge) {
-		const icaoCodeButton = airportUI.querySelector('.icao-code');
-		icaoCodeButton.classList.add('active');
-	}		
-
-	updatePosition(airportUI, airport);
+function hideInfoMenu(menu) {
+    menu.style.display = 'none';
 }
 
 function resetAllAirportsUI() {
-	// Selecionar todos os elementos de interface de aeroporto
-	const airportUIs = document.querySelectorAll(`.airport-ui`);
-
-	airportUIs.forEach(airportUI => {
-		// Remover event listeners dos badges
-		const controlBadge = airportUI.querySelector('.badge.C');
-		const approachBadge = airportUI.querySelector('.badge.A');
-		const towerBadge = airportUI.querySelector('.badge.T');
-		const groundBadge = airportUI.querySelector('.badge.G');
-		const icaoCodeButton = airportUI.querySelector('.icao-code');
-
-		if (controlBadge) {
-			controlBadge.removeEventListener('mouseenter', showInfoMenu);
-			controlBadge.removeEventListener('mouseleave', hideInfoMenu);
-		}
-		if (approachBadge) {
-			approachBadge.removeEventListener('mouseenter', showInfoMenu);
-			approachBadge.removeEventListener('mouseleave', hideInfoMenu);
-		}
-		if (towerBadge) {
-			towerBadge.removeEventListener('mouseenter', showInfoMenu);
-			towerBadge.removeEventListener('mouseleave', hideInfoMenu);
-		}
-		if (groundBadge) {
-			groundBadge.removeEventListener('mouseenter', showInfoMenu);
-			groundBadge.removeEventListener('mouseleave', hideInfoMenu);
-		}
-
-		// Remover event listener do botão ICAO
-		if (icaoCodeButton) {
-			icaoCodeButton.removeEventListener('click', toggleIcaoMenu);
-		}
-
-		// Remover o elemento da interface do DOM
-		airportUI.remove();
-	});
-
-	// Remover menus adicionais
-	const airportInfoMenus = document.querySelectorAll('.airport-info-menu');
-	airportInfoMenus.forEach(menu => menu.remove());
-
-	const icaoMenus = document.querySelectorAll('.icao-menu');
-	icaoMenus.forEach(menu => menu.remove());
-
-	// Remover event listeners globais
-	window.removeEventListener('resize', updatePosition);
-	canvas.removeEventListener('mousemove', updatePosition);
-	canvas.removeEventListener('wheel', updatePosition);
+    document.querySelectorAll('.airport-ui, .airport-info-menu, .icao-menu').forEach(el => el.remove());
+    window.removeEventListener('resize', updatePosition);
+    canvas.removeEventListener('mousemove', updatePosition);
+    canvas.removeEventListener('wheel', updatePosition);
 }
 
 function displayAirports() {
-	resetAllAirportsUI(); // Reseta todos os aeroportos antes de exibi-los
-	controlAreas.forEach(area => {
-		if (area.type === 'Airport') {
-			createAirportUI(area);
-		}
-	});
+    resetAllAirportsUI();
+    controlAreas.filter(area => area.type === 'Airport').forEach(createAirportUI);
 }
 
 // Exibe os aeroportos na inicialização
@@ -887,176 +813,104 @@ function toggleFlpMenu() {
 	}
 }
 
-function repositionFlpMenu() {
-    const FlpMenu = document.getElementById('FlpMenu');
-    const FlpButton = document.getElementById('FlpButton');
-
-    // Obtém as coordenadas e dimensões do botão
-    const buttonRect = FlpButton.getBoundingClientRect();
-
-    // Calcula a posição inicial do menu
-    let menuTop = buttonRect.bottom + window.scrollY + 10;
-    let menuLeft = buttonRect.left + window.scrollX;
-
-    // Ajusta a posição se o menu sair da tela
-    if (menuLeft + FlpMenu.offsetWidth > window.innerWidth) {
-        menuLeft = window.innerWidth - FlpMenu.offsetWidth - 10;
-    }
-    if (menuTop + FlpMenu.offsetHeight > window.innerHeight) {
-        menuTop = window.innerHeight - FlpMenu.offsetHeight - 10;
-    }
-
-    // Define a posição do menu
-    FlpMenu.style.position = 'absolute';
-    FlpMenu.style.top = `${menuTop}px`;
-    FlpMenu.style.left = `${menuLeft}px`;
-}
-//repositionFlpMenu()
-
 function saveFlp() {
-    const departure = document.getElementById('departure').value.trim().toUpperCase();
-    const departureRwy = document.getElementById('departureRwy').value.trim().toUpperCase();
-    const arrival = document.getElementById('arrival').value.trim().toUpperCase();
-    const arrivalRwy = document.getElementById('arrivalRwy').value.trim().toUpperCase();
-    const waypoints = document.getElementById('waypoints').value.trim().toUpperCase();
-    const sid = document.getElementById('sid').value.trim();
-    const deptrans = document.getElementById('deptrans').value.trim();
-    const star = document.getElementById('star').value.trim();
-    const arrtrans = document.getElementById('arrtrans').value.trim();
-    const app = document.getElementById('app').value.trim();
-
-    // Divide os waypoints em uma lista
+    const getValue = id => document.getElementById(id).value.trim().toUpperCase();
+    const [departure, departureRwy, arrival, arrivalRwy, waypoints, sid, deptrans, star, arrtrans, app] = 
+        ['departure', 'departureRwy', 'arrival', 'arrivalRwy', 'waypoints', 'sid', 'deptrans', 'star', 'arrtrans', 'app'].map(getValue);
+    
     const inputPoints = waypoints.split(' ').map(wp => wp.trim());
-
-    // Junta os dados de aeroportos e waypoints
-    const allPoints = [
-        ...controlAreas.filter(area => area.type === "Airport"),
-        ...Waypoints,
-        ...CustomWaypoints
-    ];
-
+    const allPoints = [...controlAreas.filter(a => a.type === "Airport"), ...CustomWaypoints, ...Waypoints];
     const flightPlanPoints = [];
-
-    // Fator de escala calculado a partir da referência dada
-    const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
-    const referenceDistanceNM = 1478 / 1852; // 1478 metros em NM (1 NM = 1852 metros)
-    const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
-
+    
+    const scaleFactor = (1478 / 1852) / Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
+    
+    function findAirport(name) {
+        return allPoints.find(point => point.name === name && point.type === "Airport");
+    }
+    
     function calculateAlignmentPoint(airport, runwayNumber, rotate) {
         const runway = airport.runways.find(rwy => rwy.number === runwayNumber);
         if (!runway) return null;
-
+        
         const hdgRad = (runway.hdg - (rotate ? 180 : 0)) * (Math.PI / 180);
-        const distanceNM = 1.5;
-        const distanceEuclidean = distanceNM / scaleFactor; // Converte NM para a distância euclidiana
-
-        // Usa as coordenadas da pista se disponíveis, caso contrário, usa as coordenadas do aeroporto
+        const distanceEuclidean = (1.5 / scaleFactor);
         const baseCoordinates = runway.coordinates || airport.coordinates;
-
-        const x = baseCoordinates[0] + distanceEuclidean * Math.sin(hdgRad);
-        const y = baseCoordinates[1] - distanceEuclidean * Math.cos(hdgRad);
-
-        return { name: `${runwayNumber}`, coordinates: [x, y], type: "Waypoint" };
+        
+        return {
+            name: runwayNumber, 
+            coordinates: [
+                baseCoordinates[0] + distanceEuclidean * Math.sin(hdgRad),
+                baseCoordinates[1] - distanceEuclidean * Math.cos(hdgRad)
+            ],
+            type: "Waypoint"
+        };
     }
-
-    // Adiciona os pontos de alinhamento e as pistas ao plano de voo
-    const departureAirport = allPoints.find(point => point.name === departure && point.type === "Airport");
-    const arrivalAirport = allPoints.find(point => point.name === arrival && point.type === "Airport");
-    if (!departureAirport) {
-        showMessage('Flight Plan Error', `Departure airport "${departure}" not found!`);
+    
+    const departureAirport = findAirport(departure);
+    const arrivalAirport = findAirport(arrival);
+    if (!departureAirport || !arrivalAirport) {
+        showMessage('Flight Plan Error', `Airport not found!`);
         return;
     }
-    if (!arrivalAirport) {
-        showMessage('Flight Plan Error', `Arrival airport "${arrival}" not found!`);
-        return;
-    }
-
-    // Adiciona a pista de decolagem
-    if (departureAirport && departureRwy) {
-        const departureRunway = departureAirport.runways.find(rwy => rwy.number === departureRwy);
-        if (!departureRunway || !departureRunway.coordinates) {
-            showMessage('Flight Plan Error', `Departure runway "${departureRwy}" not found at airport "${departure}"!`);
-            return;
+    
+    function addRunway(airport, runwayNumber, align) {
+        const runway = airport.runways.find(rwy => rwy.number === runwayNumber);
+        if (!runway || !runway.coordinates) {
+            showMessage('Flight Plan Error', `Runway "${runwayNumber}" not found at "${airport.name}"!`);
+            return false;
         }
-        flightPlanPoints.push({ name: "", coordinates: departureRunway.coordinates, type: "Runway" });
-        const alignmentPoint = calculateAlignmentPoint(departureAirport, departureRwy, false);
-        if (alignmentPoint) {
-            flightPlanPoints.push(alignmentPoint); // Insere como o segundo ponto
+        if (align === 'departure') {
+            flightPlanPoints.push({ name: "", coordinates: runway.coordinates, type: "Runway" });
+            const alignmentPoint = calculateAlignmentPoint(airport, runwayNumber, false);
+            if (alignmentPoint) flightPlanPoints.push(alignmentPoint);
+        } else if (align === 'arrival') {
+            const alignmentPoint = calculateAlignmentPoint(airport, runwayNumber, true);
+            if (alignmentPoint) flightPlanPoints.push(alignmentPoint);
+            flightPlanPoints.push({ name: "", coordinates: runway.coordinates, type: "Runway" });
+        } else {
+            flightPlanPoints.push({ name: "", coordinates: runway.coordinates, type: "Runway" });
         }
+        return true;
     }
-
-    // Adiciona o SID ao plano de voo
-    if (departureAirport && sid) {
-        const sidProcedure = departureAirport.SIDs.find(proc => proc.name === sid && proc.transition === deptrans);
-        if (!sidProcedure) {
-            showMessage('Flight Plan Error', `SID "${sid}" with transition "${deptrans}" not found at airport "${departure}"!`);
-            return;
-        }
-        sidProcedure.waypoints.forEach(wp => {
-            const matchedPoint = allPoints.find(point => point.name === wp);
-            if (matchedPoint) {
-                flightPlanPoints.push(matchedPoint);
-            }
-        });
-    }
-
-    // Adiciona os waypoints fornecidos pelo usuário
+    
+    function addProcedure(airport, type, name, transition) {
+		if (!name) return true;
+	
+		let procedure;
+		if (type === 'APPs') {
+			// O APP não tem transition, então encontramos apenas pelo nome
+			procedure = airport[type]?.find(proc => proc.name === name && proc.rwy.includes(transition));
+		} else {
+			// Para SIDs e STARs, mantém-se a lógica original
+			procedure = airport[type]?.find(proc => proc.name === name && proc.transition === transition);
+		}
+	
+		if (!procedure) {
+			showMessage('Flight Plan Error', `${type.toUpperCase()} "${name}" ${type === 'APPs' ? '' : `with transition "${transition}" `}not found at "${airport.name}"!`);
+			return false;
+		}
+	
+		procedure.waypoints.forEach(wp => {
+			const matchedPoint = allPoints.find(point => point.name === wp);
+			if (matchedPoint) flightPlanPoints.push(matchedPoint);
+		});
+	
+		return true;
+	}	
+    
+    if (!addRunway(departureAirport, departureRwy, 'departure')) return;
+    if (!addProcedure(departureAirport, 'SIDs', sid, deptrans)) return;
+    
     inputPoints.forEach(input => {
         const matchedPoint = allPoints.find(point => point.name === input);
-        if (!matchedPoint && input !== "") {
-            showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
-        }
-        if (matchedPoint) {
-            flightPlanPoints.push(matchedPoint);
-        }
+        if (matchedPoint) flightPlanPoints.push(matchedPoint);
+        else if (input !== "") showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
     });
-
-    // Adiciona o STAR ao plano de voo
-    if (arrivalAirport && star) {
-        const starProcedure = arrivalAirport.STARs.find(proc => proc.name === star && proc.transition === arrtrans);
-        if (!starProcedure) {
-            showMessage('Flight Plan Error', `STAR "${star}" with transition "${arrtrans}" not found at airport "${arrival}"!`);
-            return;
-        }
-        starProcedure.waypoints.forEach(wp => {
-            const matchedPoint = allPoints.find(point => point.name === wp);
-            if (matchedPoint) {
-                flightPlanPoints.push(matchedPoint);
-            }
-        });
-    }
-
-    // Adiciona o APP ao plano de voo
-    if (arrivalAirport && app) {
-		const appProcedure = arrivalAirport.APPs.find(proc => proc.name === app && proc.rwy.includes(arrivalRwy));
-		if (!appProcedure) {
-			showMessage('Flight Plan Error', `APP "${app}" for runway "${arrivalRwy}" not found at airport "${arrival}"!`);
-			return;
-		}
-		appProcedure.waypoints.forEach(wp => {
-			const matchedPoint = allPoints.find(point => point.name === wp);
-			if (matchedPoint) {
-				flightPlanPoints.push(matchedPoint);
-			}
-		});
-	}
-
-    // Adiciona a pista de chegada
-    if (arrivalAirport && arrivalRwy) {
-        const arrivalRunway = arrivalAirport.runways.find(rwy => rwy.number === arrivalRwy);
-        if (!arrivalRunway || !arrivalRunway.coordinates) {
-            showMessage('Flight Plan Error', `Arrival runway "${arrivalRwy}" not found at airport "${arrival}"!`);
-            return;
-        }
-        if (!app) { // Só adiciona o ponto de alinhamento se não houver APP
-            const alignmentPoint = calculateAlignmentPoint(arrivalAirport, arrivalRwy, true);
-            if (alignmentPoint) {
-                flightPlanPoints.push(alignmentPoint); // Insere como o penúltimo ponto
-            }
-        }
-        flightPlanPoints.push({ name: "", coordinates: arrivalRunway.coordinates, type: "Runway" });
-    }
-
+    
+    if (!addProcedure(arrivalAirport, 'STARs', star, arrtrans)) return;
+    if (!addProcedure(arrivalAirport, 'APPs', app, arrivalRwy)) return;
+    if (!addRunway(arrivalAirport, arrivalRwy, app ? false : 'arrival')) return;
+    
     flightRoute = flightPlanPoints;
     draw();
 }
@@ -1497,27 +1351,12 @@ function checkUpdate() {
 }
 
 function ActiveAllATCfunction() {
-	const list = generateATCsListFromAreas();
-	const atcInfoTextarea = document.getElementById('atcInfo');
-	atcInfoTextarea.value = list;
-	ATCOnlinefuncion();
-	refreshUI();
-}
-
-function resetAllATCfuntion() {
-	const atcInfoTextarea = document.getElementById('atcInfo');
-	atcInfoTextarea.value = "";
 	controlAreas.forEach(area => {
 		if (area.type === 'Airport') {
-			area.tower = false; // Desativa a torre
-			area.ground = false; // Desativa o ground
-			area.towerAtc = ''; // Limpa o ATC da torre
-			area.groundAtc = ''; // Limpa o ATC do ground
-			area.scale = area.originalscale; // Opcional: redefinir a escala para não mostrar
+
 		}
-	});
+	})
 	ATCOnlinefuncion();
-	refreshUI();
 }
 
 // Function to generate the list of ATCs in the specified format
@@ -1639,8 +1478,8 @@ function executeOnce() {
 }
 executeOnce();
 
-setInterval(fetchATCDataAndUpdate, 30000);
-fetchATCDataAndUpdate();
+setInterval(fetchATCDataAndUpdate, 30000);  fetchATCDataAndUpdate();
+//ActiveAllATCfunction();
 
 // Inicializa o canvas
 resizeCanvas();

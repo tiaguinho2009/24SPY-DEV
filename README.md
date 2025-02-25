@@ -47,6 +47,7 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 - IBTH RWYs corrected.
 - IRFD RWYs corrected.
 - Some fixes Names corrected.
+- Code of the Flight Plans and AirportUI was rewrited.
 - And a LOT of other bugs that i don't remember were fixed.
 
 ### Comments
