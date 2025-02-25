@@ -873,7 +873,7 @@ function saveFlp() {
         return true;
     }
     
-    function addProcedure(airport, type, name, transition) {
+    function addProcedure(airport, type, name, transition, runway) {
 		if (!name) return true;
 	
 		let procedure;
@@ -882,7 +882,7 @@ function saveFlp() {
 			procedure = airport[type]?.find(proc => proc.name === name && proc.rwy.includes(transition));
 		} else {
 			// Para SIDs e STARs, mantém-se a lógica original
-			procedure = airport[type]?.find(proc => proc.name === name && proc.transition === transition);
+			procedure = airport[type]?.find(proc => proc.name === name && proc.transition === transition && proc.rwy.includes(runway));
 		}
 	
 		if (!procedure) {
@@ -899,7 +899,7 @@ function saveFlp() {
 	}	
     
     if (!addRunway(departureAirport, departureRwy, 'departure')) return;
-    if (!addProcedure(departureAirport, 'SIDs', sid, deptrans)) return;
+    if (!addProcedure(departureAirport, 'SIDs', sid, deptrans, departureRwy)) return;
     
     inputPoints.forEach(input => {
         const matchedPoint = allPoints.find(point => point.name === input);
@@ -907,7 +907,7 @@ function saveFlp() {
         else if (input !== "") showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
     });
     
-    if (!addProcedure(arrivalAirport, 'STARs', star, arrtrans)) return;
+    if (!addProcedure(arrivalAirport, 'STARs', star, arrtrans, arrivalRwy)) return;
     if (!addProcedure(arrivalAirport, 'APPs', app, arrivalRwy)) return;
     if (!addRunway(arrivalAirport, arrivalRwy, app ? false : 'arrival')) return;
     

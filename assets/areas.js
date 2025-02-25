@@ -733,7 +733,7 @@ const controlAreas = [
             // KENED 3 DEP TRANSITIONS
             { name: "KENED", transition: "RENDR", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "RENDR"]},
             { name: "KENED", transition: "JOOPY", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "JOOPY"]},
-            { name: "KENED", transition: "DINER", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "WELSH", "PROBE", "INDEX", "NKITA", "DINER"]},
+            { name: "KENED", transition: "DINER", rwy: ["25L", "25C", "25R", "07L", "07C", "07R"], waypoints: ["KUNAV", "KENED", "INDEX", "NKITA", "DINER"]},
             
             // LOGAN 4 DEP TRANSITIONS
             { name: "LOGAN", transition: "RENDR", rwy: ["25R", "25C"], waypoints: ["DLREY", "DAALE", "LOGAN", "BUCFA", "SKYDV", "WELSH", "RENDR"]},
@@ -785,7 +785,7 @@ const controlAreas = [
 
             //SUNST 2 ARR TRANSITIONS    
             { name: "SUNST", transition: "LAAMP", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "LAAMP", "LOGAN"]},
-            { name: "SUNST", transition: "BUCFA", rwy: ["07L", "07C", "07R"], waypoints: ["SUNST", "BUCFA", "HAWFA", "SWEET", "POPPY"]},
+            { name: "SUNST", transition: "BUCFA", rwy: ["25L", "25C", "25R"], waypoints: ["SUNST", "BUCFA", "HAWFA", "SWEET", "POPPY"]},
         ],
         
         APPs: [
