@@ -1505,8 +1505,8 @@ function executeOnce() {
 }
 executeOnce();
 
-//setInterval(fetchATCDataAndUpdate, 30000);  fetchATCDataAndUpdate();
-ActiveAllATCfunction();
+setInterval(fetchATCDataAndUpdate, 30000);  fetchATCDataAndUpdate();
+//ActiveAllATCfunction();
 
 // Inicializa o canvas
 resizeCanvas();
