@@ -1283,7 +1283,7 @@ function fetchATCDataAndUpdate() {
     fetch(dynamicURLRepository, {
         method: 'GET',
         headers: {
-            'uniqeID': uniqueUserId
+            'uniqueID': uniqueUserId
         }
     })
         .then(response => {
