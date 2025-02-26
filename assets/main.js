@@ -1280,12 +1280,7 @@ function fetchATCDataAndUpdate() {
     const dynamicURLRepository = 'https://raw.githubusercontent.com/tiaguinho2009/24SPY-Backend/main/backend';
 
     // Busca a URL dinâmica do repositório GitHub
-    fetch(dynamicURLRepository, {
-        method: 'GET',
-        headers: {
-            'uniqueid': uniqueUserId
-        }
-    })
+    fetch(dynamicURLRepository)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro ao buscar repositório: ${response.status}`);
@@ -1299,7 +1294,12 @@ function fetchATCDataAndUpdate() {
                 const dynamicURL = dynamicURLMatch[0] + '/api/controllers';
 
                 // Tenta buscar dados do endpoint dinâmico
-                return fetch(dynamicURL)
+                return fetch(dynamicURL, {
+                    method: 'GET',
+                    headers: {
+                        'uniqueid': uniqueUserId
+                    }
+                })
                     .then(response => {
                         if (response.ok) {
                             return response.json();
@@ -1320,12 +1320,7 @@ function fetchATCDataAndUpdate() {
             console.error('Erro ao usar a URL dinâmica, fallback para a URL padrão:', error);
 
             // Fallback para a URL padrão
-            fetch(defaultURL, {
-                method: 'GET',
-                headers: {
-                    'uniqueid': uniqueUserId
-                }
-            })
+            fetch(defaultURL)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Erro ao buscar dados na URL padrão: ${response.status}`);
