@@ -1283,7 +1283,7 @@ function fetchATCDataAndUpdate() {
     fetch(dynamicURLRepository, {
         method: 'GET',
         headers: {
-            'uniqueID': uniqueUserId
+            'uniqueid': uniqueUserId
         }
     })
         .then(response => {
@@ -1320,7 +1320,12 @@ function fetchATCDataAndUpdate() {
             console.error('Erro ao usar a URL dinâmica, fallback para a URL padrão:', error);
 
             // Fallback para a URL padrão
-            fetch(defaultURL)
+            fetch(defaultURL, {
+                method: 'GET',
+                headers: {
+                    'uniqueid': uniqueUserId
+                }
+            })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Erro ao buscar dados na URL padrão: ${response.status}`);
