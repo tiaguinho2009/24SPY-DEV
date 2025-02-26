@@ -1298,8 +1298,15 @@ async function fetchDynamicURL() {
 }
 
 async function fetchATCData(url) {
+    let response = null;
+
     try {
-        const response = await fetch(url, { headers: { 'uniqueid': uniqueUserId } });
+        if (url === defaultURL) {
+            response = await fetch(url);
+        } else {
+            response = await fetch(url, { headers: { 'uniqueid': uniqueUserId } });
+        }
+        
         if (!response.ok) throw new Error(`Erro ao buscar dados: ${response.status}`);
         return await response.json();
     } catch (error) {
