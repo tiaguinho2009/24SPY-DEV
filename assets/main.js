@@ -1252,6 +1252,17 @@ function ATCOnlinefuncion(atcList) {
 
 let fetchATCDataAndUpdateTimesExecuted = 0;
 
+function getUniqueUserId() {
+    let userId = localStorage.getItem("uniqueUserId");
+    if (!userId) {
+        userId = crypto.randomUUID(); // Gera um UUID único
+        localStorage.setItem("uniqueUserId", userId);
+    }
+    return userId;
+}
+
+const uniqueUserId = getUniqueUserId();
+
 function fetchATCDataAndUpdate() {
     function toggleUpdateClass() {
         const mapUpdateTime = document.getElementById('mapUpdateTime');
@@ -1269,7 +1280,12 @@ function fetchATCDataAndUpdate() {
     const dynamicURLRepository = 'https://raw.githubusercontent.com/tiaguinho2009/24SPY-Backend/main/backend';
 
     // Busca a URL dinâmica do repositório GitHub
-    fetch(dynamicURLRepository)
+    fetch(dynamicURLRepository, {
+        method: 'GET',
+        headers: {
+            'uniqeID': uniqueUserId
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro ao buscar repositório: ${response.status}`);
