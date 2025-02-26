@@ -648,9 +648,9 @@ canvas {
 
 .airport-ui {
     position: absolute;
-    background-color: rgba(32, 47, 54, 0);
+    background-color: rgba(40, 40, 60, 0);
     padding: 3px 0px;
-    border-radius: 3px;
+    border-radius: 5px;
     color: #7d7d85;
     font-size: 0.85em;
     text-align: center;
@@ -798,8 +798,13 @@ canvas {
 }
 
 .chart-button:hover {
-    background-color: rgba(50, 50, 55, 1); /* Cor mais clara ao passar o mouse */
-    color: white; /* Texto fica branco ao passar o mouse */
+    background-color: rgba(50, 50, 55, 1);
+    color: white;
+}
+
+.chart-button:active {
+    background-color: #3b6cec;
+    color: white;
 }
 
 .airport-info-menu {

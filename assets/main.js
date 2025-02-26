@@ -493,7 +493,7 @@ function createAirportElement(airport) {
     `;
 
     if (airportUI.querySelector('.badge')) {
-		airportUI.style.backgroundColor = "rgba(32, 47, 54, 0.5)";
+		airportUI.style.backgroundColor = "rgba(40, 40, 55, 0.5)";
 		airportUI.style.color = "#ffffff";
 		
 		const icaoButton = airportUI.querySelector('.icao-code');
@@ -1505,8 +1505,8 @@ function executeOnce() {
 }
 executeOnce();
 
-setInterval(fetchATCDataAndUpdate, 30000);  fetchATCDataAndUpdate();
-//ActiveAllATCfunction();
+//setInterval(fetchATCDataAndUpdate, 30000);  fetchATCDataAndUpdate();
+ActiveAllATCfunction();
 
 // Inicializa o canvas
 resizeCanvas();
