@@ -670,6 +670,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     let frequency = 'N/A';
     let uptime = 'N/A';
     const ATCs = getOnlineATCs(airport.real_name);
+    console.log(ATCs);
 
     if (position === 'Tower') {
         atcName = airport.towerAtc || 'N/A';
@@ -684,7 +685,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
         atcName = airport.groundAtc || 'N/A';
         frequency = airport.groundfreq || 'N/A';
     }
-    uptime = ATCs[position].uptime || 'N/A';
+    uptime = ATCs[positionMapping[position]].uptime || 'N/A';
 
     // Verifica se o controlador é um usuário especial
     const specialUser = Object.keys(specialUsers).find(user => user === atcName);
