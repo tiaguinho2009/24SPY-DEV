@@ -293,9 +293,9 @@ function updateATCUI() {
 
             area.tower = atcs.TWR.length > 0;
             area.ground = atcs.GND.length > 0;
-            area.towerAtc = atcs.TWR.map(atc => atc.holder).join(', ');
-            area.groundAtc = atcs.GND.map(atc => atc.holder).join(', ');
-            area.uptime = atcs.TWR.concat(atcs.GND).map(atc => atc.uptime).join(', ');
+            area.towerAtc = atcs.TWR.length > 0 ? atcs.TWR[0].holder : '';
+            area.groundAtc = atcs.GND.length > 0 ? atcs.GND[0].holder : '';
+            area.uptime = atcs.TWR.length > 0 ? atcs.TWR[0].uptime : (atcs.GND.length > 0 ? atcs.GND[0].uptime : '');
             area.scale = atcs.TWR.length > 0 || atcs.GND.length > 0 ? 0 : area.originalscale;
 
             // Ativa a TMA correspondente, se aplicável
@@ -668,19 +668,24 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     const position = positions[badge.classList[1]] || 'Unknown';
     let atcName = 'N/A';
     let frequency = 'N/A';
+    let uptime = 'N/A';
 
     if (position === 'Tower') {
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
+        uptime = airport.uptime || 'N/A';
     } else if (position === 'Control') {
         atcName = airport.ctrAtc || 'N/A';
         frequency = airport.ctrfreq || 'N/A';
+        uptime = airport.uptime || 'N/A';
     } else if (position === 'Approach') {
         atcName = airport.appAtc || 'N/A';
         frequency = airport.appfreq || 'N/A';
+        uptime = airport.uptime || 'N/A';
     } else if (position === 'Ground') {
         atcName = airport.groundAtc || 'N/A';
         frequency = airport.groundfreq || 'N/A';
+        uptime = airport.uptime || 'N/A';
     }
 
     // Verifica se o controlador é um usuário especial
@@ -694,7 +699,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
         <div class="controller-info-section">
             <p><strong>Controller:</strong> ${atcName}</p>
             <p><strong>Frequency:</strong> ${frequency}</p>
-            <p><strong>Online:</strong> ${airport.uptime}</p>
+            <p><strong>Online:</strong> ${uptime}</p>
         </div>
     `;
     positionInfoMenu(menu, airportUI);
@@ -1298,72 +1303,6 @@ function updateATCCount() {
 function processATCData(atcList) {
     updateOnlineATCs(atcList);
     updateATCUI();
-}
-
-function ATCOnlinefuncion(atcList) {
-	onlineATC = 0;
-
-	// Desativa todas as áreas e aeroportos ao iniciar
-	controlAreas.forEach(area => {
-		if (area.type === 'Airport') {
-			area.tower = false;
-			area.ground = false;
-			area.towerAtc = '';
-			area.groundAtc = '';
-			area.uptime = ''; // Inicializa a propriedade uptime
-			area.scale = area.originalscale;
-		} else if (area.type === 'polygon') {
-			area.active = false; // Desativa TMAs/CTRs inicialmente
-		}
-	});
-
-	if (settingsValues.showOnlineATC === false) {updateATCCount(); refreshUI(); return;}
-
-	// Processa cada objeto da lista ATC
-	atcList.forEach(atcData => {
-		const { holder, claimable, airport, position, uptime } = atcData;
-
-		if (claimable) return;
-
-		// Encontra a área correspondente ao aeroporto
-		controlAreas.forEach(area => {
-			if (area.type === 'Airport' && area.real_name === airport) {
-				area.scale = 0; // Reduz o scale ao ativar uma posição no aeroporto
-				area.uptime = uptime || 'error'; // Armazena o uptime se disponível
-
-				if (position === "tower") {
-					area.tower = true;
-					area.towerAtc = holder;
-					onlineATC += 1;
-
-					// Ativa a TMA correspondente, se aplicável
-					controlAreas.forEach(tmaArea => {
-						if (tmaArea.type === 'polygon' && tmaArea.name === area.tma) {
-							tmaArea.active = true;
-						}
-					});
-				}
-
-				if (position === "ground") {
-					area.ground = true;
-					area.groundAtc = holder;
-					onlineATC += 1;
-				}
-
-				// Ativa a CTR correspondente, se aplicável
-				if (area.ctr) {
-					controlAreas.forEach(ctrArea => {
-						if (ctrArea.type === 'polygon' && ctrArea.name === area.ctr) {
-							ctrArea.active = true;
-						}
-					});
-				}
-			}
-		});
-	});
-
-	updateATCCount();
-	refreshUI();
 }
 
 let fetchATCDataAndUpdateTimesExecuted = 0;
