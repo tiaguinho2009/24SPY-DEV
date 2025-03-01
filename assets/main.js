@@ -664,24 +664,23 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 }
 
 function showInfoMenu(badge, airport, menu, airportUI) {
-    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground' };
+    const positions = { C: 'control', A: 'approach', T: 'tower', G: 'ground' };
     const position = positions[badge.classList[1]] || 'Unknown';
     let atcName = 'N/A';
     let frequency = 'N/A';
     let uptime = 'N/A';
     const ATCs = getOnlineATCs(airport.real_name);
-    console.log(ATCs);
 
-    if (position === 'Tower') {
+    if (position === 'tower') {
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
-    } else if (position === 'Control') {
+    } else if (position === 'control') {
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
-    } else if (position === 'Approach') {
+    } else if (position === 'approach') {
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
-    } else if (position === 'Ground') {
+    } else if (position === 'ground') {
         atcName = airport.groundAtc || 'N/A';
         frequency = airport.groundfreq || 'N/A';
     }
