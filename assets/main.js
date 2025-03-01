@@ -15,11 +15,15 @@ let flightRoute = [];
 let onlineATCs = {};
 
 const positionMapping = {
+    center: 'CTR',
+    control: 'CTR',
+    approach: 'APP',
+    departure: 'APP',
+    director: 'APP',
     tower: 'TWR',
     ground: 'GND',
-    approach: 'APP',
-    center: 'CTR',
     delivery: 'DEL',
+    atis: 'ATS',
     ats: 'ATS'
 };
 
@@ -282,7 +286,6 @@ function drawControlAreas() {
     });
 }
 
-// Função para atualizar a interface do usuário com os ATCs online
 function updateATCUI() {
     controlAreas.forEach(area => {
         if (area.type === 'Airport') {
@@ -663,11 +666,25 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 function showInfoMenu(badge, airport, menu, airportUI) {
     const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground' };
     const position = positions[badge.classList[1]] || 'Unknown';
-    const atcName = airport.towerAtc || airport.groundAtc || 'N/A';
-    const frequency = airport.towerfreq || airport.groundfreq || 'N/A';
+    let atcName = 'N/A';
+    let frequency = 'N/A';
+
+    if (position === 'Tower') {
+        atcName = airport.towerAtc || 'N/A';
+        frequency = airport.towerfreq || 'N/A';
+    } else if (position === 'Control') {
+        atcName = airport.ctrAtc || 'N/A';
+        frequency = airport.ctrfreq || 'N/A';
+    } else if (position === 'Approach') {
+        atcName = airport.appAtc || 'N/A';
+        frequency = airport.appfreq || 'N/A';
+    } else if (position === 'Ground') {
+        atcName = airport.groundAtc || 'N/A';
+        frequency = airport.groundfreq || 'N/A';
+    }
 
     // Verifica se o controlador é um usuário especial
-    const specialUser = Object.keys(specialUsers).find(user => user === airport.towerAtc);
+    const specialUser = Object.keys(specialUsers).find(user => user === atcName);
     const specialTag = specialUser ? `<div class="special-tag">${specialUsers[specialUser][0].Role}</div>` : '';
 
     menu.style.display = 'block';
@@ -1462,7 +1479,6 @@ async function checkUpdate() {
     }
 }
 
-// Função para ativar todos os ATCs (para testes)
 function ActiveAllATCfunction() {
     const allAirports = [];
 
@@ -1470,19 +1486,19 @@ function ActiveAllATCfunction() {
         if (area.type === 'Airport') {
             allAirports.push({
                 airport: area.real_name,
-                holder: 'Tiaguinho_2009',
+                holder: 'Tiaguinho_2009 | Tower',
                 claimable: false,
-                position: "TWR",
-                uptime: "00:00",
+                position: 'tower',
+                uptime: '00:00',
             });
 
             if (area.atcs && area.atcs.length > 1) {
                 allAirports.push({
                     airport: area.real_name,
-                    holder: 'Tiaguinho_2009',
+                    holder: 'Tiaguinho_2009 | Ground',
                     claimable: false,
-                    position: "GND",
-                    uptime: "00:00",
+                    position: 'ground',
+                    uptime: '00:00',
                 });
             }
         }
@@ -1613,5 +1629,5 @@ executeOnce();
 
 resizeCanvas();
 loadFromLocalStorage();
-setInterval(fetchATCDataAndUpdate, 30000);
-fetchATCDataAndUpdate();
+//setInterval(fetchATCDataAndUpdate, 30000);fetchATCDataAndUpdate();
+ActiveAllATCfunction();
