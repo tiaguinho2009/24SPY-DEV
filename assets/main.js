@@ -670,6 +670,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     let frequency = 'N/A';
     let uptime = 'N/A';
     const ATCs = getOnlineATCs(airport.real_name);
+    console.log(ATCs);
 
     if (position === 'tower') {
         atcName = airport.towerAtc || 'N/A';
