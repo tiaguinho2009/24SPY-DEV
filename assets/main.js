@@ -669,24 +669,22 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     let atcName = 'N/A';
     let frequency = 'N/A';
     let uptime = 'N/A';
+    const ATCs = getOnlineATCs(airport.real_name);
 
     if (position === 'Tower') {
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
-        uptime = airport.uptime || 'N/A';
     } else if (position === 'Control') {
-        atcName = airport.ctrAtc || 'N/A';
-        frequency = airport.ctrfreq || 'N/A';
-        uptime = airport.uptime || 'N/A';
+        atcName = airport.towerAtc || 'N/A';
+        frequency = airport.towerfreq || 'N/A';
     } else if (position === 'Approach') {
-        atcName = airport.appAtc || 'N/A';
-        frequency = airport.appfreq || 'N/A';
-        uptime = airport.uptime || 'N/A';
+        atcName = airport.towerAtc || 'N/A';
+        frequency = airport.towerfreq || 'N/A';
     } else if (position === 'Ground') {
         atcName = airport.groundAtc || 'N/A';
         frequency = airport.groundfreq || 'N/A';
-        uptime = airport.uptime || 'N/A';
     }
+    uptime = ATCs[position].uptime || 'N/A';
 
     // Verifica se o controlador é um usuário especial
     const specialUser = Object.keys(specialUsers).find(user => user === atcName);
