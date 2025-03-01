@@ -880,6 +880,17 @@ canvas {
     opacity: 0.3; /* Para dar um efeito de sombra */
 }
 
+.special-tag {
+    color: #ffffff;
+    background-color: #3b6cec;
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 5px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
 /* Estilo da seção de informações do controlador */
 .controller-info-section {
     background-color: rgba(32,32,36,1);

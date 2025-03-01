@@ -1,5 +1,31 @@
 let PTFSAPIError = []
 let PTFSAPI = []
+const atcData = {
+    IRFD: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IPPH: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IZOL: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    ITKO: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    ILAR: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IGRV: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IBTH: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    ISAU: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IPAP: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IMLR: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IDCS: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IGAR: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IIAB: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    ISCM: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IBLT: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    ILKL: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    ITRN: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IJAF: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IHEN: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    IBAR: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    ISKP: { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    SHV:  { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    OWO:  { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+    TVO:  { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] },
+};
 
 const controlAreas = [
     //TMA/RDR
@@ -1669,33 +1695,41 @@ const specialUsers = {
     "Tiaguinho_2009": [{
         "Role": "Main Developer",
         "DiscordNick": "tiaguinho_2009",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
     "aaronandethan123": [{
         "Role": "Contributor",
         "DiscordNick": "awdev_",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
     "AvatarRoblox2018": [{
         "Role": "24SPY Helper",
         "DiscordNick": "noah_the_plane_guy",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
     "GalaxyON_1": [{
         "Role": "24SPY Helper",
         "DiscordNick": "rafa_tugapt",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
     "BEANZBURGERBEANZ": [{
         "Role": "24SPY First User",
         "DiscordNick": "echogecko89",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
     "frozenterror13": [{
         "Role": "Chart Maker",
         "DiscordNick": "aerosd",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
     "EzyDubbs": [{
         "Role": "Chart Maker",
         "DiscordNick": "ezydubbs",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
     "2316Nati": [{
         "Role": "Contributor",
         "DiscordNick": "bedsdrout",
+        "Color": "rgba(158, 29, 206, 0.075)",
     }],
 };

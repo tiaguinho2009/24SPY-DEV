@@ -96,10 +96,6 @@ function processQueue() {
     closeButton2.onclick = () => closeMenu(2);
 }
 
-//showMessage("Test", "Test Message").then(() => {
-//	showMessage("Test", "OMG U PRESSED THE CLOSE BUTTON", "DON'T PRESS ME AGAIN")
-//});
-
 // Configuração do tamanho do canvas
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -590,9 +586,13 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     const atcName = airport.towerAtc || airport.groundAtc || 'N/A';
     const frequency = airport.towerfreq || airport.groundfreq || 'N/A';
 
+    // Verifica se o controlador é um usuário especial
+    const specialUser = Object.keys(specialUsers).find(user => user === airport.towerAtc);
+    const specialTag = specialUser ? `<div class="special-tag">${specialUsers[specialUser][0].Role}</div>` : '';
+
     menu.style.display = 'block';
     menu.innerHTML = `
-        <div class="title">${airport.real_name} ${position}</div>
+        <div class="title">${airport.real_name} ${position} ${specialTag}</div>
         <hr class="menu-divider">
         <div class="controller-info-section">
             <p><strong>Controller:</strong> ${atcName}</p>
@@ -748,7 +748,7 @@ canvas.addEventListener('wheel', (e) => {
             const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
 
             // Ajusta a taxa de zoom dinamicamente com base na escala atual
-            const baseZoomRate = 0.0025; // Taxa de zoom base
+            const baseZoomRate = 0.005; // Taxa de zoom base
             const zoomRate = baseZoomRate * scale; // Ajusta a taxa de zoom conforme a escala aumenta
             const zoomFactor = e.deltaY * -zoomRate;
 
@@ -1350,7 +1350,7 @@ async function fetchATCDataAndUpdate() {
     document.querySelector('.mapUpdateTime .time').textContent = ` ${getTime()}`;
     if (!window.location.href.includes('DEV')) {
         fetchATCDataAndUpdateTimesExecuted += 1;
-        if (fetchATCDataAndUpdateTimesExecuted >= 0) {
+        if (fetchATCDataAndUpdateTimesExecuted >= 5) {
             fetchATCDataAndUpdateTimesExecuted = 0;
             checkUpdate();
         }
@@ -1381,7 +1381,7 @@ function ActiveAllATCfunction() {
         if (area.type === 'Airport') {
             allAirports.push({
                 airport: area.real_name,
-                holder: '24SPY',
+                holder: 'Tiaguinho_2009',
                 claimable: false,
                 position: "tower",
                 uptime: "00:00",
@@ -1390,7 +1390,7 @@ function ActiveAllATCfunction() {
             if (area.atcs && area.atcs.length > 1) {
                 allAirports.push({
                     airport: area.real_name,
-                    holder: '24SPY',
+                    holder: 'Tiaguinho_2009',
                     claimable: false,
                     position: "ground",
                     uptime: "00:00",
