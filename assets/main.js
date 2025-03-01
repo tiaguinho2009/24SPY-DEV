@@ -12,6 +12,16 @@ let isDragging = false;
 let startX, startY;
 let onlineATC = 0;
 let flightRoute = [];
+let onlineATCs = {};
+
+const positionMapping = {
+    tower: 'TWR',
+    ground: 'GND',
+    approach: 'APP',
+    center: 'CTR',
+    delivery: 'DEL',
+    ats: 'ATS'
+};
 
 const sortedAirports = controlAreas
 	.filter(area => area.type === "Airport")
@@ -122,121 +132,191 @@ function transformCoordinates(coord) {
 	];
 }
 
+function updateOnlineATCs(atcList) {
+    onlineATCs = {};
+
+    atcList.forEach(atcData => {
+        const { holder, claimable, airport, position, uptime } = atcData;
+
+        if (claimable) return;
+
+        const mappedPosition = positionMapping[position];
+        if (!mappedPosition) {
+            console.error(`Invalid position: ${position} for airport: ${airport}`);
+            return;
+        }
+
+        if (!onlineATCs[airport]) {
+            onlineATCs[airport] = { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] };
+        }
+
+        onlineATCs[airport][mappedPosition].push({ holder, uptime });
+    });
+}
+
+// Função para verificar se um ATC está online
+function isATCOnline(airport, position) {
+    const mappedPosition = positionMapping[position];
+    return onlineATCs[airport] && onlineATCs[airport][mappedPosition].length > 0;
+}
+
+// Função para obter a lista de ATCs online em um aeroporto
+function getOnlineATCs(airport) {
+    return onlineATCs[airport] || { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] };
+}
+
 // Função de desenho
 function draw() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	if (settingsValues.showBetterMap) {
-		currentMapImage = scale < 10 ? mapImageSmallScale : mapImageNormal;
-	} else {
-		currentMapImage = mapImageSmallScale;
-	}
+    if (settingsValues.showBetterMap) {
+        currentMapImage = scale < 10 ? mapImageSmallScale : mapImageNormal;
+    } else {
+        currentMapImage = mapImageSmallScale;
+    }
 
-	// Calcula tamanho ajustado do mapa
-	const mapWidth = 1200 * scale;
-	const mapHeight = 1200 * scale;
+    // Calcula tamanho ajustado do mapa
+    const mapWidth = 1200 * scale;
+    const mapHeight = 1200 * scale;
 
-	// Desenha a imagem do mapa
-	ctx.drawImage(currentMapImage, offsetX, offsetY, mapWidth, mapHeight);
+    // Desenha a imagem do mapa
+    ctx.drawImage(currentMapImage, offsetX, offsetY, mapWidth, mapHeight);
 
-	drawControlAreas();
-	drawFlightPlan(flightRoute);
-	resetChartsMenu();
-	drawNavaids();
-	updateAllAirportsUI();
+    drawControlAreas();
+    drawFlightPlan(flightRoute);
+    resetChartsMenu();
+    drawNavaids();
+    updateAllAirportsUI();
 }
 
 // Função para desenhar áreas de controle
 function drawControlAreas() {
-	// Desenho das polylines
-	controlAreas.forEach(area => {
-		if (area.active && area.type === 'polyline') {
-			let drawLine = false;
+    // Desenho das polylines
+    controlAreas.forEach(area => {
+        if (area.active && area.type === 'polyline') {
+            let drawLine = false;
 
-			if (area.name.includes('TMA') && settingsValues.showAPPlines) {
-				drawLine = true;
-			};
-			if (area.name.includes('FIR') && settingsValues.showFIRlines) {
-				drawLine = true;
-			};
+            if (area.name.includes('TMA') && settingsValues.showAPPlines) {
+                drawLine = true;
+            }
+            if (area.name.includes('FIR') && settingsValues.showFIRlines) {
+                drawLine = true;
+            }
 
-			const coordinates = area.coordinates.map(transformCoordinates);
-			ctx.beginPath();
-			ctx.strokeStyle = area.color;
-			ctx.lineWidth = 0.5;
+            const coordinates = area.coordinates.map(transformCoordinates);
+            ctx.beginPath();
+            ctx.strokeStyle = area.color;
+            ctx.lineWidth = 0.5;
 
-			if (drawLine) {
-				coordinates.forEach((point, index) => {
-					if (index === 0) {
-						ctx.moveTo(point[0], point[1]);
-					} else {
-						ctx.lineTo(point[0], point[1]);
-					}
-				});
-				ctx.stroke();
-			}
-		}
-	});
+            if (drawLine) {
+                coordinates.forEach((point, index) => {
+                    if (index === 0) {
+                        ctx.moveTo(point[0], point[1]);
+                    } else {
+                        ctx.lineTo(point[0], point[1]);
+                    }
+                });
+                ctx.stroke();
+            }
+        }
+    });
 
-	// Desenho dos polygons (TMAs e CTRs)
-	controlAreas.forEach(area => {
-		if (area.type === 'polygon') {
-			let drawCTR = false;
-			let drawAPP = false;
+    // Desenho dos polygons (TMAs e CTRs)
+    controlAreas.forEach(area => {
+        if (area.type === 'polygon') {
+            let drawCTR = false;
+            let drawAPP = false;
 
-			// Verifica se algum aeroporto possui o valor "ctr" ou "app" igual ao nome da área e "tower" ativo
-			controlAreas.forEach(airport => {
-				if (airport.type === 'Airport' && airport.tower) {
-					if (airport.ctr === area.name) {
-						drawCTR = true;
-					}
-					if (airport.app === area.name) {
-						drawAPP = true;
-					}
-				}
-			});
+            // Verifica se algum aeroporto possui o valor "ctr" ou "app" igual ao nome da área e "tower" ativo
+            controlAreas.forEach(airport => {
+                if (airport.type === 'Airport' && airport.tower) {
+                    if (airport.ctr === area.name) {
+                        drawCTR = true;
+                    }
+                    if (airport.app === area.name) {
+                        drawAPP = true;
+                    }
+                }
+            });
 
-			// Desenha o CTR se existir
-			if (drawCTR) {
-				const coordinates = area.coordinates.map(transformCoordinates);
-				ctx.beginPath();
-				ctx.strokeStyle = area.color;
-				ctx.fillStyle = area.fillColor;
-				ctx.lineWidth = 0.5;
+            // Desenha o CTR se existir
+            if (drawCTR) {
+                const coordinates = area.coordinates.map(transformCoordinates);
+                ctx.beginPath();
+                ctx.strokeStyle = area.color;
+                ctx.fillStyle = area.fillColor;
+                ctx.lineWidth = 0.5;
 
-				coordinates.forEach((point, index) => {
-					if (index === 0) {
-						ctx.moveTo(point[0], point[1]);
-					} else {
-						ctx.lineTo(point[0], point[1]);
-					}
-				});
-				ctx.closePath();
-				ctx.fill();
-				ctx.stroke();
-			}
+                coordinates.forEach((point, index) => {
+                    if (index === 0) {
+                        ctx.moveTo(point[0], point[1]);
+                    } else {
+                        ctx.lineTo(point[0], point[1]);
+                    }
+                });
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
 
-			// Desenha o APP se existir
-			if (drawAPP) {
-				const coordinates = area.coordinates.map(transformCoordinates);
-				ctx.beginPath();
-				ctx.strokeStyle = area.color;
-				ctx.fillStyle = area.fillColor;
-				ctx.lineWidth = 0.5;
+            // Desenha o APP se existir
+            if (drawAPP) {
+                const coordinates = area.coordinates.map(transformCoordinates);
+                ctx.beginPath();
+                ctx.strokeStyle = area.color;
+                ctx.fillStyle = area.fillColor;
+                ctx.lineWidth = 0.5;
 
-				coordinates.forEach((point, index) => {
-					if (index === 0) {
-						ctx.moveTo(point[0], point[1]);
-					} else {
-						ctx.lineTo(point[0], point[1]);
-					}
-				});
-				ctx.closePath();
-				ctx.fill();
-				ctx.stroke();
-			}
-		}
-	});
+                coordinates.forEach((point, index) => {
+                    if (index === 0) {
+                        ctx.moveTo(point[0], point[1]);
+                    } else {
+                        ctx.lineTo(point[0], point[1]);
+                    }
+                });
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+    });
+}
+
+// Função para atualizar a interface do usuário com os ATCs online
+function updateATCUI() {
+    controlAreas.forEach(area => {
+        if (area.type === 'Airport') {
+            const atcs = getOnlineATCs(area.real_name);
+
+            area.tower = atcs.TWR.length > 0;
+            area.ground = atcs.GND.length > 0;
+            area.towerAtc = atcs.TWR.map(atc => atc.holder).join(', ');
+            area.groundAtc = atcs.GND.map(atc => atc.holder).join(', ');
+            area.uptime = atcs.TWR.concat(atcs.GND).map(atc => atc.uptime).join(', ');
+            area.scale = atcs.TWR.length > 0 || atcs.GND.length > 0 ? 0 : area.originalscale;
+
+            // Ativa a TMA correspondente, se aplicável
+            if (atcs.TWR.length > 0) {
+                controlAreas.forEach(tmaArea => {
+                    if (tmaArea.type === 'polygon' && tmaArea.name === area.tma) {
+                        tmaArea.active = true;
+                    }
+                });
+            }
+
+            // Ativa a CTR correspondente, se aplicável
+            if (area.ctr && atcs.CTR.length > 0) {
+                controlAreas.forEach(ctrArea => {
+                    if (ctrArea.type === 'polygon' && ctrArea.name === area.ctr) {
+                        ctrArea.active = true;
+                    }
+                });
+            }
+        }
+    });
+
+    updateATCCount();
+    refreshUI();
 }
 
 function drawFlightPlan(points) {
@@ -1189,10 +1269,18 @@ function refreshUI() {
 }
 
 function updateATCCount() {
-	const atcNumberElement = document.querySelector('.online-number');
-	if (atcNumberElement) {
-		atcNumberElement.textContent = onlineATC;
-	}
+    const atcNumberElement = document.querySelector('.online-number');
+    if (atcNumberElement) {
+        const onlineCount = Object.values(onlineATCs).reduce((count, atcs) => {
+            return count + Object.values(atcs).flat().length;
+        }, 0);
+        atcNumberElement.textContent = onlineCount;
+    }
+}
+
+function processATCData(atcList) {
+    updateOnlineATCs(atcList);
+    updateATCUI();
 }
 
 function ATCOnlinefuncion(atcList) {
@@ -1335,7 +1423,7 @@ async function fetchATCDataAndUpdate() {
 
     if (data) {
         PTFSAPI = data;
-        ATCOnlinefuncion(PTFSAPI);
+        processATCData(PTFSAPI);
         toggleUpdateClass();
     } else {
         if (!window.location.href.includes('DEV')) {
@@ -1343,7 +1431,7 @@ async function fetchATCDataAndUpdate() {
                 .then(() => fetchATCDataAndUpdate());
         }
         PTFSAPI = PTFSAPIError;
-        ATCOnlinefuncion(PTFSAPI);
+        processATCData(PTFSAPI);
         toggleUpdateClass();
     }
 
@@ -1357,6 +1445,7 @@ async function fetchATCDataAndUpdate() {
     }
 }
 
+// Função para verificar atualizações
 async function checkUpdate() {
     try {
         const response = await fetch('https://raw.githubusercontent.com/tiaguinho2009/24SPY-Backend/main/version');
@@ -1373,7 +1462,7 @@ async function checkUpdate() {
     }
 }
 
-
+// Função para ativar todos os ATCs (para testes)
 function ActiveAllATCfunction() {
     const allAirports = [];
 
@@ -1383,7 +1472,7 @@ function ActiveAllATCfunction() {
                 airport: area.real_name,
                 holder: 'Tiaguinho_2009',
                 claimable: false,
-                position: "tower",
+                position: "TWR",
                 uptime: "00:00",
             });
 
@@ -1392,7 +1481,7 @@ function ActiveAllATCfunction() {
                     airport: area.real_name,
                     holder: 'Tiaguinho_2009',
                     claimable: false,
-                    position: "ground",
+                    position: "GND",
                     uptime: "00:00",
                 });
             }
@@ -1400,7 +1489,7 @@ function ActiveAllATCfunction() {
     });
 
     PTFSAPI = allAirports;
-    ATCOnlinefuncion(PTFSAPI);
+    processATCData(PTFSAPI);
 }
 
 // Function to generate the list of ATCs in the specified format
@@ -1522,8 +1611,7 @@ function executeOnce() {
 }
 executeOnce();
 
-setInterval(fetchATCDataAndUpdate, 30000);  fetchATCDataAndUpdate();
-//ActiveAllATCfunction();
-
-// Inicializa o canvas
 resizeCanvas();
+loadFromLocalStorage();
+setInterval(fetchATCDataAndUpdate, 30000);
+fetchATCDataAndUpdate();
