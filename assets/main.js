@@ -1629,5 +1629,5 @@ executeOnce();
 
 resizeCanvas();
 loadFromLocalStorage();
-//setInterval(fetchATCDataAndUpdate, 30000);fetchATCDataAndUpdate();
-ActiveAllATCfunction();
+setInterval(fetchATCDataAndUpdate, 30000);fetchATCDataAndUpdate();
+//ActiveAllATCfunction();
