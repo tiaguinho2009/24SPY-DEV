@@ -700,7 +700,7 @@ canvas {
     background-color: #3b6cec;
 }
 
-.airport-ui .badge.A {
+.airport-ui .badge.A[data-type="Approach"] {
     background-color: #ff7a00;
 }
 
@@ -712,11 +712,19 @@ canvas {
     background-color: #008856;
 }
 
+.airport-ui .badge.D {
+    background-color: #ffcc00;
+}
+
+.airport-ui .badge.A[data-type="ATIS"] {
+    background-color: #ff00ff;
+}
+
 .airport-ui .badge.C:hover {
     background-color: #497dff;
 }
 
-.airport-ui .badge.A:hover {
+.airport-ui .badge.A[data-type="Approach"]:hover {
     background-color: #e66900;
 }
 
@@ -726,6 +734,14 @@ canvas {
 
 .airport-ui .badge.G:hover {
     background-color: #006f45;
+}
+
+.airport-ui .badge.D:hover {
+    background-color: #e6b800;
+}
+
+.airport-ui .badge.A[data-type="ATIS"]:hover {
+    background-color: #e600e6;
 }
 
 .highlight {
