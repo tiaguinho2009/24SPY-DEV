@@ -183,6 +183,11 @@ function getOnlineATCs(airport) {
     return onlineATCs[airport] || { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] };
 }
 
+function isSpecialUser(atcName) {
+    const baseName = atcName.split(' | ')[0];
+    return Object.keys(specialUsers).includes(baseName);
+}
+
 // Função de desenho
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -678,8 +683,9 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 }
 
 function showInfoMenu(badge, airport, menu, airportUI) {
-    const positions = { C: 'control', A: 'approach', T: 'tower', G: 'ground' };
+    const positions = { C: 'control', A: 'approach', T: 'tower', G: 'ground', D: 'delivery' };
     let position = positions[badge.classList[1]] || 'Unknown';
+    let position2
     let atcName = 'N/A';
     let frequency = 'N/A';
     let uptime = 'N/A';
@@ -687,18 +693,20 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     console.log(ATCs);
 
     if (position === 'control') {
-        position = 'tower'; //REMOVE FOR MULTI-POSITION
+        position2 = 'tower'; //REMOVE FOR MULTI-POSITION
     } else if (position === 'approach') {
-        position = 'tower'; //REMOVE FOR MULTI-POSITION
+        position2 = 'tower'; //REMOVE FOR MULTI-POSITION
+    } else {
+        position2 = position;
     }
 
-    atcName = ATCs[positionMapping[position]][0].holder || 'N/A';
-    frequency = ATCs[positionMapping[position]][0].frequency || 'N/A';
-    uptime = ATCs[positionMapping[position]][0].uptime || 'N/A';
+    atcName = ATCs[positionMapping[position2]][0].holder || 'N/A';
+    frequency = ATCs[positionMapping[position2]][0].frequency || 'N/A';
+    uptime = ATCs[positionMapping[position2]][0].uptime || 'N/A';
 
-    // Verifica se o controlador é um usuário especial
-    const specialUser = Object.keys(specialUsers).find(user => user === atcName);
-    const specialTag = specialUser ? `<div class="special-tag">${specialUsers[specialUser][0].Role}</div>` : '';
+    const baseName = atcName.split(' | ')[0];
+    const specialUser = isSpecialUser(baseName);
+    const specialTag = specialUser ? `<div class="special-tag">${specialUsers[baseName][0].Role}</div>` : '';
 
     menu.style.display = 'block';
     menu.innerHTML = `
