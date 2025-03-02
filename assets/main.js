@@ -688,7 +688,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
         frequency = airport.groundfreq || 'N/A';
     }
     uptime = ATCs[positionMapping[position]].uptime || 'N/A';
-
+    console.log(ATCs[positionMapping[position]])
     // Verifica se o controlador é um usuário especial
     const specialUser = Object.keys(specialUsers).find(user => user === atcName);
     const specialTag = specialUser ? `<div class="special-tag">${specialUsers[specialUser][0].Role}</div>` : '';
