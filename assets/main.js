@@ -511,21 +511,23 @@ function drawNavaids() {
 	});
 }
 
-// Função para atualizar a posição do aeroporto
 function updatePosition(airportUI, airport) {
-	if (scale < airport.scale) {
-		airportUI.style.display = 'none';
-		return;
-	} else {
-		airportUI.style.display = 'block';
-	}
+    const atcs = getOnlineATCs(airport.real_name);
+    const hasATCOnline = atcs.CTR.length > 0 || atcs.APP.length > 0 || atcs.TWR.length > 0 || atcs.GND.length > 0;
 
-	const [x, y] = transformCoordinates(airport.coordinates);
-	const uiWidth = airportUI.offsetWidth;
-	const uiHeight = airportUI.offsetHeight;
+    if (scale < airport.scale && !hasATCOnline) {
+        airportUI.style.display = 'none';
+        return;
+    } else {
+        airportUI.style.display = 'block';
+    }
 
-	airportUI.style.left = `${x - uiWidth / 2}px`;
-	airportUI.style.top = `${y + uiHeight / 2}px`;
+    const [x, y] = transformCoordinates(airport.coordinates);
+    const uiWidth = airportUI.offsetWidth;
+    const uiHeight = airportUI.offsetHeight;
+
+    airportUI.style.left = `${x - uiWidth / 2}px`;
+    airportUI.style.top = `${y + uiHeight / 2}px`;
 }
 
 function updateAllAirportsUI() {
