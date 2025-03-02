@@ -140,9 +140,23 @@ function updateOnlineATCs(atcList) {
     onlineATCs = {};
 
     atcList.forEach(atcData => {
-        const { holder, claimable, airport, position, uptime } = atcData;
-
+        const { holder, claimable, airport, position, uptime, frequency: initialFrequency } = atcData;
         if (claimable) return;
+
+        let frequency = initialFrequency;
+
+        if (!frequency) {
+            controlAreas.forEach(area => {
+                if (area.type === 'Airport' && area.real_name === airport) {
+                    const position2 = positionMapping[position];
+                    if (position2 === 'CTR' || position2 === 'APP' || position2 === 'TWR') {
+                        frequency = area.towerfreq;
+                    } else {
+                        frequency = area.groundfreq;
+                    }
+                }
+            });
+        }
 
         const mappedPosition = positionMapping[position];
         if (!mappedPosition) {
@@ -151,10 +165,10 @@ function updateOnlineATCs(atcList) {
         }
 
         if (!onlineATCs[airport]) {
-            onlineATCs[airport] = { TWR: [], GND: [], APP: [], CTR: [], DEL: [], ATS: [] };
+            onlineATCs[airport] = { CTR: [], APP: [], TWR: [], GND: [], DEL: [], ATS: [] };
         }
 
-        onlineATCs[airport][mappedPosition].push({ holder, uptime });
+        onlineATCs[airport][mappedPosition].push({ holder, uptime, frequency });
     });
 }
 
@@ -672,23 +686,16 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     const ATCs = getOnlineATCs(airport.real_name);
     console.log(ATCs);
 
-    if (position === 'tower') {
-        atcName = airport.towerAtc || 'N/A';
-        frequency = airport.towerfreq || 'N/A';
-    } else if (position === 'control') {
+    if (position === 'control') {
         position = 'tower'; //REMOVE FOR MULTI-POSITION
-        atcName = airport.towerAtc || 'N/A';
-        frequency = airport.towerfreq || 'N/A';
     } else if (position === 'approach') {
         position = 'tower'; //REMOVE FOR MULTI-POSITION
-        atcName = airport.towerAtc || 'N/A';
-        frequency = airport.towerfreq || 'N/A';
-    } else if (position === 'ground') {
-        atcName = airport.groundAtc || 'N/A';
-        frequency = airport.groundfreq || 'N/A';
     }
+
+    atcName = ATCs[positionMapping[position]][0].holder || 'N/A';
+    frequency = ATCs[positionMapping[position]][0].frequency || 'N/A';
     uptime = ATCs[positionMapping[position]][0].uptime || 'N/A';
-    console.log(ATCs[positionMapping[position]])
+
     // Verifica se o controlador é um usuário especial
     const specialUser = Object.keys(specialUsers).find(user => user === atcName);
     const specialTag = specialUser ? `<div class="special-tag">${specialUsers[specialUser][0].Role}</div>` : '';
