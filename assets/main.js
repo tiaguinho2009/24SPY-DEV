@@ -676,9 +676,11 @@ function showInfoMenu(badge, airport, menu, airportUI) {
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
     } else if (position === 'control') {
+        position = 'tower'; //REMOVE FOR MULTI-POSITION
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
     } else if (position === 'approach') {
+        position = 'tower'; //REMOVE FOR MULTI-POSITION
         atcName = airport.towerAtc || 'N/A';
         frequency = airport.towerfreq || 'N/A';
     } else if (position === 'ground') {
