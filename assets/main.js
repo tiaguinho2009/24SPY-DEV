@@ -226,7 +226,6 @@ function draw() {
     updateAllAirportsUI();
 }
 
-// Função para desenhar áreas de controle
 function drawControlAreas() {
     // Desenho das polylines
     controlAreas.forEach(area => {
@@ -266,11 +265,13 @@ function drawControlAreas() {
 
             // Verifica se algum aeroporto possui o valor "ctr" ou "app" igual ao nome da área e "tower" ativo
             controlAreas.forEach(airport => {
-                if (airport.type === 'Airport' && airport.tower) {
-                    if (airport.ctr === area.name) {
+                if (airport.type === 'Airport') {
+                    const atcs = getOnlineATCs(airport.real_name);
+
+                    if (atcs.CTR.length > 0 && airport.ctr === area.name) {
                         drawCTR = true;
                     }
-                    if (airport.app === area.name) {
+                    if (atcs.APP.length > 0 && airport.app === area.name) {
                         drawAPP = true;
                     }
                 }
@@ -541,42 +542,41 @@ function updateAllAirportsUI() {
 const icaoMenuCount = 0;
 
 function highlightCTR(ctrName) {
-	controlAreas.forEach(area => {
-		if (area.type === 'polygon' && area.name === ctrName) {
-			area.originalFillColor = area.fillColor;
-			area.fillColor = 'rgba(0, 255, 125, 0.075)';
-			draw();
-		}
-	});
+    controlAreas.forEach(area => {
+        if (area.type === 'polygon' && area.name === ctrName) {
+            area.originalFillColor = area.fillColor;
+            area.fillColor = 'rgba(0, 255, 125, 0.075)';
+            draw();
+        }
+    });
 }
 
 function resetCTRHighlight(ctrName) {
-	controlAreas.forEach(area => {
-		if (area.type === 'polygon' && area.name === ctrName) {
-			area.fillColor = area.originalFillColor;
-			draw();
-		}
-	});
+    controlAreas.forEach(area => {
+        if (area.type === 'polygon' && area.name === ctrName) {
+            area.fillColor = area.originalFillColor;
+            draw();
+        }
+    });
 }
 
-// Funções para destaque de APP
 function highlightAPP(appName) {
-	controlAreas.forEach(area => {
-		if (area.type === 'polygon' && area.name === appName) {
-			area.originalFillColor = area.fillColor;
-			area.fillColor = 'rgba(255, 122, 0, 0.1)';
-			draw();
-		}
-	});
+    controlAreas.forEach(area => {
+        if (area.type === 'polygon' && area.name === appName) {
+            area.originalFillColor = area.fillColor;
+            area.fillColor = 'rgba(255, 122, 0, 0.1)';
+            draw();
+        }
+    });
 }
 
 function resetAPPHighlight(appName) {
-	controlAreas.forEach(area => {
-		if (area.type === 'polygon' && area.name === appName) {
-			area.fillColor = area.originalFillColor;
-			draw();
-		}
-	});
+    controlAreas.forEach(area => {
+        if (area.type === 'polygon' && area.name === appName) {
+            area.fillColor = area.originalFillColor;
+            draw();
+        }
+    });
 }
 
 function createAirportUI(airport) {
@@ -618,11 +618,13 @@ function createAirportElement(airport) {
 }
 
 function generateBadges(airport) {
+    const atcs = getOnlineATCs(airport.real_name);
+
     return `
-        ${airport.ctr && airport.tower ? '<div class="badge C">C</div>' : ''}
-        ${airport.app && airport.tower && !airport.ctr ? '<div class="badge A">A</div>' : ''}
-        ${!airport.ctr && !airport.app && airport.tower ? '<div class="badge T">T</div>' : ''}
-        ${airport.ground ? '<div class="badge G">G</div>' : ''}
+        ${atcs.CTR.length > 0 ? '<div class="badge C">C</div>' : ''}
+        ${atcs.APP.length > 0 ? '<div class="badge A">A</div>' : ''}
+        ${atcs.TWR.length > 0 ? '<div class="badge T">T</div>' : ''}
+        ${atcs.GND.length > 0 ? '<div class="badge G">G</div>' : ''}
     `;
 }
 
@@ -698,26 +700,19 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 }
 
 function showInfoMenu(badge, airport, menu, airportUI) {
-    const positions = { C: 'control', A: 'approach', T: 'tower', G: 'ground', D: 'delivery' };
-    let position = positions[badge.classList[1]] || 'Unknown';
-    let position2
+    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery' };
+    const position = positions[badge.classList[1]] || 'Unknown';
     let atcName = 'N/A';
     let frequency = 'N/A';
     let uptime = 'N/A';
     const ATCs = getOnlineATCs(airport.real_name);
     console.log(ATCs);
 
-    if (position === 'control') {
-        position2 = 'tower'; //REMOVE FOR MULTI-POSITION
-    } else if (position === 'approach') {
-        position2 = 'tower'; //REMOVE FOR MULTI-POSITION
-    } else {
-        position2 = position;
+    if (ATCs[positionMapping[position.toLowerCase()]] && ATCs[positionMapping[position.toLowerCase()]].length > 0) {
+        atcName = ATCs[positionMapping[position.toLowerCase()]][0].holder || 'N/A';
+        frequency = ATCs[positionMapping[position.toLowerCase()]][0].frequency || 'N/A';
+        uptime = ATCs[positionMapping[position.toLowerCase()]][0].uptime || 'N/A';
     }
-
-    atcName = ATCs[positionMapping[position2]][0].holder || 'N/A';
-    frequency = ATCs[positionMapping[position2]][0].frequency || 'N/A';
-    uptime = ATCs[positionMapping[position2]][0].uptime || 'N/A';
 
     const baseName = atcName.split(' | ')[0];
     const specialUser = isSpecialUser(baseName);
