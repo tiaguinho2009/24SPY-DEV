@@ -665,7 +665,7 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 
 function showInfoMenu(badge, airport, menu, airportUI) {
     const positions = { C: 'control', A: 'approach', T: 'tower', G: 'ground' };
-    const position = positions[badge.classList[1]] || 'Unknown';
+    let position = positions[badge.classList[1]] || 'Unknown';
     let atcName = 'N/A';
     let frequency = 'N/A';
     let uptime = 'N/A';
