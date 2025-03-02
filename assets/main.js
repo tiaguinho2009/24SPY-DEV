@@ -27,6 +27,20 @@ const positionMapping = {
     ats: 'ATS'
 };
 
+const positionMapping2 = {
+    CTR: 'CTR',
+    OCA: 'CTR',
+    OCC: 'CTR',
+    APP: 'APP',
+    DEP: 'APP',
+    DIR: 'APP',
+    TWR: 'TWR',
+    RDO: 'TWR',
+    GND: 'GND',
+    DEL: 'DEL',
+    ATS: 'ATS'
+}
+
 const sortedAirports = controlAreas
 	.filter(area => area.type === "Airport")
 	.map(area => area.name)
@@ -664,7 +678,8 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         C: { condition: airport.ctr, highlight: highlightCTR, reset: resetCTRHighlight },
         A: { condition: airport.app, highlight: highlightAPP, reset: resetAPPHighlight },
         T: { condition: airport.tower },
-        G: { condition: airport.ground }
+        G: { condition: airport.ground },
+        D: { condition: airport.delivery }
     };
 
     Object.entries(badges).forEach(([key, { condition, highlight, reset }]) => {

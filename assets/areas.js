@@ -830,7 +830,6 @@ const controlAreas = [
         name: "IPPH",
         real_name: "Perth",
         type: "Airport",
-        app: "IPPH APP",
         originalscale: 0,
         scale: 0,
         coordinates: [796,362],
@@ -839,6 +838,7 @@ const controlAreas = [
         tower: false,
         ground: false,
         ctr: "IPPH CTR",
+        app: "IPPH APP",
         towerATC: "",
         groundATC: "",
         atcs: [
