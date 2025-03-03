@@ -609,7 +609,7 @@ function createAirportElement(airport) {
     `;
 
     if (airportUI.querySelector('.badge')) {
-        airportUI.style.backgroundColor = "rgba(40, 40, 55, 0.5)";
+        airportUI.style.backgroundColor = "rgba(40, 40, 55, 0.3)";
         airportUI.style.color = "#ffffff";
         
         const icaoButton = airportUI.querySelector('.icao-code');
