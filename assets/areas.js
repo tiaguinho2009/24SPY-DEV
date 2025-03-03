@@ -1,4 +1,77 @@
-let PTFSAPIError = []
+let PTFSAPIError = [
+    {
+      "holder": "willingpankakes2053",
+      "claimable": false,
+      "airport": "Rockford",
+      "position": "control",
+      "uptime": "00:28",
+      "onlineSince": "2025-03-03T17:47:20.127Z"
+    },
+    {
+      "holder": "willingpankakes2053",
+      "claimable": false,
+      "airport": "Rockford",
+      "position": "approach",
+      "uptime": "00:28",
+      "onlineSince": "2025-03-03T17:47:20.127Z"
+    },
+    {
+      "holder": "willingpankakes2053",
+      "claimable": false,
+      "airport": "Rockford",
+      "position": "tower",
+      "uptime": "00:28",
+      "onlineSince": "2025-03-03T17:47:20.127Z"
+    },
+    {
+      "holder": "willingpankakes2053",
+      "claimable": false,
+      "airport": "Rockford",
+      "position": "ground",
+      "uptime": "00:28",
+      "onlineSince": "2025-03-03T17:47:20.127Z"
+    },
+    {
+      "holder": "willingpankakes2053",
+      "claimable": false,
+      "airport": "Rockford",
+      "position": "delivery",
+      "uptime": "00:28",
+      "onlineSince": "2025-03-03T17:47:20.127Z"
+    },
+    {
+      "holder": "Charisios10 | IZOL_CTR",
+      "claimable": false,
+      "airport": "Izolirani",
+      "position": "control",
+      "uptime": "00:10",
+      "onlineSince": "2025-03-03T18:05:50.153Z"
+    },
+    {
+      "holder": "Ninjakitpard",
+      "claimable": false,
+      "airport": "Tokyo",
+      "position": "control",
+      "uptime": "00:12",
+      "onlineSince": "2025-03-03T18:03:50.122Z"
+    },
+    {
+      "holder": "Mr_richWho | IPPH_CTR",
+      "claimable": false,
+      "airport": "Perth",
+      "position": "control",
+      "uptime": "00:50",
+      "onlineSince": "2025-03-03T17:25:50.135Z"
+    },
+    {
+      "holder": "MD_590",
+      "claimable": false,
+      "airport": "Saint Barthélemy",
+      "position": "control",
+      "uptime": "00:05",
+      "onlineSince": "2025-03-03T18:10:49.945Z"
+    }
+  ]
 let PTFSAPI = []
 
 const controlAreas = [

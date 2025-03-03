@@ -715,7 +715,7 @@ canvas {
     background-color: #3b6cec;
 }
 
-.airport-ui .badge.A[data-type="Approach"] {
+.airport-ui .badge.A {
     background-color: #ff7a00;
 }
 
@@ -740,7 +740,7 @@ canvas {
     background-color: #497dff;
 }
 
-.airport-ui .badge.A[data-type="Approach"]:hover {
+.airport-ui .badge.A:hover {
     background-color: #e66900;
 }
 

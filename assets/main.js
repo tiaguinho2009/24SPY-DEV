@@ -681,18 +681,18 @@ function toggleIcaoMenu(menu, airport) {
 }
 
 function addBadgeEventListeners(airport, airportUI, infoMenu) {
+    const atcs = getOnlineATCs(airport.real_name);
     const badges = {
-        C: { condition: airport.ctr, highlight: highlightCTR, reset: resetCTRHighlight },
-        A: { condition: airport.app, highlight: highlightAPP, reset: resetAPPHighlight },
-        T: { condition: airport.tower },
-        G: { condition: airport.ground },
-        D: { condition: airport.delivery }
+        C: { condition: atcs.CTR.length > 0, highlight: highlightCTR, reset: resetCTRHighlight },
+        A: { condition: atcs.APP.length > 0, highlight: highlightAPP, reset: resetAPPHighlight },
+        T: { condition: atcs.TWR.length > 0 },
+        G: { condition: atcs.GND.length > 0 },
+        D: { condition: atcs.DEL.length > 0 }
     };
 
-    Object.entries(badges).forEach(([key, { condition, highlight, reset, type }]) => {
+    Object.entries(badges).forEach(([key, { condition, highlight, reset }]) => {
         const badge = airportUI.querySelector(`.badge.${key}`);
         if (badge && condition) {
-            badge.dataset.type = type || key.toLowerCase(); // Adiciona o tipo de posição como um atributo de dados
             badge.addEventListener('mouseenter', () => {
                 showInfoMenu(badge, airport, infoMenu, airportUI);
                 if (highlight) highlight(condition);
@@ -712,7 +712,6 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     let frequency = 'N/A';
     let uptime = 'N/A';
     const ATCs = getOnlineATCs(airport.real_name);
-    console.log(ATCs);
 
     if (ATCs[positionMapping[position.toLowerCase()]] && ATCs[positionMapping[position.toLowerCase()]].length > 0) {
         atcName = ATCs[positionMapping[position.toLowerCase()]][0].holder || 'N/A';
@@ -1393,7 +1392,6 @@ async function fetchATCDataAndUpdate() {
         mapUpdateTime.style.backgroundColor = '#ff7a00';
         mapUpdateTime.style.color = '#ffffff'; // Muda a cor do texto para branco
     }
-
     toggleUpdateClass();
 
     let localCachedURL = localStorage.getItem("cachedDynamicURL");
@@ -1412,8 +1410,24 @@ async function fetchATCDataAndUpdate() {
     if (!data) data = await fetchATCData(defaultURL);
 
     if (data) {
-        PTFSAPI = data;
-        processATCData(PTFSAPI);
+        const newATCList = data;
+        const newATCCount = newATCList.length;
+        const currentATCCount = Object.values(onlineATCs).reduce((count, atcs) => {
+            return count + Object.values(atcs).flat().length;
+        }, 0);
+
+        if (newATCCount !== currentATCCount) {
+            PTFSAPI = newATCList;
+            processATCData(PTFSAPI);
+        } else {
+            const newATCNames = newATCList.map(atc => atc.holder).sort().join(',');
+            const currentATCNames = Object.values(onlineATCs).flatMap(atcs => Object.values(atcs).flat().map(atc => atc.holder)).sort().join(',');
+
+            if (newATCNames !== currentATCNames) {
+                PTFSAPI = newATCList;
+                processATCData(PTFSAPI);
+            }
+        }
     } else {
         if (!window.location.href.includes('DEV')) {
             await showMessage('Server Error', 'Couldn’t get the info from the server, please check your internet connection.', 'Retry');
