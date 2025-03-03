@@ -731,10 +731,6 @@ canvas {
     background-color: #174acf;
 }
 
-.airport-ui .badge.A[data-type="ATIS"] {
-    background-color: #fbff00;
-}
-
 .airport-ui .badge:hover {
     transform: scale(1.1);
     z-index: 11;
@@ -758,10 +754,6 @@ canvas {
 
 .airport-ui .badge.D:hover {
     background-color: #3b6cec;
-}
-
-.airport-ui .badge.A[data-type="ATIS"]:hover {
-    background-color: #e6b800;
 }
 
 .highlight {

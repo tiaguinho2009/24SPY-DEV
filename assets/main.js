@@ -630,7 +630,6 @@ function generateBadges(airport) {
         ${atcs.TWR.length > 0 ? '<div class="badge T" data-type="Tower">T</div>' : ''}
         ${atcs.GND.length > 0 ? '<div class="badge G" data-type="Ground">G</div>' : ''}
         ${atcs.DEL.length > 0 ? '<div class="badge D" data-type="Delivery">D</div>' : ''}
-        ${atcs.ATS.length > 0 ? '<div class="badge A" data-type="ATIS">A</div>' : ''}
     `;
 }
 
@@ -687,8 +686,7 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         A: { condition: airport.app, highlight: highlightAPP, reset: resetAPPHighlight },
         T: { condition: airport.tower },
         G: { condition: airport.ground },
-        D: { condition: airport.delivery },
-        A2: { condition: airport.atis, type: 'ATIS' } // Usando A2 para ATIS
+        D: { condition: airport.delivery }
     };
 
     Object.entries(badges).forEach(([key, { condition, highlight, reset, type }]) => {
