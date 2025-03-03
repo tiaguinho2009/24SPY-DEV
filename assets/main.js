@@ -719,29 +719,36 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 function showInfoMenu(badge, airport, menu, airportUI) {
     const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery' };
     const position = positions[badge.classList[1]] || 'Unknown';
-    let atcName = 'N/A';
-    let frequency = 'N/A';
-    let uptime = 'N/A';
     const ATCs = getOnlineATCs(airport.real_name);
+    const atcList = ATCs[positionMapping[position.toLowerCase()]] || [];
 
-    if (ATCs[positionMapping[position.toLowerCase()]] && ATCs[positionMapping[position.toLowerCase()]].length > 0) {
-        atcName = ATCs[positionMapping[position.toLowerCase()]][0].holder || 'N/A';
-        frequency = ATCs[positionMapping[position.toLowerCase()]][0].frequency || 'N/A';
-        uptime = ATCs[positionMapping[position.toLowerCase()]][0].uptime || 'N/A';
-    }
+    let infoSections = '';
 
-    const baseName = atcName.split(' | ')[0];
-    const specialUser = isSpecialUser(baseName);
-    const specialTag = specialUser ? `<div class="special-tag">${specialUsers[baseName][0].Role}</div>` : '';
+    atcList.forEach(atc => {
+        const atcName = atc.holder || 'N/A';
+        const frequency = atc.frequency || 'N/A';
+        const uptime = atc.uptime || 'N/A';
+
+        const baseName = atcName.split(' | ')[0];
+        const specialUser = isSpecialUser(baseName);
+        const specialTag = specialUser ? `<div class="special-tag">${specialUsers[baseName][0].Role}</div>` : '';
+
+        infoSections += `
+            <div class="controller-info-section">
+                <p><strong>Controller:</strong> ${atcName}</p>
+                <p><strong>Frequency:</strong> ${frequency}</p>
+                <p><strong>Online:</strong> ${uptime}</p>
+                ${specialTag}
+            </div>
+        `;
+    });
 
     menu.style.display = 'block';
     menu.innerHTML = `
-        <div class="title">${airport.real_name} ${position} ${specialTag}</div>
+        <div class="title">${airport.real_name} ${position}</div>
         <hr class="menu-divider">
-        <div class="controller-info-section">
-            <p><strong>Controller:</strong> ${atcName}</p>
-            <p><strong>Frequency:</strong> ${frequency}</p>
-            <p><strong>Online:</strong> ${uptime}</p>
+        <div class="info-sections">
+            ${infoSections}
         </div>
     `;
     positionInfoMenu(menu, airportUI);
@@ -1460,6 +1467,7 @@ async function fetchATCDataAndUpdate() {
     // Restaura a cor do mapUpdateTime ao final de todas as operações
     const mapUpdateTime = document.getElementById('mapUpdateTime');
     setTimeout(() => {
+        PTFSAPI = PTFSAPIError;processATCData(PTFSAPI);
         mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)';
         mapUpdateTime.style.color = ''; // Restaura a cor do texto ao valor padrão
     }, 150);

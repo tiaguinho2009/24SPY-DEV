@@ -839,7 +839,7 @@ canvas {
     position: absolute;
     background-color: #131316;
     color: #fff;
-    padding: 10px;
+    padding: 10px 10px 5px 10px;
     border-radius: 5px;
     font-size: 1em;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
@@ -919,7 +919,13 @@ canvas {
     display: inline-block;
 }
 
-/* Estilo da seção de informações do controlador */
+.info-sections {
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-color: #3b6cec transparent;
+    scrollbar-width: thin;
+}
+
 .controller-info-section {
     background-color: rgba(32,32,36,1);
     border-radius: 5px;
