@@ -27,14 +27,6 @@ let PTFSAPIError = [
       "holder": "willingpankakes2053",
       "claimable": false,
       "airport": "Rockford",
-      "position": "approach",
-      "uptime": "00:28",
-      "onlineSince": "2025-03-03T17:47:20.127Z"
-    },
-    {
-      "holder": "willingpankakes2053",
-      "claimable": false,
-      "airport": "Rockford",
       "position": "tower",
       "uptime": "00:28",
       "onlineSince": "2025-03-03T17:47:20.127Z"
@@ -51,7 +43,7 @@ let PTFSAPIError = [
       "holder": "willingpankakes2053",
       "claimable": false,
       "airport": "Rockford",
-      "position": "delivery",
+      "position": "atis",
       "uptime": "00:28",
       "onlineSince": "2025-03-03T17:47:20.127Z"
     },

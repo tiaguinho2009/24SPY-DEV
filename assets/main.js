@@ -635,6 +635,7 @@ function generateBadges(airport) {
         ${atcs.TWR.length > 0 ? '<div class="badge T" data-type="Tower">T</div>' : ''}
         ${atcs.GND.length > 0 ? '<div class="badge G" data-type="Ground">G</div>' : ''}
         ${atcs.DEL.length > 0 ? '<div class="badge D" data-type="Delivery">D</div>' : ''}
+        ${atcs.ATS.length > 0 ? '<div class="badge S" data-type="ATIS">A</div>' : ''}
     `;
 }
 
@@ -685,6 +686,78 @@ function toggleIcaoMenu(menu, airport) {
     }
 }
 
+function calculateBoundingArea(div1, div2, indication) {
+    const rect1 = div1.getBoundingClientRect();
+    const rect2 = div2.getBoundingClientRect();
+    let vertices = []
+
+    if (indication === 'top') {
+        vertices = [
+            { x: rect1.left, y: rect1.bottom },
+            { x: rect1.left, y: rect1.top },
+            { x: rect1.right, y: rect1.top },
+            { x: rect1.right, y: rect1.bottom },
+            { x: rect2.right, y: rect2.top },
+            { x: rect2.right, y: rect2.bottom },
+            { x: rect2.left, y: rect2.bottom },
+            { x: rect2.left, y: rect2.top },
+        ];
+    } else if (indication === 'bottom') {
+        vertices = [
+            { x: rect2.right, y: rect2.top },
+            { x: rect2.right, y: rect2.bottom },
+            { x: rect1.right, y: rect1.top },
+            { x: rect1.right, y: rect1.bottom },
+            { x: rect1.left, y: rect1.bottom },
+            { x: rect1.left, y: rect1.top },
+            { x: rect2.left, y: rect2.bottom },
+            { x: rect2.left, y: rect2.top }
+        ];
+    }
+    
+    return vertices;
+}
+
+function isMouseOutsideArea(event, vertices) {
+    const { clientX: x, clientY: y } = event;
+
+    function isPointInPolygon(point, polygon) {
+        let isInside = false;
+        for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+            const xi = polygon[i].x, yi = polygon[i].y;
+            const xj = polygon[j].x, yj = polygon[j].y;
+
+            const intersect = ((yi > point.y) !== (yj > point.y)) &&
+                (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi);
+            if (intersect) isInside = !isInside;
+        }
+        return !isInside;
+    }
+
+    return isPointInPolygon({ x, y }, vertices);
+}
+
+function addMouseLeaveListener(div1, div2, callback) {
+    const vertices = calculateBoundingArea(div1, div2, 'top');
+
+    function onMouseMove(event) {
+        if (isMouseOutsideArea(event, vertices)) {
+            callback();
+            document.removeEventListener('mousemove', onMouseMove);
+        }
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    return onMouseMove;
+}
+
+function resetMenuAndListeners(currentMouseMoveListener) {
+    if (currentMouseMoveListener) {
+        document.removeEventListener('mousemove', currentMouseMoveListener);
+    }
+    hideInfoMenu(document.querySelector('.airport-info-menu'));
+}
+
 function addBadgeEventListeners(airport, airportUI, infoMenu) {
     const atcs = getOnlineATCs(airport.real_name);
     const badges = {
@@ -692,32 +765,38 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         A: { condition: atcs.APP.length > 0, highlight: highlightAPP, reset: resetAPPHighlight },
         T: { condition: atcs.TWR.length > 0 },
         G: { condition: atcs.GND.length > 0 },
-        D: { condition: atcs.DEL.length > 0 }
+        D: { condition: atcs.DEL.length > 0 },
+        S: { condition: atcs.ATS.length > 0 } // Adicionando a condição para ATIS
     };
+
+    let currentMouseMoveListener = null;
 
     Object.entries(badges).forEach(([key, { condition, highlight, reset }]) => {
         const badge = airportUI.querySelector(`.badge.${key}`);
         if (badge && condition) {
             badge.addEventListener('mouseenter', () => {
+                resetMenuAndListeners(currentMouseMoveListener);
                 showInfoMenu(badge, airport, infoMenu, airportUI);
+                resetHighlights();
                 if (highlight) highlight(airport);
                 if (dataIsFrom === 'ATC24' && key === 'C') {
                     highlightAPP(airport);
                 }
-            });
-            badge.addEventListener('mouseleave', () => {
-                hideInfoMenu(infoMenu);
-                if (reset) reset(airport);
-                if (dataIsFrom === 'ATC24' && key === 'C') {
-                    resetAPPHighlight(airport);
-                }
+
+                currentMouseMoveListener = addMouseLeaveListener(badge, infoMenu, () => {
+                    hideInfoMenu(infoMenu);
+                    if (reset) reset(airport);
+                    if (dataIsFrom === 'ATC24' && key === 'C') {
+                        resetAPPHighlight(airport);
+                    }
+                });
             });
         }
     });
 }
 
 function showInfoMenu(badge, airport, menu, airportUI) {
-    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery' };
+    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery', S: 'ATIS' };
     const position = positions[badge.classList[1]] || 'Unknown';
     const ATCs = getOnlineATCs(airport.real_name);
     const atcList = ATCs[positionMapping[position.toLowerCase()]] || [];

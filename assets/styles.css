@@ -731,6 +731,10 @@ canvas {
     background-color: #174acf;
 }
 
+.airport-ui .badge.S {
+    background-color: #ecb549;
+}
+
 .airport-ui .badge:hover {
     transform: scale(1.1);
     z-index: 11;
@@ -754,6 +758,10 @@ canvas {
 
 .airport-ui .badge.D:hover {
     background-color: #3b6cec;
+}
+
+.airport-ui .badge.S:hover {
+    background-color: #ffbe3c;
 }
 
 .highlight {
@@ -924,6 +932,7 @@ canvas {
     overflow-y: auto;
     scrollbar-color: #3b6cec transparent;
     scrollbar-width: thin;
+    margin-bottom: 5px;
 }
 
 .controller-info-section {
@@ -932,6 +941,11 @@ canvas {
     padding: 10px;
     margin-top: 5px;
     text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.controller-info-section:hover {
+    background-color: rgba(40, 40, 45, 1);
 }
 
 .controller-info-section p {
