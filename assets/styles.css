@@ -654,8 +654,10 @@ canvas {
     color: #7d7d85;
     font-size: 0.85em;
     text-align: center;
-    width: 50px;
     z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .airport-ui .icao-code {
@@ -677,8 +679,11 @@ canvas {
     color: #dcdcdc;
 }
 
-.airport-ui p {
-    margin: 5px 0;
+.airport-ui .badges-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
 
 .airport-ui .badge {
@@ -686,14 +691,22 @@ canvas {
     width: 20px;
     height: 20px;
     line-height: 20px;      /* Centraliza verticalmente o texto */
-    margin: 0px;
     text-align: center;     /* Centraliza horizontalmente */
-    border-radius: 5px;
     color: #fff;
     cursor: pointer;        /* Mostra que é interativo */
     pointer-events: auto;   /* Permite interações de hover */
     position: relative;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.airport-ui .badge:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.airport-ui .badge:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .airport-ui .badge.C {
@@ -718,6 +731,11 @@ canvas {
 
 .airport-ui .badge.A[data-type="ATIS"] {
     background-color: #ff00ff;
+}
+
+.airport-ui .badge:hover {
+    transform: scale(1.1);
+    z-index: 11;
 }
 
 .airport-ui .badge.C:hover {

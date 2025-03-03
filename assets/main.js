@@ -603,7 +603,9 @@ function createAirportElement(airport) {
     airportUI.style.zIndex = 10 + (3 - airport.originalscale);
     airportUI.innerHTML = `
         <button class="icao-code">${airport.name}</button>
-        ${generateBadges(airport)}
+        <div class="badges-container">
+            ${generateBadges(airport)}
+        </div>
     `;
 
     if (airportUI.querySelector('.badge')) {
@@ -686,7 +688,7 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         T: { condition: airport.tower },
         G: { condition: airport.ground },
         D: { condition: airport.delivery },
-        A: { condition: airport.atis, type: 'ATIS' }
+        A2: { condition: airport.atis, type: 'ATIS' } // Usando A2 para ATIS
     };
 
     Object.entries(badges).forEach(([key, { condition, highlight, reset, type }]) => {
@@ -706,18 +708,18 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 }
 
 function showInfoMenu(badge, airport, menu, airportUI) {
-    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery', A: 'ATIS' };
-    const position = positions[badge.dataset.type] || 'Unknown';
+    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery' };
+    const position = positions[badge.classList[1]] || 'Unknown';
     let atcName = 'N/A';
     let frequency = 'N/A';
     let uptime = 'N/A';
     const ATCs = getOnlineATCs(airport.real_name);
     console.log(ATCs);
 
-    if (ATCs[positionMapping[position]] && ATCs[positionMapping[position]].length > 0) {
-        atcName = ATCs[positionMapping[position]][0].holder || 'N/A';
-        frequency = ATCs[positionMapping[position]][0].frequency || 'N/A';
-        uptime = ATCs[positionMapping[position]][0].uptime || 'N/A';
+    if (ATCs[positionMapping[position.toLowerCase()]] && ATCs[positionMapping[position.toLowerCase()]].length > 0) {
+        atcName = ATCs[positionMapping[position.toLowerCase()]][0].holder || 'N/A';
+        frequency = ATCs[positionMapping[position.toLowerCase()]][0].frequency || 'N/A';
+        uptime = ATCs[positionMapping[position.toLowerCase()]][0].uptime || 'N/A';
     }
 
     const baseName = atcName.split(' | ')[0];
@@ -1362,7 +1364,7 @@ async function fetchDynamicURL() {
         const dynamicURLMatch = repositoryContent.match(/https?:\/\/[\w.-]+\.trycloudflare\.com/g);
         
         if (dynamicURLMatch && dynamicURLMatch.length > 0) {
-            cachedDynamicURL = dynamicURLMatch[0] + '/api/controllers/test';
+            cachedDynamicURL = dynamicURLMatch[0] + '/api/controllers';
             localStorage.setItem("cachedDynamicURL", cachedDynamicURL);
         } else {
             throw new Error('Nenhuma URL dinâmica encontrada no repositório.');
