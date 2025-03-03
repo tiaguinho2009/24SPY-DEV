@@ -1393,8 +1393,10 @@ async function fetchATCDataAndUpdate() {
     function toggleUpdateClass() {
         const mapUpdateTime = document.getElementById('mapUpdateTime');
         mapUpdateTime.style.backgroundColor = '#ff7a00';
-        setTimeout(() => mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)', 150);
+        mapUpdateTime.style.color = '#ffffff'; // Muda a cor do texto para branco
     }
+
+    toggleUpdateClass();
 
     let localCachedURL = localStorage.getItem("cachedDynamicURL");
     let data = localCachedURL ? await fetchATCData(localCachedURL) : null;
@@ -1414,15 +1416,13 @@ async function fetchATCDataAndUpdate() {
     if (data) {
         PTFSAPI = data;
         processATCData(PTFSAPI);
-        toggleUpdateClass();
     } else {
         if (!window.location.href.includes('DEV')) {
-            showMessage('Server Error', 'Couldn’t get the info from the server, please check your internet connection.', 'Retry')
-                .then(() => fetchATCDataAndUpdate());
+            await showMessage('Server Error', 'Couldn’t get the info from the server, please check your internet connection.', 'Retry');
+            await fetchATCDataAndUpdate();
         }
         PTFSAPI = PTFSAPIError;
         processATCData(PTFSAPI);
-        toggleUpdateClass();
     }
 
     document.querySelector('.mapUpdateTime .time').textContent = ` ${getTime()}`;
@@ -1433,6 +1433,13 @@ async function fetchATCDataAndUpdate() {
             checkUpdate();
         }
     }
+
+    // Restaura a cor do mapUpdateTime ao final de todas as operações
+    const mapUpdateTime = document.getElementById('mapUpdateTime');
+    setTimeout(() => {
+        mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)';
+        mapUpdateTime.style.color = ''; // Restaura a cor do texto ao valor padrão
+    }, 150);
 }
 
 // Função para verificar atualizações
