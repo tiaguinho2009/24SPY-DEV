@@ -11,6 +11,7 @@ let scale = 1;
 let isDragging = false;
 let startX, startY;
 let onlineATC = 0;
+let dataIsFrom = 'ATC24';
 let flightRoute = [];
 let onlineATCs = {};
 
@@ -270,8 +271,12 @@ function drawControlAreas() {
 
                     if (atcs.CTR.length > 0 && airport.ctr === area.name) {
                         drawCTR = true;
+                        
                     }
                     if (atcs.APP.length > 0 && airport.app === area.name) {
+                        drawAPP = true;
+                    }
+                    if (atcs.CTR.length > 0 && airport.app === area.name && dataIsFrom === 'ATC24') {
                         drawAPP = true;
                     }
                 }
@@ -543,9 +548,9 @@ function updateAllAirportsUI() {
 
 const icaoMenuCount = 0;
 
-function highlightCTR(ctrName) {
+function highlightCTR(airport) {
     controlAreas.forEach(area => {
-        if (area.type === 'polygon' && area.name === ctrName) {
+        if (area.type === 'polygon' && area.name === airport.ctr) {
             area.originalFillColor = area.fillColor;
             area.fillColor = 'rgba(0, 255, 125, 0.075)';
             draw();
@@ -553,18 +558,18 @@ function highlightCTR(ctrName) {
     });
 }
 
-function resetCTRHighlight(ctrName) {
+function resetCTRHighlight(airport) {
     controlAreas.forEach(area => {
-        if (area.type === 'polygon' && area.name === ctrName) {
+        if (area.type === 'polygon' && area.name === airport.ctr) {
             area.fillColor = area.originalFillColor;
             draw();
         }
     });
 }
 
-function highlightAPP(appName) {
+function highlightAPP(airport) {
     controlAreas.forEach(area => {
-        if (area.type === 'polygon' && area.name === appName) {
+        if (area.type === 'polygon' && area.name === airport.app) {
             area.originalFillColor = area.fillColor;
             area.fillColor = 'rgba(255, 122, 0, 0.1)';
             draw();
@@ -572,9 +577,9 @@ function highlightAPP(appName) {
     });
 }
 
-function resetAPPHighlight(appName) {
+function resetAPPHighlight(airport) {
     controlAreas.forEach(area => {
-        if (area.type === 'polygon' && area.name === appName) {
+        if (area.type === 'polygon' && area.name === airport.app) {
             area.fillColor = area.originalFillColor;
             draw();
         }
@@ -695,11 +700,17 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         if (badge && condition) {
             badge.addEventListener('mouseenter', () => {
                 showInfoMenu(badge, airport, infoMenu, airportUI);
-                if (highlight) highlight(condition);
+                if (highlight) highlight(airport);
+                if (dataIsFrom === 'ATC24' && key === 'C') {
+                    highlightAPP(airport);
+                }
             });
             badge.addEventListener('mouseleave', () => {
                 hideInfoMenu(infoMenu);
-                if (reset) reset(condition);
+                if (reset) reset(airport);
+                if (dataIsFrom === 'ATC24' && key === 'C') {
+                    resetAPPHighlight(airport);
+                }
             });
         }
     });
