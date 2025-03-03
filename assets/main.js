@@ -1467,7 +1467,7 @@ async function fetchATCDataAndUpdate() {
     // Restaura a cor do mapUpdateTime ao final de todas as operações
     const mapUpdateTime = document.getElementById('mapUpdateTime');
     setTimeout(() => {
-        PTFSAPI = PTFSAPIError;processATCData(PTFSAPI);
+        //PTFSAPI = PTFSAPIError;processATCData(PTFSAPI);
         mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)';
         mapUpdateTime.style.color = ''; // Restaura a cor do texto ao valor padrão
     }, 150);
