@@ -1430,6 +1430,7 @@ function processATCData(atcList) {
 }
 
 let fetchATCDataAndUpdateTimesExecuted = 0;
+let typeOfDataReceivedTimesExecuted = 0;
 
 function getUniqueUserId() {
     let userId = localStorage.getItem("uniqueUserId");
@@ -1480,6 +1481,7 @@ async function fetchATCData(url) {
 }
 
 async function fetchATCDataAndUpdate() {
+    let typeOfDataReceived = '';
     function toggleUpdateClass() {
         const mapUpdateTime = document.getElementById('mapUpdateTime');
         mapUpdateTime.style.backgroundColor = '#ff7a00';
@@ -1496,11 +1498,15 @@ async function fetchATCDataAndUpdate() {
             data = await fetchATCData(cachedDynamicURL);
             if (data) {
                 localStorage.setItem("cachedDynamicURL", cachedDynamicURL);
+                typeOfDataReceived = 'dynamicURL';
             }
         }
     }
 
-    if (!data) data = await fetchATCData(defaultURL);
+    if (!data) {
+        data = await fetchATCData(defaultURL)
+        typeOfDataReceived = 'defaultURL';
+    };
 
     if (data) {
         const newATCList = data;
@@ -1539,13 +1545,18 @@ async function fetchATCDataAndUpdate() {
         }
     }
 
-    // Restaura a cor do mapUpdateTime ao final de todas as operações
     const mapUpdateTime = document.getElementById('mapUpdateTime');
     setTimeout(() => {
-        //PTFSAPI = PTFSAPIError;processATCData(PTFSAPI);
         mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)';
         mapUpdateTime.style.color = ''; // Restaura a cor do texto ao valor padrão
     }, 150);
+    //PTFSAPI = PTFSAPIError;processATCData(PTFSAPI);
+    if (typeOfDataReceived === 'defaultURL' && typeOfDataReceivedTimesExecuted === 0) {
+        typeOfDataReceivedTimesExecuted = 1;
+        showMessage('24SPY API Offline', 'The 24SPY API is currently offline. The data is being fetched from the ATC24 API, some website features may not work correctly.', 'Close', 'Try Again').then(response => {
+            if (response === 2) fetchATCDataAndUpdate();
+        });
+    }
 }
 
 // Função para verificar atualizações
