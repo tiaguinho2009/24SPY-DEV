@@ -1,12 +1,12 @@
 // prevent right click menu from appearing and annoying people - awdev1
 document.addEventListener('contextmenu', function(event) {
-	event.preventDefault();
+    event.preventDefault();
 });
 const canvas = document.getElementById('map');
 const ctx = canvas.getContext('2d');
 
 let offsetX = 0,
-	offsetY = 0;
+    offsetY = 0;
 let scale = 1;
 let isDragging = false;
 let startX, startY;
@@ -43,13 +43,13 @@ const positionMapping2 = {
 }
 
 const sortedAirports = controlAreas
-	.filter(area => area.type === "Airport")
-	.map(area => area.name)
-	.sort();
+    .filter(area => area.type === "Airport")
+    .map(area => area.name)
+    .sort();
 
 const sortedWaypoints = Waypoints
-	.map(wp => wp.name)
-	.sort();
+    .map(wp => wp.name)
+    .sort();
 
 const mapImages = {
     normal: 'PTFS-Map-Grey.png',
@@ -145,17 +145,17 @@ function centerMap() {
 
 // Função de transformação das coordenadas
 function transformCoordinates(coord) {
-	return [
-		coord[0] * scale + offsetX,
-		coord[1] * scale + offsetY
-	];
+    return [
+        coord[0] * scale + offsetX,
+        coord[1] * scale + offsetY
+    ];
 }
 
 function updateOnlineATCs(atcList) {
     onlineATCs = {};
 
     atcList.forEach(atcData => {
-        const { holder, claimable, airport, position, uptime, frequency: initialFrequency } = atcData;
+        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency } = atcData;
         if (claimable) return;
 
         let frequency = initialFrequency;
@@ -183,7 +183,7 @@ function updateOnlineATCs(atcList) {
             onlineATCs[airport] = { CTR: [], APP: [], TWR: [], GND: [], DEL: [], ATS: [] };
         }
 
-        onlineATCs[airport][mappedPosition].push({ holder, uptime, frequency });
+        onlineATCs[airport][mappedPosition].push({ holder, uptime, frequency, code });
     });
 }
 
@@ -362,158 +362,158 @@ function updateATCUI() {
 }
 
 function drawFlightPlan(points) {
-	if (points.length < 2) {
-		return;
-	}
+    if (points.length < 2) {
+        return;
+    }
 
-	ctx.strokeStyle = "#cc4265";
-	ctx.lineWidth = 2;
+    ctx.strokeStyle = "#cc4265";
+    ctx.lineWidth = 2;
 
-	// Fator de escala calculado a partir da referência dada
-	const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
-	const referenceDistanceNM = 1478 / 1852; // 1478 metros em NM (1 NM = 1852 metros)
-	const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
+    // Fator de escala calculado a partir da referência dada
+    const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
+    const referenceDistanceNM = 1478 / 1852; // 1478 metros em NM (1 NM = 1852 metros)
+    const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
 
-	const transformedPoints = points.map(point => ({
-		...point,
-		transformedCoordinates: transformCoordinates(point.coordinates),
-	}));
+    const transformedPoints = points.map(point => ({
+        ...point,
+        transformedCoordinates: transformCoordinates(point.coordinates),
+    }));
 
-	ctx.beginPath();
-	ctx.moveTo(
-		transformedPoints[0].transformedCoordinates[0],
-		transformedPoints[0].transformedCoordinates[1]
-	);
+    ctx.beginPath();
+    ctx.moveTo(
+        transformedPoints[0].transformedCoordinates[0],
+        transformedPoints[0].transformedCoordinates[1]
+    );
 
-	for (let i = 1; i < transformedPoints.length; i++) {
-		const current = transformedPoints[i - 1];
-		const next = transformedPoints[i];
+    for (let i = 1; i < transformedPoints.length; i++) {
+        const current = transformedPoints[i - 1];
+        const next = transformedPoints[i];
 
-		const currentTrans = current.transformedCoordinates;
-		const nextTrans = next.transformedCoordinates;
+        const currentTrans = current.transformedCoordinates;
+        const nextTrans = next.transformedCoordinates;
 
-		// Desenha a linha
-		ctx.lineTo(nextTrans[0], nextTrans[1]);
+        // Desenha a linha
+        ctx.lineTo(nextTrans[0], nextTrans[1]);
 
-		// Calcula o HDG
-		const dx = nextTrans[0] - currentTrans[0];
-		const dy = nextTrans[1] - currentTrans[1];
-		const hdg = Math.round((Math.atan2(dx, -dy) * (180 / Math.PI) + 360) % 360);
+        // Calcula o HDG
+        const dx = nextTrans[0] - currentTrans[0];
+        const dy = nextTrans[1] - currentTrans[1];
+        const hdg = Math.round((Math.atan2(dx, -dy) * (180 / Math.PI) + 360) % 360);
 
-		// Calcula a distância diretamente das coordenadas sem transformá-las
-		const dxRaw = next.coordinates[0] - current.coordinates[0];
-		const dyRaw = next.coordinates[1] - current.coordinates[1];
-		const distanceEuclidean = Math.sqrt(dxRaw ** 2 + dyRaw ** 2);
-		const distanceNM = (distanceEuclidean * scaleFactor).toFixed(2);
+        // Calcula a distância diretamente das coordenadas sem transformá-las
+        const dxRaw = next.coordinates[0] - current.coordinates[0];
+        const dyRaw = next.coordinates[1] - current.coordinates[1];
+        const distanceEuclidean = Math.sqrt(dxRaw ** 2 + dyRaw ** 2);
+        const distanceNM = (distanceEuclidean * scaleFactor).toFixed(2);
 
-		// Chama a função para desenhar as labels secundárias se o zoom for maior que 1
-		if (scale > 0.5) {
-			drawSecondaryLabels(currentTrans, nextTrans, hdg, distanceNM);
-		}
-	}
-	ctx.stroke();
+        // Chama a função para desenhar as labels secundárias se o zoom for maior que 1
+        if (scale > 0.5) {
+            drawSecondaryLabels(currentTrans, nextTrans, hdg, distanceNM);
+        }
+    }
+    ctx.stroke();
 
-	// Desenha os pontos transformados
-	transformedPoints.forEach((point, index) => {
-		const [x, y] = point.transformedCoordinates;
+    // Desenha os pontos transformados
+    transformedPoints.forEach((point, index) => {
+        const [x, y] = point.transformedCoordinates;
 
-		let pointColor;
-		if (index === 0) {
-			pointColor = "#00FF00"; // Verde para o primeiro ponto
-		} else if (index === transformedPoints.length - 1) {
-			pointColor = "#FF0000"; // Vermelho para o último ponto
-		} else {
-			pointColor = point.type === "VOR" ? "#66B2FF" : "#FFFF66";
-		}
+        let pointColor;
+        if (index === 0) {
+            pointColor = "#00FF00"; // Verde para o primeiro ponto
+        } else if (index === transformedPoints.length - 1) {
+            pointColor = "#FF0000"; // Vermelho para o último ponto
+        } else {
+            pointColor = point.type === "VOR" ? "#66B2FF" : "#FFFF66";
+        }
 
-		ctx.beginPath();
-		ctx.arc(x, y, 4, 0, 2 * Math.PI);
-		ctx.fillStyle = pointColor;
-		ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = pointColor;
+        ctx.fill();
 
-		if ((index === 0 || index === transformedPoints.length - 1) && point.type === "Airport") {
-			return;
-		}
+        if ((index === 0 || index === transformedPoints.length - 1) && point.type === "Airport") {
+            return;
+        }
 
-		if (settingsValues.showNavaidsLabels) {
-			ctx.fillStyle = "#FFFFFF";
-			ctx.font = "14px Arial";
-			ctx.fillText(point.name, x + 5, y - 5);
-		}
-	});
+        if (settingsValues.showNavaidsLabels) {
+            ctx.fillStyle = "#FFFFFF";
+            ctx.font = "14px Arial";
+            ctx.fillText(point.name, x + 5, y - 5);
+        }
+    });
 }
 
 function drawSecondaryLabels(currentTrans, nextTrans, hdg, distanceNM) {
-	// Calcula a posição para exibir as labels (meio do segmento)
-	const midX = (currentTrans[0] + nextTrans[0]) / 2;
-	const midY = (currentTrans[1] + nextTrans[1]) / 2;
+    // Calcula a posição para exibir as labels (meio do segmento)
+    const midX = (currentTrans[0] + nextTrans[0]) / 2;
+    const midY = (currentTrans[1] + nextTrans[1]) / 2;
 
-	// Rotaciona o contexto para alinhar com o ângulo da rota
-	ctx.save();
-	ctx.translate(midX, midY);
-	let angle = Math.atan2(nextTrans[1] - currentTrans[1], nextTrans[0] - currentTrans[0]);
-	if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
-		angle += Math.PI; // Inverte para evitar que fique de cabeça para baixo
-	}
-	ctx.rotate(angle);
+    // Rotaciona o contexto para alinhar com o ângulo da rota
+    ctx.save();
+    ctx.translate(midX, midY);
+    let angle = Math.atan2(nextTrans[1] - currentTrans[1], nextTrans[0] - currentTrans[0]);
+    if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+        angle += Math.PI; // Inverte para evitar que fique de cabeça para baixo
+    }
+    ctx.rotate(angle);
 
-	// Desenha o HDG
-	ctx.fillStyle = "#bbbbbb";
-	ctx.font = "12px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText(`${hdg}°`, 0, -5);
+    // Desenha o HDG
+    ctx.fillStyle = "#bbbbbb";
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(`${hdg}°`, 0, -5);
 
-	// Desenha a Distância em NM
-	ctx.fillStyle = "#bbbbbb";
-	ctx.font = "12px Arial";
-	ctx.textAlign = "center";
-	ctx.fillText(`${distanceNM} NM`, 0, 15);
+    // Desenha a Distância em NM
+    ctx.fillStyle = "#bbbbbb";
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(`${distanceNM} NM`, 0, 15);
 
-	// Restaura o contexto
-	ctx.restore();
+    // Restaura o contexto
+    ctx.restore();
 }
 
 function drawNavaids() {
-	if (!settingsValues.showNavaids) {
-		return;
-	}
-	const navaids = [
-		...Waypoints,
-		//...CustomWaypoints
-	];
+    if (!settingsValues.showNavaids) {
+        return;
+    }
+    const navaids = [
+        ...Waypoints,
+        //...CustomWaypoints
+    ];
 
-	navaids.forEach(navaid => {
-		// Filtra apenas os tipos VOR e Waypoint
-		if (navaid.type !== "VOR" && navaid.type !== "Waypoint") {
-			return;
-		}
+    navaids.forEach(navaid => {
+        // Filtra apenas os tipos VOR e Waypoint
+        if (navaid.type !== "VOR" && navaid.type !== "Waypoint") {
+            return;
+        }
 
-		// Verifica se o navaid está na flightRoute
-		const isInFlightRoute = flightRoute.some(routePoint => routePoint.name === navaid.name);
-		if (isInFlightRoute) {
-			return; // Não desenha se estiver na rota
-		}
+        // Verifica se o navaid está na flightRoute
+        const isInFlightRoute = flightRoute.some(routePoint => routePoint.name === navaid.name);
+        if (isInFlightRoute) {
+            return; // Não desenha se estiver na rota
+        }
 
-		// Transforma as coordenadas
-		const [x, y] = transformCoordinates(navaid.coordinates);
+        // Transforma as coordenadas
+        const [x, y] = transformCoordinates(navaid.coordinates);
 
-		// Define a cor baseada no tipo
-		const color = navaid.type === "VOR" ? "#477bb3" : "#BDBD4C"; // VOR azul claro, Waypoint amarelo claro
+        // Define a cor baseada no tipo
+        const color = navaid.type === "VOR" ? "#477bb3" : "#BDBD4C"; // VOR azul claro, Waypoint amarelo claro
 
-		// Desenha a bolinha
-		ctx.beginPath();
-		ctx.arc(x, y, 4, 0, 2 * Math.PI);
-		ctx.fillStyle = color;
-		ctx.fill();
+        // Desenha a bolinha
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
 
-		if (!settingsValues.showNavaidsLabels) {
-			return;
-		}
-		// Adiciona a label
-		ctx.fillStyle = "#bbbbbb";
-		ctx.font = "14px Arial";
-		ctx.fillText(navaid.name, x + 5, y - 5);
-	});
+        if (!settingsValues.showNavaidsLabels) {
+            return;
+        }
+        // Adiciona a label
+        ctx.fillStyle = "#bbbbbb";
+        ctx.font = "14px Arial";
+        ctx.fillText(navaid.name, x + 5, y - 5);
+    });
 }
 
 function updatePosition(airportUI, airport) {
@@ -536,14 +536,14 @@ function updatePosition(airportUI, airport) {
 }
 
 function updateAllAirportsUI() {
-	controlAreas.forEach(area => {
-		if (area.type === 'Airport') {
-			const airportUI = document.querySelector(`.airport-ui[id="${area.name}"]`);
-			if (airportUI) {
-				updatePosition(airportUI, area);
-			}
-		}
-	});
+    controlAreas.forEach(area => {
+        if (area.type === 'Airport') {
+            const airportUI = document.querySelector(`.airport-ui[id="${area.name}"]`);
+            if (airportUI) {
+                updatePosition(airportUI, area);
+            }
+        }
+    });
 }
 
 const icaoMenuCount = 0;
@@ -807,6 +807,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
         const atcName = atc.holder || 'N/A';
         const frequency = atc.frequency || 'N/A';
         const uptime = atc.uptime || 'N/A';
+        const atcCode = atc.code || '';
 
         const baseName = atcName.split(' | ')[0];
         const specialUser = isSpecialUser(baseName);
@@ -814,10 +815,11 @@ function showInfoMenu(badge, airport, menu, airportUI) {
 
         infoSections += `
             <div class="controller-info-section">
+                <p><strong>${atcCode}</strong></p>
                 <p><strong>Controller:</strong> ${atcName}</p>
+                ${specialTag}
                 <p><strong>Frequency:</strong> ${frequency}</p>
                 <p><strong>Online:</strong> ${uptime}</p>
-                ${specialTag}
             </div>
         `;
     });
@@ -917,24 +919,24 @@ canvas.addEventListener('mouseleave', (e) => {
 });
 
 function applyInertia() {
-	// Aplica a inércia até que a velocidade seja insignificante
-	if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
-		offsetX += velocityX;
-		offsetY += velocityY;
+    // Aplica a inércia até que a velocidade seja insignificante
+    if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
+        offsetX += velocityX;
+        offsetY += velocityY;
 
-		// Aplica atrito para reduzir a velocidade gradualmente
-		velocityX *= friction;
-		velocityY *= friction;
+        // Aplica atrito para reduzir a velocidade gradualmente
+        velocityX *= friction;
+        velocityY *= friction;
 
-		draw();
+        draw();
 
-		// Continua a aplicar inércia
-		requestAnimationFrame(applyInertia);
-	} else {
-		// Zera as velocidades quando a inércia para
-		velocityX = 0;
-		velocityY = 0;
-	}
+        // Continua a aplicar inércia
+        requestAnimationFrame(applyInertia);
+    } else {
+        // Zera as velocidades quando a inércia para
+        velocityX = 0;
+        velocityY = 0;
+    }
 }
 
 let isZooming = false;
@@ -958,7 +960,7 @@ function animateZoom(startScale, endScale, startX, endX, startY, endY, duration)
             requestAnimationFrame(animationStep);
         } else {
             isZooming = false;
-			console.log(scale);
+            console.log(scale);
         }
     }
 
@@ -1006,8 +1008,8 @@ canvas.addEventListener('wheel', (e) => {
 
 // Carregar as imagens e inicializar o canvas
 Promise.all([
-	new Promise((resolve) => (mapImageNormal.onload = resolve)),
-	new Promise((resolve) => (mapImageSmallScale.onload = resolve))
+    new Promise((resolve) => (mapImageNormal.onload = resolve)),
+    new Promise((resolve) => (mapImageSmallScale.onload = resolve))
 ]).then(resizeCanvas);
 
 let lastMouseX = 0;
@@ -1015,43 +1017,43 @@ let lastMouseY = 0;
 
 // Captura a posição do mouse no canvas
 canvas.addEventListener('mousemove', (e) => {
-	lastMouseX = e.clientX;
-	lastMouseY = e.clientY;
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
 });
 
 function toggleSettingsMenu() {
-	const settingsMenu = document.getElementById('settingsMenu');
-	const settingsButton = document.querySelector('.settings-button');
+    const settingsMenu = document.getElementById('settingsMenu');
+    const settingsButton = document.querySelector('.settings-button');
 
-	if (settingsMenu.style.display === 'none' || settingsMenu.style.display === '') {
-		settingsMenu.style.display = 'block';
-		settingsButton.classList.add('on'); // Adiciona a classe "on" ao botão
-	} else {
-		settingsMenu.style.display = 'none';
-		settingsButton.classList.remove('on'); // Remove a classe "on" do botão
-	}
+    if (settingsMenu.style.display === 'none' || settingsMenu.style.display === '') {
+        settingsMenu.style.display = 'block';
+        settingsButton.classList.add('on'); // Adiciona a classe "on" ao botão
+    } else {
+        settingsMenu.style.display = 'none';
+        settingsButton.classList.remove('on'); // Remove a classe "on" do botão
+    }
 }
 
 function toggleChangeLogMenu() {
-	const Changelogmenu = document.getElementById('ChangelogMenu');
-	Changelogmenu.style.display = Changelogmenu.style.display === 'none' || Changelogmenu.style.display === '' ? 'flex' : 'none';
+    const Changelogmenu = document.getElementById('ChangelogMenu');
+    Changelogmenu.style.display = Changelogmenu.style.display === 'none' || Changelogmenu.style.display === '' ? 'flex' : 'none';
 }
 
 function toggleFlpMenu() {
-	const FlpMenu = document.getElementById('FlpMenu');
-	const FlpButton = document.getElementById('FlpButton');
-	const FlpIcon = document.getElementById('FlpIcon');
+    const FlpMenu = document.getElementById('FlpMenu');
+    const FlpButton = document.getElementById('FlpButton');
+    const FlpIcon = document.getElementById('FlpIcon');
 
-	// Alterna o menu entre visível e escondido
-	if (FlpMenu.style.display === 'none' || FlpMenu.style.display === '') {
-		FlpMenu.style.display = 'flex'; // Mostra o menu
-		FlpButton.classList.add('on'); // Adiciona a classe "on" ao botão
-		FlpIcon.style.filter = 'brightness(1)';
-	} else {
-		FlpMenu.style.display = 'none'; // Esconde o menu
-		FlpButton.classList.remove('on'); // Remove a classe "on" do botão
-		FlpIcon.style.filter = 'brightness(0.8)';
-	}
+    // Alterna o menu entre visível e escondido
+    if (FlpMenu.style.display === 'none' || FlpMenu.style.display === '') {
+        FlpMenu.style.display = 'flex'; // Mostra o menu
+        FlpButton.classList.add('on'); // Adiciona a classe "on" ao botão
+        FlpIcon.style.filter = 'brightness(1)';
+    } else {
+        FlpMenu.style.display = 'none'; // Esconde o menu
+        FlpButton.classList.remove('on'); // Remove a classe "on" do botão
+        FlpIcon.style.filter = 'brightness(0.8)';
+    }
 }
 
 function saveFlp() {
@@ -1115,29 +1117,29 @@ function saveFlp() {
     }
     
     function addProcedure(airport, type, name, transition, runway) {
-		if (!name) return true;
-	
-		let procedure;
-		if (type === 'APPs') {
-			// O APP não tem transition, então encontramos apenas pelo nome
-			procedure = airport[type]?.find(proc => proc.name === name && proc.rwy.includes(transition));
-		} else {
-			// Para SIDs e STARs, mantém-se a lógica original
-			procedure = airport[type]?.find(proc => proc.name === name && proc.transition === transition && proc.rwy.includes(runway));
-		}
-	
-		if (!procedure) {
-			showMessage('Flight Plan Error', `${type.toUpperCase()} "${name}" ${type === 'APPs' ? '' : `with transition "${transition}" `}not found at "${airport.name}"!`);
-			return false;
-		}
-	
-		procedure.waypoints.forEach(wp => {
-			const matchedPoint = allPoints.find(point => point.name === wp);
-			if (matchedPoint) flightPlanPoints.push(matchedPoint);
-		});
-	
-		return true;
-	}	
+        if (!name) return true;
+    
+        let procedure;
+        if (type === 'APPs') {
+            // O APP não tem transition, então encontramos apenas pelo nome
+            procedure = airport[type]?.find(proc => proc.name === name && proc.rwy.includes(transition));
+        } else {
+            // Para SIDs e STARs, mantém-se a lógica original
+            procedure = airport[type]?.find(proc => proc.name === name && proc.transition === transition && proc.rwy.includes(runway));
+        }
+    
+        if (!procedure) {
+            showMessage('Flight Plan Error', `${type.toUpperCase()} "${name}" ${type === 'APPs' ? '' : `with transition "${transition}" `}not found at "${airport.name}"!`);
+            return false;
+        }
+    
+        procedure.waypoints.forEach(wp => {
+            const matchedPoint = allPoints.find(point => point.name === wp);
+            if (matchedPoint) flightPlanPoints.push(matchedPoint);
+        });
+    
+        return true;
+    }	
     
     if (!addRunway(departureAirport, departureRwy, 'departure')) return;
     if (!addProcedure(departureAirport, 'SIDs', sid, deptrans, departureRwy)) return;
@@ -1157,22 +1159,22 @@ function saveFlp() {
 }
 
 function resetFlp() {
-	// Limpa os valores das text areas pelos seus IDs
-	document.getElementById('departure').value = '';
-	document.getElementById('departureRwy').value = '';
-	document.getElementById('arrival').value = '';
-	document.getElementById('arrivalRwy').value = '';
-	document.getElementById('waypoints').value = '';
-	document.getElementById('sid').value = '';
-	document.getElementById('deptrans').value = '';
-	document.getElementById('star').value = '';
-	document.getElementById('arrtrans').value = '';
-	document.getElementById('app').value = '';
-	
+    // Limpa os valores das text areas pelos seus IDs
+    document.getElementById('departure').value = '';
+    document.getElementById('departureRwy').value = '';
+    document.getElementById('arrival').value = '';
+    document.getElementById('arrivalRwy').value = '';
+    document.getElementById('waypoints').value = '';
+    document.getElementById('sid').value = '';
+    document.getElementById('deptrans').value = '';
+    document.getElementById('star').value = '';
+    document.getElementById('arrtrans').value = '';
+    document.getElementById('app').value = '';
+    
 
-	// Reseta a rota de voo
-	flightRoute = [];
-	draw();
+    // Reseta a rota de voo
+    flightRoute = [];
+    draw();
 }
 
 function getProcedures(airport, runway, type) {
@@ -1385,37 +1387,31 @@ document.getElementById('app').addEventListener('focus', () => {
 });
 
 function resetHighlights() {
-	controlAreas.forEach(area =>{
-		if (area.type === "polygon") {
-			if (area.name.endsWith("CTR")) {
-				area.fillColor = "rgba(0, 90, 50, 0.05)";
-			};
-			if (area.name.endsWith("APP")) {
-				area.fillColor = "rgba(255, 122, 0, 0)";
-			};
-		};
-	});
-	//hideAirportUI();
-	draw();
+    controlAreas.forEach(area =>{
+        if (area.type === "polygon") {
+            if (area.name.endsWith("CTR")) {
+                area.fillColor = "rgba(0, 90, 50, 0.05)";
+            };
+            if (area.name.endsWith("APP")) {
+                area.fillColor = "rgba(255, 122, 0, 0)";
+            };
+        };
+    });
+    draw();
 }
 
 function resetChartsMenu() {
-	const menus = document.querySelectorAll(`.icao-menu`);
-	menus.forEach(menu => {
-		menu.style.display = "none";
-	});
+    const menus = document.querySelectorAll(`.icao-menu`);
+    menus.forEach(menu => {
+        menu.style.display = "none";
+    });
 }
 
 function refreshUI() {
-	// Limpa e redesenha o canvas
-	draw();
-
-	// Remove todos os elementos da UI (exemplo de classes específicas)
-	document.querySelectorAll('.airport-ui').forEach(el => el.remove());
-
-	// Redesenha os elementos da interface do usuário
-	displayAirports();
-	resetHighlights();
+    draw();
+    document.querySelectorAll('.airport-ui').forEach(el => el.remove());
+    displayAirports();
+    resetHighlights();
 }
 
 function updateATCCount() {
@@ -1569,61 +1565,9 @@ async function checkUpdate() {
     }
 }
 
-function ActiveAllATCfunction() {
-    const allAirports = [];
-
-    controlAreas.forEach(area => {
-        if (area.type === 'Airport') {
-            allAirports.push({
-                airport: area.real_name,
-                holder: 'Tiaguinho_2009 | Tower',
-                claimable: false,
-                position: 'tower',
-                uptime: '00:00',
-            });
-
-            if (area.atcs && area.atcs.length > 1) {
-                allAirports.push({
-                    airport: area.real_name,
-                    holder: 'Tiaguinho_2009 | Ground',
-                    claimable: false,
-                    position: 'ground',
-                    uptime: '00:00',
-                });
-            }
-        }
-    });
-
-    PTFSAPI = allAirports;
-    processATCData(PTFSAPI);
-}
-
-// Function to generate the list of ATCs in the specified format
-function generateATCsListFromAreas() {
-	// List to collect ATCs in the desired format
-	let atcsList = [];
-
-	// Filter areas by type 'Airport' and extract their ATCs
-	controlAreas.forEach(area => {
-		if (area.type === "Airport" && area.atcs && area.atcs.length > 0) {
-			area.atcs.forEach(atc => {
-				// Add the ATC name followed by '@' on a new line
-				atcsList.push(atc);
-				atcsList.push("@");
-			});
-		}
-	});
-
-	// Juntar os ATCs em uma string
-	const formattedATCs = atcsList.join("\n");
-	return formattedATCs;
-}
-
-generateATCsListFromAreas()
-
 function saveToLocalStorage() {
-	localStorage.setItem('settingsValues', JSON.stringify(settingsValues));
-	localStorage.setItem('websiteInfo', JSON.stringify(websiteInfo));
+    localStorage.setItem('settingsValues', JSON.stringify(settingsValues));
+    localStorage.setItem('websiteInfo', JSON.stringify(websiteInfo));
 }
 
 function loadFromLocalStorage() {
@@ -1662,62 +1606,61 @@ function loadFromLocalStorage() {
 loadFromLocalStorage();
 
 function onCheckBoxChange(checkbox) {
-	settings.forEach(setting => {
-		if (setting === checkbox.id) {
-			settingsValues[setting] = checkbox.checked;
-			saveToLocalStorage()
-			draw()
-			refreshUI()
-		};
-		if (setting === "showOnlineATC") {fetchATCDataAndUpdate()};
-	});
+    settings.forEach(setting => {
+        if (setting === checkbox.id) {
+            settingsValues[setting] = checkbox.checked;
+            saveToLocalStorage()
+            draw()
+            refreshUI()
+        };
+        if (setting === "showOnlineATC") {fetchATCDataAndUpdate()};
+    });
 }
 
 function getTime() {
-	const now = new Date();
-	const hours = String(now.getHours()).padStart(2, '0');
-	const minutes = String(now.getMinutes()).padStart(2, '0');
-	const seconds = String(now.getSeconds()).padStart(2, '0');
-	const timeString = `${hours}:${minutes}:${seconds}`;
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
 
-	return timeString;
+    return timeString;
 }
 
 function copyCoordinatesToClipboard(x, y) {
-	const coordsText = `[${x.toFixed(2)}, ${y.toFixed(2)}]`;
-	navigator.clipboard.writeText(coordsText).then(() => {
-		console.log(`Coordenadas copiadas: ${coordsText}`);
-	}).catch(err => {
-		showMessage('Clipboard Error', 'Failed to copy coordinates to clipboard.');
-		console.error('Failed to copy coordinates to clipboard.', err);
-	});
+    const coordsText = `[${x.toFixed(2)}, ${y.toFixed(2)}]`;
+    navigator.clipboard.writeText(coordsText).then(() => {
+        console.log(`Coordenadas copiadas: ${coordsText}`);
+    }).catch(err => {
+        showMessage('Clipboard Error', 'Failed to copy coordinates to clipboard.');
+        console.error('Failed to copy coordinates to clipboard.', err);
+    });
 }
 
 window.addEventListener('keydown', (e) => {
-	if (e.key === 'ç') { // Verifica se a tecla pressionada é "ç"
-		const mouseX = (lastMouseX - canvas.getBoundingClientRect().left - offsetX) / scale;
-		const mouseY = (lastMouseY - canvas.getBoundingClientRect().top - offsetY) / scale;
-		copyCoordinatesToClipboard(mouseX, mouseY);
-	}
+    if (e.key === 'ç') { // Verifica se a tecla pressionada é "ç"
+        const mouseX = (lastMouseX - canvas.getBoundingClientRect().left - offsetX) / scale;
+        const mouseY = (lastMouseY - canvas.getBoundingClientRect().top - offsetY) / scale;
+        copyCoordinatesToClipboard(mouseX, mouseY);
+    }
 });
 
 function executeOnce() {
-	const hasExecuted = localStorage.getItem('hasExecuted');
+    const hasExecuted = localStorage.getItem('hasExecuted');
 
-	if (!hasExecuted) {
-		showMessage("24SPY Discord Server", "How about joining our Discord Server, where you can receive updated news about 24SPY, make suggestions and questions and much more?", "Join", "Close").then((response) => {
-			if (response === 1) {
-				window.open("https://discord.gg/8cQAguPjkh", "_blank");
-			}
-		});
+    if (!hasExecuted) {
+        showMessage("24SPY Discord Server", "How about joining our Discord Server, where you can receive updated news about 24SPY, make suggestions and questions and much more?", "Join", "Close").then((response) => {
+            if (response === 1) {
+                window.open("https://discord.gg/8cQAguPjkh", "_blank");
+            }
+        });
 
-		// Defina a variável no localStorage para indicar que a função já foi executada
-		localStorage.setItem('hasExecuted', 'true');
-	}
+        // Defina a variável no localStorage para indicar que a função já foi executada
+        localStorage.setItem('hasExecuted', 'true');
+    }
 }
 executeOnce();
 
 resizeCanvas();
 loadFromLocalStorage();
 setInterval(fetchATCDataAndUpdate, 30000);fetchATCDataAndUpdate();
-//ActiveAllATCfunction();
