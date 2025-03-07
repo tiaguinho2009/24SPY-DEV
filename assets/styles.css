@@ -693,14 +693,14 @@ canvas {
     display: inline-block;
     width: 18px;
     height: 18px;
-    line-height: 18px;      /* Centraliza verticalmente o texto */
+    line-height: 18px;
     font-size: 0.9em;
-    text-align: center;     /* Centraliza horizontalmente */
+    text-align: center;
     color: #fff;
-    cursor: pointer;        /* Mostra que é interativo */
-    pointer-events: auto;   /* Permite interações de hover */
+    cursor: pointer;
+    pointer-events: auto;
     position: relative;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .airport-ui .badge:first-child {
@@ -737,38 +737,14 @@ canvas {
     background-color: #ecb549;
 }
 
-.airport-ui .badge:hover {
-    transform: scale(1.1);
+.airport-ui .badge.special {
+    background-color: #44b4b4;
+}
+
+.airport-ui .badge.active {
+    transform: scale(1.15);
     z-index: 11;
-}
-
-.airport-ui .badge.C:hover {
-    background-color: #497dff;
-}
-
-.airport-ui .badge.A:hover {
-    background-color: #e66900;
-}
-
-.airport-ui .badge.T:hover {
-    background-color: #9e2411;
-}
-
-.airport-ui .badge.G:hover {
-    background-color: #006f45;
-}
-
-.airport-ui .badge.D:hover {
-    background-color: #3b6cec;
-}
-
-.airport-ui .badge.S:hover {
-    background-color: #ffbe3c;
-}
-
-.highlight {
-    background-color: rgba(255, 215, 0, 0.5); /* Cor de destaque para a CTR */
-    z-index: 10;
+    box-shadow: 0 0 10px rgba(100, 100, 100, 0.99);
 }
 
 .icao-menu {
@@ -846,7 +822,7 @@ canvas {
 }
 
 .airport-info-menu {
-    position: absolute;
+    position: fixed;
     background-color: #131316;
     color: #fff;
     padding: 10px 10px 5px 10px;

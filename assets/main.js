@@ -5,6 +5,8 @@ document.addEventListener('contextmenu', function(event) {
 const canvas = document.getElementById('map');
 const ctx = canvas.getContext('2d');
 
+let devMode = false;
+
 let offsetX = 0,
     offsetY = 0;
 let scale = 1;
@@ -55,6 +57,25 @@ const mapImages = {
     normal: 'PTFS-Map-Grey.png',
     smallScale: 'PTFS-Map-1200px.png'
 };
+
+const tiles1 = [];
+const tiles2 = [];
+const tiles3 = [];
+
+for (let i = 1; i <= 25; i++) {
+    const img1 = new Image();
+    img1.src = `tiles1/${i}.png`;
+    tiles1.push(img1);
+
+    const img2 = new Image();
+    img2.src = `tiles2/${i}.png`;
+    tiles2.push(img2);
+
+    const img3 = new Image();
+    img3.src = `tiles3/${i}.png`;
+    tiles3.push(img3);
+}
+
 const mapImageNormal = new Image();
 const mapImageSmallScale = new Image();
 mapImageNormal.src = mapImages.normal;
@@ -123,6 +144,55 @@ function processQueue() {
 
     closeButton1.onclick = () => closeMenu(1);
     closeButton2.onclick = () => closeMenu(2);
+}
+
+function getTiles() {
+    if (scale > 7) {
+        return tiles3;
+    } else if (scale > 3) {
+        return tiles2;
+    } else {
+        return tiles1;
+    }
+}
+
+function getViewBox() {
+    const topLeftX = -offsetX / scale;
+    const topLeftY = -offsetY / scale;
+    const bottomRightX = (canvas.width - offsetX) / scale;
+    const bottomRightY = (canvas.height - offsetY) / scale;
+
+    return {
+        topLeft: { x: topLeftX, y: topLeftY },
+        bottomRight: { x: bottomRightX, y: bottomRightY }
+    };
+}
+
+function getVisibleTiles() {
+    const viewBox = getViewBox();
+    const tileSize = 240; // Tamanho de cada tile em pixels
+    const tilesPerColumn = 5; // Número de tiles por coluna
+
+    const visibleTiles = [];
+
+    for (let i = 1; i <= 25; i++) {
+        const col = Math.floor((i - 1) / tilesPerColumn);
+        const row = (i - 1) % tilesPerColumn;
+
+        const tileTopLeftX = col * tileSize;
+        const tileTopLeftY = row * tileSize;
+        const tileBottomRightX = tileTopLeftX + tileSize;
+        const tileBottomRightY = tileTopLeftY + tileSize;
+
+        const isTileVisible = !(tileBottomRightX < viewBox.topLeft.x || tileTopLeftX > viewBox.bottomRight.x ||
+                                tileBottomRightY < viewBox.topLeft.y || tileTopLeftY > viewBox.bottomRight.y);
+
+        if (isTileVisible) {
+            visibleTiles.push(i);
+        }
+    }
+
+    return visibleTiles;
 }
 
 // Configuração do tamanho do canvas
@@ -203,22 +273,20 @@ function isSpecialUser(atcName) {
     return Object.keys(specialUsers).includes(baseName);
 }
 
-// Função de desenho
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (settingsValues.showBetterMap) {
-        currentMapImage = scale < 10 ? mapImageSmallScale : mapImageNormal;
-    } else {
-        currentMapImage = mapImageSmallScale;
-    }
-
-    // Calcula tamanho ajustado do mapa
-    const mapWidth = 1200 * scale;
-    const mapHeight = 1200 * scale;
-
-    // Desenha a imagem do mapa
-    ctx.drawImage(currentMapImage, offsetX, offsetY, mapWidth, mapHeight);
+    // Desenha os tiles visíveis
+    const visibleTiles = getVisibleTiles();
+    const tiles = getTiles();
+    visibleTiles.forEach(tileIndex => {
+        const tile = tiles[tileIndex - 1];
+        const col = Math.floor((tileIndex - 1) / 5);
+        const row = (tileIndex - 1) % 5;
+        const tileX = col * 240 * scale + offsetX;
+        const tileY = row * 240 * scale + offsetY;
+        ctx.drawImage(tile, tileX, tileY, 240 * scale, 240 * scale);
+    });
 
     drawControlAreas();
     drawFlightPlan(flightRoute);
@@ -629,13 +697,17 @@ function createAirportElement(airport) {
 function generateBadges(airport) {
     const atcs = getOnlineATCs(airport.real_name);
 
+    function isPositionSpecial(position) {
+        return atcs[position].some(atc => isSpecialUser(atc.holder));
+    }
+
     return `
-        ${atcs.CTR.length > 0 ? '<div class="badge C" data-type="Control">C</div>' : ''}
-        ${atcs.APP.length > 0 ? '<div class="badge A" data-type="Approach">A</div>' : ''}
-        ${atcs.TWR.length > 0 ? '<div class="badge T" data-type="Tower">T</div>' : ''}
-        ${atcs.GND.length > 0 ? '<div class="badge G" data-type="Ground">G</div>' : ''}
-        ${atcs.DEL.length > 0 ? '<div class="badge D" data-type="Delivery">D</div>' : ''}
-        ${atcs.ATS.length > 0 ? '<div class="badge S" data-type="ATIS">A</div>' : ''}
+        ${atcs.CTR.length > 0 ? `<div class="badge C ${isPositionSpecial('CTR') ? 'special' : ''}" data-type="Control">C</div>` : ''}
+        ${atcs.APP.length > 0 ? `<div class="badge A ${isPositionSpecial('APP') ? 'special' : ''}" data-type="Approach">A</div>` : ''}
+        ${atcs.TWR.length > 0 ? `<div class="badge T ${isPositionSpecial('TWR') ? 'special' : ''}" data-type="Tower">T</div>` : ''}
+        ${atcs.GND.length > 0 ? `<div class="badge G ${isPositionSpecial('GND') ? 'special' : ''}" data-type="Ground">G</div>` : ''}
+        ${atcs.DEL.length > 0 ? `<div class="badge D ${isPositionSpecial('DEL') ? 'special' : ''}" data-type="Delivery">D</div>` : ''}
+        ${atcs.ATS.length > 0 ? `<div class="badge S ${isPositionSpecial('ATS') ? 'special' : ''}" data-type="ATIS">A</div>` : ''}
     `;
 }
 
@@ -718,8 +790,13 @@ function calculateBoundingArea(div1, div2, indication) {
     return vertices;
 }
 
-function isMouseOutsideArea(event, vertices) {
+function isMouseOutsideArea(event, vertices, badge) {
     const { clientX: x, clientY: y } = event;
+
+    // Verifica se o mouse está sobre a badge
+    if (badge.classList.contains('hover')) {
+        return false;
+    }
 
     function isPointInPolygon(point, polygon) {
         let isInside = false;
@@ -741,7 +818,7 @@ function addMouseLeaveListener(div1, div2, callback) {
     const vertices = calculateBoundingArea(div1, div2, 'top');
 
     function onMouseMove(event) {
-        if (isMouseOutsideArea(event, vertices)) {
+        if (isMouseOutsideArea(event, vertices, div1)) {
             callback();
             document.removeEventListener('mousemove', onMouseMove);
         }
@@ -766,7 +843,7 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         T: { condition: atcs.TWR.length > 0 },
         G: { condition: atcs.GND.length > 0 },
         D: { condition: atcs.DEL.length > 0 },
-        S: { condition: atcs.ATS.length > 0 } // Adicionando a condição para ATIS
+        S: { condition: atcs.ATS.length > 0 }
     };
 
     let currentMouseMoveListener = null;
@@ -775,6 +852,7 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         const badge = airportUI.querySelector(`.badge.${key}`);
         if (badge && condition) {
             badge.addEventListener('mouseenter', () => {
+                badge.classList.add('hover');
                 resetMenuAndListeners(currentMouseMoveListener);
                 showInfoMenu(badge, airport, infoMenu, airportUI);
                 resetHighlights();
@@ -789,7 +867,12 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
                     if (dataIsFrom === 'ATC24' && key === 'C') {
                         resetAPPHighlight(airport);
                     }
+                    resetMenuAndListeners(currentMouseMoveListener);
                 });
+            });
+
+            badge.addEventListener('mouseleave', () => {
+                badge.classList.remove('hover');
             });
         }
     });
@@ -811,7 +894,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
 
         const baseName = atcName.split(' | ')[0];
         const specialUser = isSpecialUser(baseName);
-        const specialTag = specialUser ? `<div class="special-tag">${specialUsers[baseName][0].Role}</div>` : '';
+        const specialTag = specialUser ? `<div class="special-tag">${specialUsers[baseName].Role}</div>` : '';
 
         infoSections += `
             <div class="controller-info-section">
@@ -833,16 +916,34 @@ function showInfoMenu(badge, airport, menu, airportUI) {
         </div>
     `;
     positionInfoMenu(menu, airportUI);
+
+    badge.classList.add('active');
 }
 
 function positionInfoMenu(menu, airportUI) {
     const rect = airportUI.getBoundingClientRect();
-    menu.style.left = `${rect.left + window.scrollX}px`;
-    menu.style.top = `${rect.bottom + window.scrollY + 10}px`;
+    const menuWidth = menu.offsetWidth;
+    const menuHeight = menu.offsetHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    let left = rect.left + window.scrollX;
+    let top = rect.bottom + window.scrollY + 10;
+
+    if (left + menuWidth > windowWidth) {
+        left = windowWidth - menuWidth - 10;
+    }
+
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
 }
 
 function hideInfoMenu(menu) {
     menu.style.display = 'none';
+
+    document.querySelectorAll('.badge.active').forEach(badge => {
+        badge.classList.remove('active');
+    });
 }
 
 function resetAllAirportsUI() {
@@ -1006,11 +1107,12 @@ canvas.addEventListener('wheel', (e) => {
     }
 });
 
-// Carregar as imagens e inicializar o canvas
-Promise.all([
-    new Promise((resolve) => (mapImageNormal.onload = resolve)),
-    new Promise((resolve) => (mapImageSmallScale.onload = resolve))
-]).then(resizeCanvas);
+Promise.all([...tiles1, ...tiles2, ...tiles3].map(tile => new Promise(resolve => tile.onload = resolve))).then(() => {
+    resizeCanvas();
+    loadFromLocalStorage();
+    setInterval(fetchATCDataAndUpdate, 30000);
+    fetchATCDataAndUpdate();
+});
 
 let lastMouseX = 0;
 let lastMouseY = 0;
@@ -1418,7 +1520,12 @@ function updateATCCount() {
     const atcNumberElement = document.querySelector('.online-number');
     if (atcNumberElement) {
         const onlineCount = Object.values(onlineATCs).reduce((count, atcs) => {
-            return count + Object.values(atcs).flat().length;
+            return count + Object.entries(atcs).reduce((subCount, [position, atcList]) => {
+                if (position !== 'ATS') {
+                    return subCount + atcList.length;
+                }
+                return subCount;
+            }, 0);
         }, 0);
         atcNumberElement.textContent = onlineCount;
     }
@@ -1481,6 +1588,7 @@ async function fetchATCData(url) {
 }
 
 async function fetchATCDataAndUpdate() {
+    let data
     let typeOfDataReceived = '';
     function toggleUpdateClass() {
         const mapUpdateTime = document.getElementById('mapUpdateTime');
@@ -1489,8 +1597,11 @@ async function fetchATCDataAndUpdate() {
     }
     toggleUpdateClass();
 
-    let localCachedURL = localStorage.getItem("cachedDynamicURL");
-    let data = localCachedURL ? await fetchATCData(localCachedURL) : null;
+    if (devMode) {
+        data = PTFSAPIError;
+    } else {
+        data = localCachedURL ? await fetchATCData(localStorage.getItem("cachedDynamicURL")) : null;
+    }
 
     if (!data) {
         await fetchDynamicURL();
@@ -1550,11 +1661,14 @@ async function fetchATCDataAndUpdate() {
         mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)';
         mapUpdateTime.style.color = ''; // Restaura a cor do texto ao valor padrão
     }, 150);
-    //PTFSAPI = PTFSAPIError;processATCData(PTFSAPI);
+    
     if (typeOfDataReceived === 'defaultURL' && typeOfDataReceivedTimesExecuted === 0) {
         typeOfDataReceivedTimesExecuted = 1;
         showMessage('24SPY API Offline', 'The 24SPY API is currently offline. The data is being fetched from the ATC24 API, some website features may not work correctly.', 'Close', 'Try Again').then(response => {
-            if (response === 2) fetchATCDataAndUpdate();
+            if (response === 2) {
+                fetchATCDataAndUpdate();
+                typeOfDataReceivedTimesExecuted = 0;
+            };
         });
     }
 }
