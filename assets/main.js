@@ -5,11 +5,14 @@ document.addEventListener('contextmenu', function(event) {
 const canvas = document.getElementById('map');
 const ctx = canvas.getContext('2d');
 
-let devMode = false;
+let devMode = true;
 
 let offsetX = 0,
     offsetY = 0;
+
 let scale = 1;
+let lastMouseX = 0;
+let lastMouseY = 0;
 let isDragging = false;
 let startX, startY;
 let onlineATC = 0;
@@ -23,26 +26,14 @@ const positionMapping = {
     approach: 'APP',
     departure: 'APP',
     director: 'APP',
+    final: 'APP',
     tower: 'TWR',
+    afis: 'TWR',
     ground: 'GND',
     delivery: 'DEL',
     atis: 'ATS',
     ats: 'ATS'
 };
-
-const positionMapping2 = {
-    CTR: 'CTR',
-    OCA: 'CTR',
-    OCC: 'CTR',
-    APP: 'APP',
-    DEP: 'APP',
-    DIR: 'APP',
-    TWR: 'TWR',
-    RDO: 'TWR',
-    GND: 'GND',
-    DEL: 'DEL',
-    ATS: 'ATS'
-}
 
 const sortedAirports = controlAreas
     .filter(area => area.type === "Airport")
@@ -74,7 +65,13 @@ for (let i = 1; i <= 25; i++) {
     const img3 = new Image();
     img3.src = `tiles3/${i}.png`;
     tiles3.push(img3);
-}
+
+    if (i === 25) {
+        img1.onload = () => {
+            resizeCanvas();
+        };
+    };
+};
 
 const mapImageNormal = new Image();
 const mapImageSmallScale = new Image();
@@ -199,8 +196,7 @@ function getVisibleTiles() {
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - 50;
-    draw();
-    centerMap(); // Centraliza o mapa após redimensionar o canvas
+    centerMap();
 }
 window.addEventListener('resize', resizeCanvas);
 
@@ -852,6 +848,7 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
         const badge = airportUI.querySelector(`.badge.${key}`);
         if (badge && condition) {
             badge.addEventListener('mouseenter', () => {
+                if (isDragging) return;
                 badge.classList.add('hover');
                 resetMenuAndListeners(currentMouseMoveListener);
                 showInfoMenu(badge, airport, infoMenu, airportUI);
@@ -894,13 +891,12 @@ function showInfoMenu(badge, airport, menu, airportUI) {
 
         const baseName = atcName.split(' | ')[0];
         const specialUser = isSpecialUser(baseName);
-        const specialTag = specialUser ? `<div class="special-tag">${specialUsers[baseName].Role}</div>` : '';
+        const specialTag = specialUser ? `<span class="special-tag">${specialUsers[baseName].Role}</span>` : '';
 
         infoSections += `
             <div class="controller-info-section">
                 <p><strong>${atcCode}</strong></p>
-                <p><strong>Controller:</strong> ${atcName}</p>
-                ${specialTag}
+                <p><strong>Controller:</strong> ${atcName}${specialTag}</p>
                 <p><strong>Frequency:</strong> ${frequency}</p>
                 <p><strong>Online:</strong> ${uptime}</p>
             </div>
@@ -957,92 +953,90 @@ function displayAirports() {
     resetAllAirportsUI();
     controlAreas.filter(area => area.type === 'Airport').forEach(createAirportUI);
 }
-
-// Exibe os aeroportos na inicialização
 displayAirports();
 
 let velocityX = 0, velocityY = 0;
 let friction = 0.85;
+let isZooming = false;
 const MIN_VELOCITY_THRESHOLD = 0.1;
 
+function disablePointerEvents() {
+    canvas.classList.add('disable-pointer-events');
+}
+
+function enablePointerEvents() {
+    canvas.classList.remove('disable-pointer-events');
+}
+
 canvas.addEventListener('mousedown', (e) => {
-    if (e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
+    if (e.button !== 0) return;
     isDragging = true;
     startX = e.clientX;
     startY = e.clientY;
     velocityX = 0;
     velocityY = 0;
+    disablePointerEvents();
 });
 
-canvas.addEventListener('mousemove', (e) => {
-    if (!isDragging || e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
+document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
     const currentX = e.clientX;
     const currentY = e.clientY;
 
-    // Calcula o deslocamento
     const dx = currentX - startX;
     const dy = currentY - startY;
 
-    // Atualiza a posição do mapa
     offsetX += dx;
     offsetY += dy;
 
-    // Calcula a velocidade apenas se houver movimento significativo
     if (Math.abs(dx) > MIN_VELOCITY_THRESHOLD || Math.abs(dy) > MIN_VELOCITY_THRESHOLD) {
         velocityX = dx;
         velocityY = dy;
     } else {
-        velocityX = 0; // Considera que o rato está parado
+        velocityX = 0;
         velocityY = 0;
     }
 
-    // Atualiza o ponto inicial
     startX = currentX;
     startY = currentY;
 
-    // Redesenha o canvas
     draw();
 });
 
-canvas.addEventListener('mouseup', (e) => {
-    if (e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
+document.addEventListener('mouseup', (e) => {
+    if (e.button !== 0) return;
     isDragging = false;
+    enablePointerEvents();
 
-    // Só aplica inércia se a velocidade for significativa
     if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
         applyInertia();
     }
 });
 
-canvas.addEventListener('mouseleave', (e) => {
-    if (e.button !== 0) return; // Verifica se o botão pressionado é o esquerdo
+document.addEventListener('mouseleave', (e) => {
+    if (e.button !== 0) return;
     isDragging = false;
+    enablePointerEvents();
 });
 
 function applyInertia() {
-    // Aplica a inércia até que a velocidade seja insignificante
     if (Math.abs(velocityX) > MIN_VELOCITY_THRESHOLD || Math.abs(velocityY) > MIN_VELOCITY_THRESHOLD) {
         offsetX += velocityX;
         offsetY += velocityY;
 
-        // Aplica atrito para reduzir a velocidade gradualmente
         velocityX *= friction;
         velocityY *= friction;
 
         draw();
 
-        // Continua a aplicar inércia
         requestAnimationFrame(applyInertia);
     } else {
-        // Zera as velocidades quando a inércia para
         velocityX = 0;
         velocityY = 0;
+        enablePointerEvents();
     }
 }
 
-let isZooming = false;
-
-// Função para animar o zoom
 function animateZoom(startScale, endScale, startX, endX, startY, endY, duration) {
     const startTime = performance.now();
 
@@ -1050,7 +1044,6 @@ function animateZoom(startScale, endScale, startX, endX, startY, endY, duration)
         const elapsedTime = currentTime - startTime;
         const progress = Math.min(elapsedTime / duration, 1);
 
-        // Interpolação linear para a escala e coordenadas
         scale = startScale + (endScale - startScale) * progress;
         offsetX = startX + (endX - startX) * progress;
         offsetY = startY + (endY - startY) * progress;
@@ -1061,14 +1054,12 @@ function animateZoom(startScale, endScale, startX, endX, startY, endY, duration)
             requestAnimationFrame(animationStep);
         } else {
             isZooming = false;
-            console.log(scale);
         }
     }
 
     requestAnimationFrame(animationStep);
 }
 
-// Evento de zoom
 canvas.addEventListener('wheel', (e) => {
     e.preventDefault();
 
@@ -1076,29 +1067,22 @@ canvas.addEventListener('wheel', (e) => {
         isZooming = true;
 
         requestAnimationFrame(() => {
-            // Captura a posição do mouse relativa ao canvas
             const mouseX = (e.clientX - canvas.getBoundingClientRect().left - offsetX) / scale;
             const mouseY = (e.clientY - canvas.getBoundingClientRect().top - offsetY) / scale;
 
-            // Ajusta a taxa de zoom dinamicamente com base na escala atual
-            const baseZoomRate = 0.005; // Taxa de zoom base
-            const zoomRate = baseZoomRate * scale; // Ajusta a taxa de zoom conforme a escala aumenta
+            const baseZoomRate = 0.005;
+            const zoomRate = baseZoomRate * scale;
             const zoomFactor = e.deltaY * -zoomRate;
 
-            // Define um limite de zoom out mínimo e máximo
-            const minScale = 0.5; // Limite de zoom out
-            const maxScale = 15; // Limite de zoom in
+            const minScale = 0.5;
+            const maxScale = 15;
 
-            // Calcula a nova escala e aplica os limites
             const newScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
 
-            // Se o zoom estiver dentro dos limites, ajusta o offset; caso contrário, mantém o último offset
             if (newScale !== scale) {
-                // Calcula o novo offset para centralizar o zoom no ponto do mouse
                 const newOffsetX = mouseX * (scale - newScale) + offsetX;
                 const newOffsetY = mouseY * (scale - newScale) + offsetY;
 
-                // Anima o zoom
                 animateZoom(scale, newScale, offsetX, newOffsetX, offsetY, newOffsetY, 200);
             } else {
                 isZooming = false;
@@ -1107,17 +1091,6 @@ canvas.addEventListener('wheel', (e) => {
     }
 });
 
-Promise.all([...tiles1, ...tiles2, ...tiles3].map(tile => new Promise(resolve => tile.onload = resolve))).then(() => {
-    resizeCanvas();
-    loadFromLocalStorage();
-    setInterval(fetchATCDataAndUpdate, 30000);
-    fetchATCDataAndUpdate();
-});
-
-let lastMouseX = 0;
-let lastMouseY = 0;
-
-// Captura a posição do mouse no canvas
 canvas.addEventListener('mousemove', (e) => {
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;

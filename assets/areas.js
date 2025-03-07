@@ -9,7 +9,7 @@ let PTFSAPIError = [
         "onlineSince": "2025-03-03T17:47:20.127Z"
     },
     {
-        "holder": "tiaguinho_2009",
+        "holder": "Tiaguinho_2009",
         "claimable": false,
         "airport": "Rockford",
         "position": "control",
