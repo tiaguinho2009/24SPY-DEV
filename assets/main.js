@@ -47,14 +47,54 @@ const sortedWaypoints = Waypoints
     .map(wp => wp.name)
     .sort();
 
-const mapImages = {
-    normal: 'PTFS-Map-Grey.png',
-    smallScale: 'PTFS-Map-1200px.png'
-};
+function showLoading() {
+    const loading = document.getElementById('loading');
+    loading.style.display = 'flex';
+    setTimeout(() => {
+        loading.style.opacity = 1;
+    }, 10);
+}
+
+function hideLoading() {
+    const loading = document.getElementById('loading');
+    loading.style.opacity = 0;
+    setTimeout(() => {
+        loading.style.display = 'none';
+    }, 500);
+}
+
+showLoading();
+setTimeout(hideLoading, 1000);
+
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+    });
+}
 
 const tiles1 = [];
 const tiles2 = [];
 const tiles3 = [];
+const tiles4 = [];
+const tilePromises = [];
+
+for (let i = 1; i <= 25; i++) {
+    tilePromises.push(loadImage(`tiles1/${i}.png`).then(img => tiles1.push(img)));
+    tilePromises.push(loadImage(`tiles2/${i}.png`).then(img => tiles2.push(img)));
+}
+
+Promise.all(tilePromises).then(() => {
+    console.log('Images loaded successfully!');
+    resizeCanvas();
+    loadFromLocalStorage();
+    setInterval(fetchATCDataAndUpdate, 30000);
+    fetchATCDataAndUpdate();
+}).catch(error => {
+    console.error('Error loading images:', error);
+});
 
 for (let i = 1; i <= 25; i++) {
     const img1 = new Image();
@@ -69,19 +109,16 @@ for (let i = 1; i <= 25; i++) {
     img3.src = `tiles3/${i}.png`;
     tiles3.push(img3);
 
+    const img4 = new Image();
+    img4.src = `tilesOP/${i}.png`;
+    tiles4.push(img4);
+
     if (i === 25) {
         img1.onload = () => {
             resizeCanvas();
         };
     };
 };
-
-const mapImageNormal = new Image();
-const mapImageSmallScale = new Image();
-mapImageNormal.src = mapImages.normal;
-mapImageSmallScale.src = mapImages.smallScale;
-
-let currentMapImage = mapImageSmallScale;
 
 const messageQueue = [];
 let isMessageVisible = false;
@@ -147,9 +184,11 @@ function processQueue() {
 }
 
 function getTiles() {
-    if (scale > 7) {
+    if (scale >= 12) {
+        return tiles4;
+    } else if (scale >= 6) {
         return tiles3;
-    } else if (scale > 3) {
+    } else if (scale >= 3) {
         return tiles2;
     } else {
         return tiles1;
@@ -1040,6 +1079,10 @@ function applyInertia() {
     }
 }
 
+function roundScale(value) {
+    return Math.round(value * 2) / 2;
+}
+
 function animateZoom(startScale, endScale, startX, endX, startY, endY, duration) {
     const startTime = performance.now();
 
@@ -1057,6 +1100,7 @@ function animateZoom(startScale, endScale, startX, endX, startY, endY, duration)
             requestAnimationFrame(animationStep);
         } else {
             isZooming = false;
+            console.log(scale);
         }
     }
 
@@ -1078,9 +1122,10 @@ canvas.addEventListener('wheel', (e) => {
             const zoomFactor = e.deltaY * -zoomRate;
 
             const minScale = 0.5;
-            const maxScale = 15;
+            const maxScale = 20;
 
-            const newScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
+            let newScale = Math.min(Math.max(minScale, scale + zoomFactor), maxScale);
+            newScale = roundScale(newScale);
 
             if (newScale !== scale) {
                 const newOffsetX = mouseX * (scale - newScale) + offsetX;
@@ -1762,7 +1807,3 @@ function executeOnce() {
     }
 }
 executeOnce();
-
-resizeCanvas();
-loadFromLocalStorage();
-setInterval(fetchATCDataAndUpdate, 30000);fetchATCDataAndUpdate();
