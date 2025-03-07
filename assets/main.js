@@ -1600,6 +1600,7 @@ async function fetchATCDataAndUpdate() {
     if (devMode) {
         data = PTFSAPIError;
     } else {
+        let localCachedURL = localStorage.getItem("cachedDynamicURL");
         data = localCachedURL ? await fetchATCData(localStorage.getItem("cachedDynamicURL")) : null;
     }
 
