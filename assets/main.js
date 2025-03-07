@@ -5,7 +5,10 @@ document.addEventListener('contextmenu', function(event) {
 const canvas = document.getElementById('map');
 const ctx = canvas.getContext('2d');
 
-let devMode = true;
+let devMode = false;
+if (window.location.href.startsWith('https://tiaguinho2009.github.io')) {
+    devMode = false;
+}
 
 let offsetX = 0,
     offsetY = 0;
