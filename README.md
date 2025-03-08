@@ -30,11 +30,12 @@
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance.
 
-## [DEV 0.2.1 BETA] - 03/07/2025
+## [DEV 0.2.1 BETA] - 07/03/2025
 ## NOT PUBLISHED YET
 ### Added
 - New Map tiles system, this feuture will just make the website more optimized, because your computer does not have to load an 14Kpx image, instead now it only loads small tyles that u can see.
 - Airports UI literally remaked.
+- New Loading Screen. (No one cares but its a new thing)
 
 ### Corrected
 - And again a LOT of code was rewrited because my past version of me didn't cared about organization and understandeble code.
