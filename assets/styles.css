@@ -437,7 +437,7 @@ header a {
     top: 80px; /* Ajuste para ficar abaixo do cabeçalho */
     left: 20px; /* Ajuste para ficar no canto superior esquerdo */
     width: 300px;
-    padding: 15px;
+    padding: 0 15px 15px 15px;
     background-color: #131316;
     border-radius: 10px;
     color: #fff;

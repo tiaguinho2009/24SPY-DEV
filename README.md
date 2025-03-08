@@ -36,11 +36,13 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 - New Map tiles system, this feuture will just make the website more optimized, because your computer does not have to load an 14Kpx image, instead now it only loads small tyles that u can see.
 - Airports UI literally remaked.
 - New Loading Screen. (No one cares but its a new thing)
+- New UI Animations.
 
 ### Corrected
 - And again a LOT of code was rewrited because my past version of me didn't cared about organization and understandeble code.
 - Some bugs with zoom and map movement fixed. (Now you can move more freely)
 - 24SPY API received some updates because of the website changes.
+- Now when you click on the footer, instead of being redirected to the github shows the changelog popup.
 - And a LOT of other bugs that i don't remember were fixed. (Again | I need to start writing down the changes i make because i have fish memory)
 
 ### Comments

@@ -1195,6 +1195,15 @@ function toggleFlpMenu() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const flpMenu = document.getElementById('FlpMenu');
+    if (flpMenu.style.display === 'flex') {
+        flpMenu.classList.add('open');
+    } else {
+        flpMenu.classList.add('closed');
+    }
+});
+
 function saveFlp() {
     const getValue = id => document.getElementById(id).value.trim().toUpperCase();
     const [departure, departureRwy, arrival, arrivalRwy, waypoints, sid, deptrans, star, arrtrans, app] = 
