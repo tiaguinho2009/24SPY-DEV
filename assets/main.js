@@ -1162,20 +1162,36 @@ function toggleChangeLogMenu() {
     Changelogmenu.style.display = Changelogmenu.style.display === 'none' || Changelogmenu.style.display === '' ? 'flex' : 'none';
 }
 
-function toggleFlpMenu() {
-    const FlpMenu = document.getElementById('FlpMenu');
-    const FlpButton = document.getElementById('FlpButton');
-    const FlpIcon = document.getElementById('FlpIcon');
+let isAnimating = false;
 
-    // Alterna o menu entre visível e escondido
-    if (FlpMenu.style.display === 'none' || FlpMenu.style.display === '') {
-        FlpMenu.style.display = 'flex'; // Mostra o menu
-        FlpButton.classList.add('on'); // Adiciona a classe "on" ao botão
-        FlpIcon.style.filter = 'brightness(1)';
+function toggleFlpMenu() {
+    if (isAnimating) return; // Se a animação estiver em andamento, não faz nada
+
+    const flpMenu = document.getElementById('FlpMenu');
+    const flpButton = document.getElementById('FlpButton');
+    const flpIcon = document.getElementById('FlpIcon');
+
+    isAnimating = true; // Define a variável de bloqueio
+
+    // Alterna o menu entre visível e escondido com animação
+    if (flpMenu.classList.contains('open')) {
+        flpMenu.classList.remove('open');
+        flpMenu.classList.add('closed');
+        setTimeout(() => {
+            flpMenu.style.display = 'none';
+            isAnimating = false; // Libera a variável de bloqueio após a animação
+        }, 500); // Tempo da animação
+        flpButton.classList.remove('on'); // Remove a classe "on" do botão
+        flpIcon.style.filter = 'brightness(0.8)';
     } else {
-        FlpMenu.style.display = 'none'; // Esconde o menu
-        FlpButton.classList.remove('on'); // Remove a classe "on" do botão
-        FlpIcon.style.filter = 'brightness(0.8)';
+        flpMenu.style.display = 'flex';
+        setTimeout(() => {
+            flpMenu.classList.remove('closed');
+            flpMenu.classList.add('open');
+            isAnimating = false; // Libera a variável de bloqueio após a animação
+        }, 10); // Pequeno atraso para garantir que a transição ocorra
+        flpButton.classList.add('on'); // Adiciona a classe "on" ao botão
+        flpIcon.style.filter = 'brightness(1)';
     }
 }
 

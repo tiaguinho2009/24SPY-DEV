@@ -444,6 +444,20 @@ header a {
     font-family: Arial, sans-serif;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     z-index: 100;
+    overflow: hidden; /* Necessário para a animação */
+    transform-origin: top; /* Define a origem da transformação */
+    transition: transform 0.5s ease, opacity 0.5s ease; /* Animação suave */
+}
+
+.flp-menu.open {
+    display: flex;
+    transform: scaleY(1); /* Escala para 100% */
+    opacity: 1;
+}
+
+.flp-menu.closed {
+    transform: scaleY(0); /* Escala para 0% */
+    opacity: 0;
 }
 
 @media (max-width: 768px) {
@@ -1078,6 +1092,7 @@ canvas {
 .footer-link {
     color: #bdbdbd;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .footer-link:hover {
