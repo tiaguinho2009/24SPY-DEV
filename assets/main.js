@@ -82,8 +82,8 @@ const tiles4 = [];
 const tilePromises = [];
 
 for (let i = 1; i <= 25; i++) {
-    tilePromises.push(loadImage(`tiles1/${i}.png`).then(img => tiles1.push(img)));
-    tilePromises.push(loadImage(`tiles2/${i}.png`).then(img => tiles2.push(img)));
+    tilePromises.push(loadImage(`tiles/tiles1/${i}.png`).then(img => tiles1.push(img)));
+    tilePromises.push(loadImage(`tiles/tiles2/${i}.png`).then(img => tiles2.push(img)));
 }
 
 Promise.all(tilePromises).then(() => {
@@ -98,19 +98,19 @@ Promise.all(tilePromises).then(() => {
 
 for (let i = 1; i <= 25; i++) {
     const img1 = new Image();
-    img1.src = `tiles1/${i}.png`;
+    img1.src = `tiles/tiles1/${i}.png`;
     tiles1.push(img1);
 
     const img2 = new Image();
-    img2.src = `tiles2/${i}.png`;
+    img2.src = `tiles/tiles2/${i}.png`;
     tiles2.push(img2);
 
     const img3 = new Image();
-    img3.src = `tiles3/${i}.png`;
+    img3.src = `tiles/tiles3/${i}.png`;
     tiles3.push(img3);
 
     const img4 = new Image();
-    img4.src = `tilesOP/${i}.png`;
+    img4.src = `tiles/tilesOP/${i}.png`;
     tiles4.push(img4);
 
     if (i === 25) {
