@@ -1650,6 +1650,8 @@ async function fetchATCDataAndUpdate() {
         data = localCachedURL ? await fetchATCData(localStorage.getItem("cachedDynamicURL")) : null;
     }
 
+    if (!settingsValues.showOnlineATC) data = [];
+
     if (!data) {
         await fetchDynamicURL();
         if (cachedDynamicURL) {
