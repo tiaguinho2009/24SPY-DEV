@@ -467,6 +467,16 @@ function updateATCUI() {
     refreshUI();
 }
 
+function calculateDistance(point1, point2) {
+    const referenceDistanceEuclidean = Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
+    const referenceDistanceNM = 1478 / 1852; // 1478 meters in NM (1 NM = 1852 meters)
+    const scaleFactor = referenceDistanceNM / referenceDistanceEuclidean;
+
+    const distanceEuclidean = Math.sqrt((point1.coordinates[0] - point2.coordinates[0]) ** 2 + (point1.coordinates[1] - point2.coordinates[1]) ** 2);
+    const distanceNM = (distanceEuclidean * scaleFactor);
+    return distanceNM;
+}
+
 function drawFlightPlan(points) {
     if (points.length < 2) {
         return;
@@ -506,11 +516,7 @@ function drawFlightPlan(points) {
         const dy = nextTrans[1] - currentTrans[1];
         const hdg = Math.round((Math.atan2(dx, -dy) * (180 / Math.PI) + 360) % 360);
 
-        // Calcula a distância diretamente das coordenadas sem transformá-las
-        const dxRaw = next.coordinates[0] - current.coordinates[0];
-        const dyRaw = next.coordinates[1] - current.coordinates[1];
-        const distanceEuclidean = Math.sqrt(dxRaw ** 2 + dyRaw ** 2);
-        const distanceNM = (distanceEuclidean * scaleFactor).toFixed(2);
+        const distanceNM = calculateDistance(current, next).toFixed(2);
 
         // Chama a função para desenhar as labels secundárias se o zoom for maior que 1
         if (scale > 0.5) {
@@ -1203,6 +1209,160 @@ document.addEventListener('DOMContentLoaded', () => {
         flpMenu.classList.add('closed');
     }
 });
+
+function generateFPL() {
+    const getValue = id => document.getElementById(id).value.trim().toUpperCase();
+    const [departure, departureRwy, arrival, arrivalRwy, waypoints, sid, deptrans, star, arrtrans, app] = 
+        ['departure', 'departureRwy', 'arrival', 'arrivalRwy', 'waypoints', 'sid', 'deptrans', 'star', 'arrtrans', 'app'].map(getValue);
+    const allPoints = [...controlAreas.filter(a => a.type === "Airport" && (a.name === departure || a.name === arrival)), ...Waypoints];
+
+    const departureAirport = allPoints.find(point => point.name === departure && point.type === "Airport");
+    const arrivalAirport = allPoints.find(point => point.name === arrival && point.type === "Airport");
+
+    if (!departureAirport || !arrivalAirport) {
+        showMessage('Flight Plan Error', `Airport not found!`);
+        return;
+    }
+
+    function getNeighbors(point, range) {
+        return allPoints.filter(p => calculateDistance(point, p) <= range && p !== point);
+    }
+
+    function getPath(start, goal) {
+        const startNode = { point: start, g: 0, h: calculateDistance(start, goal), f: 0, parent: null };
+        startNode.f = startNode.g + startNode.h;
+        const openList = new MinHeap((a, b) => a.f - b.f);
+        openList.push(startNode);
+        const closedList = new Set();
+        const openSet = new Map();
+        openSet.set(startNode.point, startNode);
+    
+        while (!openList.isEmpty()) {
+            const currentNode = openList.pop();
+            openSet.delete(currentNode.point);
+            closedList.add(currentNode.point);
+    
+            if (currentNode.point === goal) {
+                const path = [];
+                let current = currentNode;
+                while (current) {
+                    path.push(current.point);
+                    current = current.parent;
+                }
+                return path.reverse();
+            }
+    
+            const neighbors = getNeighbors(currentNode.point, 5);
+            for (const neighbor of neighbors) {
+                if (closedList.has(neighbor)) {
+                    continue;
+                }
+    
+                const g = currentNode.g + calculateDistance(currentNode.point, neighbor);
+                const h = calculateDistance(neighbor, goal);
+                const f = g + h;
+    
+                if (openSet.has(neighbor)) {
+                    const openNode = openSet.get(neighbor);
+                    if (g < openNode.g) {
+                        openNode.g = g;
+                        openNode.f = f;
+                        openNode.parent = currentNode;
+                        openList.update(openNode);
+                    }
+                } else {
+                    const neighborNode = { point: neighbor, g, h, f, parent: currentNode };
+                    openList.push(neighborNode);
+                    openSet.set(neighbor, neighborNode);
+                }
+            }
+        }
+    
+        return null;
+    }
+    
+    // MinHeap implementation for the open list
+    class MinHeap {
+        constructor(compare) {
+            this.compare = compare;
+            this.heap = [];
+        }
+    
+        push(node) {
+            this.heap.push(node);
+            this.bubbleUp(this.heap.length - 1);
+        }
+    
+        pop() {
+            if (this.heap.length === 1) return this.heap.pop();
+            const top = this.heap[0];
+            this.heap[0] = this.heap.pop();
+            this.bubbleDown(0);
+            return top;
+        }
+    
+        find(predicate) {
+            return this.heap.find(predicate);
+        }
+    
+        update(node) {
+            const index = this.heap.indexOf(node);
+            if (index !== -1) {
+                this.bubbleUp(index);
+                this.bubbleDown(index);
+            }
+        }
+    
+        isEmpty() {
+            return this.heap.length === 0;
+        }
+    
+        bubbleUp(index) {
+            while (index > 0) {
+                const parentIndex = Math.floor((index - 1) / 2);
+                if (this.compare(this.heap[index], this.heap[parentIndex]) < 0) {
+                    [this.heap[index], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[index]];
+                    index = parentIndex;
+                } else {
+                    break;
+                }
+            }
+        }
+    
+        bubbleDown(index) {
+            const length = this.heap.length;
+            while (true) {
+                const leftChildIndex = 2 * index + 1;
+                const rightChildIndex = 2 * index + 2;
+                let smallest = index;
+    
+                if (leftChildIndex < length && this.compare(this.heap[leftChildIndex], this.heap[smallest]) < 0) {
+                    smallest = leftChildIndex;
+                }
+    
+                if (rightChildIndex < length && this.compare(this.heap[rightChildIndex], this.heap[smallest]) < 0) {
+                    smallest = rightChildIndex;
+                }
+    
+                if (smallest !== index) {
+                    [this.heap[index], this.heap[smallest]] = [this.heap[smallest], this.heap[index]];
+                    index = smallest;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    const path = getPath(departureAirport, arrivalAirport);
+    if (!path) {
+        showMessage('Flight Plan Error', `No path found between ${departure} and ${arrival}!`);
+        return;
+    }
+
+    flightRoute = path;
+    draw();
+}
 
 function saveFlp() {
     const getValue = id => document.getElementById(id).value.trim().toUpperCase();
