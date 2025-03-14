@@ -160,6 +160,11 @@
             <button class="generate" onclick="generateFPL()">Generate</button>
          </div>
       </div>
+      <div class="mini-slider" id="MiniSlider">
+         <label for="slider">Select Value:</label>
+         <input type="range" id="slider" name="slider" min="3" max="8" step="0.5" value="5.5" oninput="updateSliderValue(this.value)">
+         <span id="sliderValue">5</span>
+     </div>
       <div class="message-menu" id="MessageMenu">
          <div class="title">Error</div>
          <div class="content">

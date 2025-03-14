@@ -595,6 +595,75 @@ textarea:focus, textarea:hover {
     background-color: #bd2130;
 }
 
+.mini-slider {
+    display: none;
+    position: absolute;
+    background-color: #131316; /* Cor de fundo escura */
+    color: #ffffff; /* Cor do texto */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 101;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+}
+
+.mini-slider.open {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mini-slider label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #bdbdbd; /* Cor do texto */
+}
+
+.mini-slider input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, #3b6cec 0%, #3b6cec 50%, #202024 50%, #202024 100%);
+    height: 5px;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+.mini-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.mini-slider input[type="range"]::-webkit-slider-thumb:hover {
+    background: #4b7eff;
+}
+
+.mini-slider input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.mini-slider span {
+    display: block;
+    margin-top: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #3b6cec; /* Cor do valor */
+}
+
 /* Estilo para o container da lista */
 .list-container {
     position: absolute;

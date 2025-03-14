@@ -22,6 +22,7 @@ let onlineATC = 0;
 let dataIsFrom = 'ATC24';
 let flightRoute = [];
 let onlineATCs = {};
+let fplgeneratorrange = 5.5;
 
 const positionMapping = {
     center: 'CTR',
@@ -829,6 +830,17 @@ function calculateBoundingArea(div1, div2, indication) {
             { x: rect2.left, y: rect2.bottom },
             { x: rect2.left, y: rect2.top }
         ];
+    } else if (indication === 'right') {
+        vertices = [
+            { x: rect1.left, y: rect1.top },
+            { x: rect1.right, y: rect1.top },
+            { x: rect2.left, y: rect2.top },
+            { x: rect2.right, y: rect2.top },
+            { x: rect2.right, y: rect2.bottom },
+            { x: rect2.left, y: rect2.bottom },
+            { x: rect1.right, y: rect1.bottom },
+            { x: rect1.left, y: rect1.bottom },
+        ];
     }
     
     return vertices;
@@ -1201,6 +1213,38 @@ function toggleFlpMenu() {
     }
 }
 
+function toggleMiniSlider(value) {
+    const miniSlider = document.getElementById('MiniSlider');
+    if (!value) {
+        miniSlider.classList.remove('open');
+        miniSlider.style.display = 'none';
+    } else {
+        miniSlider.style.display = 'block';
+        miniSlider.classList.add('open');
+    }
+}
+
+function updateSliderValue(value) {
+    document.getElementById('sliderValue').textContent = value;
+    if (fplgeneratorrange !== value) {
+        fplgeneratorrange = value;
+        generateFPL();
+    }
+
+    const slider = document.getElementById('slider');
+    const percentage = (value - slider.min) / (slider.max - slider.min) * 100;
+    slider.style.background = `linear-gradient(to right, #3b6cec ${percentage}%, #202024 ${percentage}%)`;
+    document.getElementById('sliderValue').textContent = parseFloat(value).toFixed(1);
+}
+updateSliderValue(fplgeneratorrange);
+
+function calculateMiniSliderPosition(button) {
+    const rect = button.getBoundingClientRect();
+    const miniSlider = document.getElementById('MiniSlider');
+    miniSlider.style.left = `${rect.right + window.scrollX + 20}px`;
+    miniSlider.style.top = `${rect.top + window.scrollY}px`;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const flpMenu = document.getElementById('FlpMenu');
     if (flpMenu.style.display === 'flex') {
@@ -1208,6 +1252,35 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         flpMenu.classList.add('closed');
     }
+    //
+    const generateButton = document.querySelector('.generate');
+    generateButton.addEventListener('mouseenter', () => {
+        const departureAirport = document.getElementById('departure').value.trim().toUpperCase();
+        const depairport = controlAreas.find(area => area.name === departureAirport && area.type === "Airport");
+        const arrivalAirport = document.getElementById('arrival').value.trim().toUpperCase();
+        const arrairport = controlAreas.find(area => area.name === arrivalAirport && area.type === "Airport");
+        if (depairport && arrairport) {
+            calculateMiniSliderPosition(generateButton);
+            toggleMiniSlider(true);
+        }
+    });
+
+    generateButton.addEventListener('mouseleave', (event) => {
+        const miniSlider = document.getElementById('MiniSlider');
+        const vertices = calculateBoundingArea(generateButton, miniSlider, 'right');
+        if (isMouseOutsideArea(event, vertices, generateButton)) {
+            toggleMiniSlider(false);
+        }
+    });
+
+    document.addEventListener('mousemove', (event) => {
+        const miniSlider = document.getElementById('MiniSlider');
+        const generateButton = document.querySelector('.generate');
+        const vertices = calculateBoundingArea(generateButton, miniSlider, 'right');
+        if (isMouseOutsideArea(event, vertices, generateButton)) {
+            toggleMiniSlider(false);
+        }
+    });
 });
 
 function generateFPL() {
@@ -1252,7 +1325,7 @@ function generateFPL() {
                 return path.reverse();
             }
     
-            const neighbors = getNeighbors(currentNode.point, 5);
+            const neighbors = getNeighbors(currentNode.point, fplgeneratorrange);
             for (const neighbor of neighbors) {
                 if (closedList.has(neighbor)) {
                     continue;
@@ -1356,12 +1429,19 @@ function generateFPL() {
 
     const path = getPath(departureAirport, arrivalAirport);
     if (!path) {
-        showMessage('Flight Plan Error', `No path found between ${departure} and ${arrival}!`);
+        //showMessage('Flight Plan Error', `No path found between ${departure} and ${arrival}!`);
+        flightRoute = [];
+        draw();
         return;
     }
 
+    const filteredPath = path.filter(point => point.type !== "Airport");
+
     flightRoute = path;
     draw();
+
+    const waypointsInput = document.getElementById('waypoints');
+    waypointsInput.value = filteredPath.map(point => point.name).join(' ');
 }
 
 function saveFlp() {
