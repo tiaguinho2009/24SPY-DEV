@@ -1835,7 +1835,7 @@ function getUniqueUserId() {
 }
 
 const uniqueUserId = getUniqueUserId();
-const defaultURL = 'https://ptfs.xyz/api/controllers';
+const defaultURL = 'https://123456321.xyz/api/controllers';
 const dynamicURLRepository = 'https://raw.githubusercontent.com/tiaguinho2009/24SPY-Backend/main/backend';
 let cachedDynamicURL = localStorage.getItem("cachedDynamicURL") || null;
 
