@@ -6,9 +6,7 @@ const canvas = document.getElementById('map');
 const ctx = canvas.getContext('2d');
 
 let devMode = false;
-if (window.location.href.startsWith('https://tiaguinho2009.github.io')) {
-    devMode = false;
-}
+if (window.location.href.startsWith('https://tiaguinho2009.github.io')) devMode = false;
 
 let offsetX = 0,
     offsetY = 0;
@@ -312,6 +310,36 @@ function isSpecialUser(atcName) {
     return Object.keys(specialUsers).includes(baseName);
 }
 
+let aircraftSVGImage;
+
+function loadSVG(url) {
+    return fetch(url)
+        .then(response => response.text())
+        .then(svgText => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(svgText, 'image/svg+xml');
+            const svgElement = doc.documentElement;
+
+            // Cria um novo elemento de imagem para o SVG
+            const img = new Image();
+            const svgData = new XMLSerializer().serializeToString(svgElement);
+            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+
+            img.onload = () => {
+                aircraftSVGImage = img;
+                URL.revokeObjectURL(url);
+                draw(); // Redesenha o canvas após carregar o SVG
+            };
+
+            img.src = url;
+        });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    //loadSVG('assets/Icons/plane-svgrepo-com.svg');
+});
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -332,6 +360,22 @@ function draw() {
     resetChartsMenu();
     drawNavaids();
     updateAllAirportsUI();
+    //drawAircraft();
+}
+
+function drawAircraft() {
+    if (!aircraftSVGImage) return;
+
+    Object.values(aircraftData).forEach(aircraft => {
+        const { position, heading, isOnGround } = aircraft;
+        const [x, y] = transformCoordinates([Math.sqrt(position.x ** 2) / 40, Math.sqrt(position.y ** 2) / 40]);
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate((heading * Math.PI) / 180);
+        ctx.drawImage(aircraftSVGImage, -15, -15, 30, 30); // Ajuste o tamanho conforme necessário
+        ctx.restore();
+    });
 }
 
 function drawControlAreas() {
@@ -1836,28 +1880,7 @@ function getUniqueUserId() {
 
 const uniqueUserId = getUniqueUserId();
 const defaultURL = 'https://ptfs.xyz/api/controllers';
-const dynamicURLRepository = 'https://raw.githubusercontent.com/tiaguinho2009/24SPY-Backend/main/backend';
-let cachedDynamicURL = localStorage.getItem("cachedDynamicURL") || null;
-
-async function fetchDynamicURL() {
-    try {
-        const response = await fetch(dynamicURLRepository);
-        if (!response.ok) throw new Error(`Erro ao buscar repositório: ${response.status}`);
-        
-        const repositoryContent = await response.text();
-        const dynamicURLMatch = repositoryContent.match(/https?:\/\/[\w.-]+\.trycloudflare\.com/g);
-        
-        if (dynamicURLMatch && dynamicURLMatch.length > 0) {
-            cachedDynamicURL = dynamicURLMatch[0] + '/api/controllers';
-            localStorage.setItem("cachedDynamicURL", cachedDynamicURL);
-        } else {
-            throw new Error('Nenhuma URL dinâmica encontrada no repositório.');
-        }
-    } catch (error) {
-        console.error('Erro ao buscar URL dinâmica:', error);
-        cachedDynamicURL = null;
-    }
-}
+const API_URL = 'https://123456321.xyz/api/controllers';
 
 async function fetchATCData(url) {
     try {
@@ -1874,39 +1897,38 @@ async function fetchATCData(url) {
 }
 
 async function fetchATCDataAndUpdate() {
-    let data
+    let data;
     let typeOfDataReceived = '';
     function toggleUpdateClass() {
         const mapUpdateTime = document.getElementById('mapUpdateTime');
         mapUpdateTime.style.backgroundColor = '#ff7a00';
-        mapUpdateTime.style.color = '#ffffff'; // Muda a cor do texto para branco
+        mapUpdateTime.style.color = '#ffffff'; // Change text color to white
     }
     toggleUpdateClass();
 
     if (devMode) {
         data = PTFSAPIError;
     } else {
-        let localCachedURL = localStorage.getItem("cachedDynamicURL");
-        data = localCachedURL ? await fetchATCData(localStorage.getItem("cachedDynamicURL")) : null;
+        data = await fetchATCData(API_URL);
     }
 
-    if (!settingsValues.showOnlineATC) data = [];
+    if (!settingsValues.showOnlineATC) {
+        onlineATCs = {};
+        processATCData([]);
 
-    if (!data) {
-        await fetchDynamicURL();
-        if (cachedDynamicURL) {
-            data = await fetchATCData(cachedDynamicURL);
-            if (data) {
-                localStorage.setItem("cachedDynamicURL", cachedDynamicURL);
-                typeOfDataReceived = 'dynamicURL';
-            }
-        }
+        const mapUpdateTime = document.getElementById('mapUpdateTime');
+        setTimeout(() => {
+            mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)';
+            mapUpdateTime.style.color = ''; // Restore default text color
+        }, 150);
+
+        return;
     }
 
     if (!data) {
-        data = await fetchATCData(defaultURL)
+        data = await fetchATCData(defaultURL);
         typeOfDataReceived = 'defaultURL';
-    };
+    }
 
     if (data) {
         const newATCList = data;
@@ -1932,7 +1954,7 @@ async function fetchATCDataAndUpdate() {
             await showMessage('Server Error', 'Couldn’t get the info from the server, please check your internet connection.', 'Retry');
             await fetchATCDataAndUpdate();
         }
-        PTFSAPI = PTFSAPIError;
+        PTFSAPI = null;
         processATCData(PTFSAPI);
     }
 
@@ -1948,16 +1970,16 @@ async function fetchATCDataAndUpdate() {
     const mapUpdateTime = document.getElementById('mapUpdateTime');
     setTimeout(() => {
         mapUpdateTime.style.backgroundColor = 'rgba(32, 32, 36, 1)';
-        mapUpdateTime.style.color = ''; // Restaura a cor do texto ao valor padrão
+        mapUpdateTime.style.color = ''; // Restore default text color
     }, 150);
-    
+
     if (typeOfDataReceived === 'defaultURL' && typeOfDataReceivedTimesExecuted === 0) {
         typeOfDataReceivedTimesExecuted = 1;
         showMessage('24SPY API Offline', 'The 24SPY API is currently offline. The data is being fetched from the ATC24 API, some website features may not work correctly.', 'Close', 'Try Again').then(response => {
             if (response === 2) {
                 fetchATCDataAndUpdate();
                 typeOfDataReceivedTimesExecuted = 0;
-            };
+            }
         });
     }
 }
