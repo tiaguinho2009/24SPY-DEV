@@ -263,7 +263,7 @@ function transformAtisInfoToText(atisInfo) {
         airport,
         position,
         uptime,
-        upsince,
+        onlineSince,
         ident,
         pressure,
         arwy,
@@ -271,7 +271,7 @@ function transformAtisInfoToText(atisInfo) {
         pdc
     } = atisInfo;
 
-    if (position.toLowerCase() !== "atis") {
+    if (position !== "atis") {
         console.error("Invalid position for ATIS information.");
         return "";
     }
@@ -280,36 +280,42 @@ function transformAtisInfoToText(atisInfo) {
     const airportName = airportEntry ? airportEntry.name.toUpperCase() : airport.toUpperCase();
 
     const informationIdent = ATIScodeTable[ident.toUpperCase()] || ident.toUpperCase();
-    const departureRunways = drwy.join(", ");
-    const arrivalRunways = arwy.join(", ");
+    const departureRunways = drwy > 0 ? drwy.join(", ") : "UNKNOWN";
+    const arrivalRunways = arwy > 0 ? arwy.join(", ") : "UNKNOWN";
     const visibility = "VISIBILITY 10 KILOMETERS OR MORE";
-    const qnh = `QNH${pressure}`;
-    const datalinkClearances = pdc ? "DATALINK CLEARANCES ARE AVAILABLE" : "";
-    const time = upsince ? upsince : "";
+    const qnh = pressure ? `QNH${pressure}` : "UNKNOWN";
+    const datalinkClearances = pdc ? "DATALINK CLEARANCES ARE AVAILABLE .." : "";
+    const date = new Date(onlineSince);
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const time = onlineSince ? `${hours}${minutes}Z` : "UNKNOWN";
 
-    return `${airportName} INFORMATION ${informationIdent} .. TIME ${time} .. DEPARTURE RUNWAY ${departureRunways} .. ARRIVAL RUNWAY ${arrivalRunways} .. ${visibility} .. ${qnh} .. ${datalinkClearances} .. ACKNOWLEDGE RECIEPT OF INFORMATION ${informationIdent} ON FIRST CONTACT`.trim();
+    const text = `${airportName} INFORMATION ${informationIdent} .. TIME ${time} .. DEPARTURE RUNWAY ${departureRunways} .. ARRIVAL RUNWAY ${arrivalRunways} .. ${visibility} .. ${qnh} .. ${datalinkClearances} ACKNOWLEDGE RECIEPT OF INFORMATION ${informationIdent} ON FIRST CONTACT`.trim();
+    return text
 }
-
-// Example usage
-const atisText = transformAtisInfoToText({
-    "airport": "IRFD",
-    "position": "atis",
-    "uptime": "02:44",
-    "upsince": "1220Z",
-    "ident": "N",
-    "pressure": 1013,
-    "arwy": ["07R", "07L"],
-    "drwy": ["07C", "07R"],
-    "pdc": true
-});
-console.log(atisText);
 
 function updateOnlineATCs(atcList) {
     onlineATCs = {};
 
     atcList.forEach(atcData => {
-        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency } = atcData;
+        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency, ...otherInfo } = atcData;
+
         if (claimable) return;
+
+        if (position === "atis") {
+            const atisInfo = { airport, position, uptime, ...otherInfo };
+            const text = transformAtisInfoToText(atisInfo);
+            if (!onlineATCs[airport]) {
+                onlineATCs[airport] = { CTR: [], APP: [], TWR: [], GND: [], DEL: [], ATS: [] };
+            }
+            onlineATCs[airport].ATS.push({
+                uptime: atisInfo.uptime,
+                ident: atisInfo.ident,
+                pressure: atisInfo.pressure,
+                text
+            });
+            return;
+        }
 
         let frequency = initialFrequency;
 
@@ -352,6 +358,7 @@ function getOnlineATCs(airport) {
 }
 
 function isSpecialUser(atcName) {
+    if (!atcName) return false;
     const baseName = atcName.split(' | ')[0];
     return Object.keys(specialUsers).includes(baseName);
 }
@@ -1033,27 +1040,50 @@ function showInfoMenu(badge, airport, menu, airportUI) {
 
     let infoSections = '';
 
-    atcList.forEach(atc => {
-        const atcName = atc.holder || 'N/A';
-        const frequency = atc.frequency || 'N/A';
-        const uptime = atc.uptime || 'N/A';
-        const atcCode = atc.code || '';
+    if (position === 'ATIS') {
+        menu.style.maxWidth = '400px'; // Limit the menu width for ATIS
+        atcList.forEach(atc => {
+            const { ident, uptime, text } = atc;
 
-        const baseName = atcName.split(' | ')[0];
-        const specialUser = isSpecialUser(baseName);
-        const specialTag = specialUser 
-            ? `<span class="special-tag" style="background-color: ${specialUsers[baseName].TagColor};">${specialUsers[baseName].Role}</span>` 
-            : '';
+            infoSections += `
+                <div class="atis-info-section">
+                    <div class="atis-header" style="text-align: right;">
+                        <span class="atis-ident">Info ${ident}</span>
+                        <div class="separator">|</div>
+                        <span class="atis-uptime">Time Online: ${uptime}</span>
+                        <div class="separator">|</div>
+                        <span class="atis-tooltip">
+                            <span class="atis-icon">ℹ</span>
+                            <span class="atis-tooltip-text">ATIS Info provided by 24Scope</span>
+                        </span>
+                    </div>
+                    <div class="atis-text">${text}</div>
+                </div>
+            `;
+        });
+    } else {
+        atcList.forEach(atc => {
+            const atcName = atc.holder || 'N/A';
+            const frequency = atc.frequency || 'N/A';
+            const uptime = atc.uptime || 'N/A';
+            const atcCode = atc.code || '';
 
-        infoSections += `
-            <div class="controller-info-section">
-                <p><strong>${atcCode}</strong></p>
-                <p><strong>Controller:</strong> ${atcName}${specialTag}</p>
-                <p><strong>Frequency:</strong> ${frequency}</p>
-                <p><strong>Online:</strong> ${uptime}</p>
-            </div>
-        `;
-    });
+            const baseName = atcName.split(' | ')[0];
+            const specialUser = isSpecialUser(baseName);
+            const specialTag = specialUser 
+                ? `<span class="special-tag" style="background-color: ${specialUsers[baseName].TagColor};">${specialUsers[baseName].Role}</span>` 
+                : '';
+
+            infoSections += `
+                <div class="controller-info-section">
+                    <p><strong>${atcCode}</strong></p>
+                    <p><strong>Controller:</strong> ${atcName}${specialTag}</p>
+                    <p><strong>Frequency:</strong> ${frequency}</p>
+                    <p><strong>Online:</strong> ${uptime}</p>
+                </div>
+            `;
+        });
+    }
 
     menu.style.display = 'block';
     menu.innerHTML = `

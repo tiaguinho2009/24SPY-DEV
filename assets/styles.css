@@ -823,7 +823,7 @@ canvas {
 }
 
 .airport-ui .badge.S {
-    background-color: #ecb549;
+    background-color: #2647ad;
 }
 
 .airport-ui .badge.special {
@@ -1019,6 +1019,86 @@ canvas {
     margin: 4px 0;
     color: #ddd;
     font-size: 0.9em;
+}
+
+.atis-info-section {
+    background-color: rgba(32, 32, 36, 1);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 5px;
+    text-align: left;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.atis-info-section:hover {
+    background-color: rgba(40, 40, 45, 1);
+}
+
+.atis-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9em;
+    color: #bdbdbd;
+}
+
+.atis-ident {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.atis-uptime {
+    font-size: 0.9em;
+    color: #bdbdbd;
+}
+
+.atis-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.atis-icon {
+    background-color: #3b6cec;
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.8em;
+}
+
+.atis-info-section .separator {
+    color: #3b6cec;
+}
+
+.atis-tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #131316;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 10000;
+    bottom: -200%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.atis-tooltip:hover .atis-tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.atis-text {
+    margin-top: 5px;
+    font-size: 0.85em;
+    color: #ddd;
+    line-height: 1.2;
 }
 
 #overlay {
