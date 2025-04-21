@@ -286,7 +286,23 @@ let PTFSAPIError = [
         "position": "control",
         "uptime": "00:05",
         "onlineSince": "2025-03-03T18:10:49.945Z"
-    }
+    },
+    {
+        "holder": "zedrucc",
+        "claimable": false,
+        "airport": "Perth",
+        "position": "control",
+        "uptime": "00:00",
+        "onlineSince": "2025-03-03T17:25:50.135Z"
+    },
+    {
+        "holder": "ArchUserBTW_RBLX",
+        "claimable": false,
+        "airport": "Perth",
+        "position": "control",
+        "uptime": "00:00",
+        "onlineSince": "2025-03-03T17:25:50.135Z"
+    },
 ]
 let PTFSAPI = []
 
@@ -1809,46 +1825,111 @@ const localInfo = {};
 
 document.getElementById("version").textContent = `v${websiteInfo.version}`;
 
+const ATIScodeTable = {
+    "A": "ALPHA",
+    "B": "BRAVO",
+    "C": "CHARLIE",
+    "D": "DELTA",
+    "E": "ECHO",
+    "F": "FOXTROT",
+    "G": "GOLF",
+    "H": "HOTEL",
+    "I": "INDIA",
+    "J": "JULIET",
+    "K": "KILO",
+    "L": "LIMA",
+    "M": "MIKE",
+    "N": "NOVEMBER",
+    "O": "OSCAR",
+    "P": "PAPA",
+    "Q": "QUEBEC",
+    "R": "ROMEO",
+    "S": "SIERRA",
+    "T": "TANGO",
+    "U": "UNIFORM",
+    "V": "VICTOR",
+    "W": "WHISKEY",
+    "X": "XRAY",
+    "Y": "YANKEE",
+    "Z": "ZULU",
+}
+
+const airportsTable = [
+    {icaoCode: 'IRFD', name: 'Rockford', atc24postion: "control"},
+    {icaoCode: 'IPPH', name: 'Perth', atc24postion: "control"},
+    {icaoCode: 'IZOL', name: 'Izolirani', atc24postion: "control"},
+    {icaoCode: 'ITKO', name: 'Tokyo', atc24postion: "control"},
+    {icaoCode: 'ILAR', name: 'Larnaca', atc24postion: "control"},
+    {icaoCode: 'IGRV', name: 'Grindavik', atc24postion: "control"},
+    {icaoCode: 'IBTH', name: 'Saint Barthélemy', atc24postion: "control"},
+    {icaoCode: 'ISAU', name: 'Sauthemptona', atc24postion: "control"},
+    {icaoCode: 'IPAP', name: 'Paphos', atc24postion: "approach"},
+    {icaoCode: 'IMLR', name: 'Mellor', atc24postion: "approach"},
+    {icaoCode: 'IDCS', name: 'Saba', atc24postion: "approach"},
+    {icaoCode: 'IGAR', name: 'Garry', atc24postion: "approach"},
+    {icaoCode: 'IIAB', name: 'McConnell', atc24postion: "approach"},
+    {icaoCode: 'ISCM', name: 'Scampton', atc24postion: "approach"},
+    {icaoCode: 'IBLT', name: 'Boltic'},
+    {icaoCode: 'ILKL', name: 'Lukla'},
+    {icaoCode: 'ITRN', name: 'Training Centre'},
+    {icaoCode: 'IJAF', name: 'Al Najaf'},
+    {icaoCode: 'IHEN', name: 'Henstridge'},
+    {icaoCode: 'IBAR', name: 'Barra'},
+    {icaoCode: 'ISKP', name: 'Skopelos', atc24postion: "control"},
+    {icaoCode: 'SHV', name: 'Sea Haven'},
+    {icaoCode: 'OWO', name: 'Waterloo'},
+    {icaoCode: 'TVO', name: 'Tavaro Seabase'},
+]
 
 const specialUsers = {
     "Tiaguinho_2009": {
         "Role": "Main Developer",
         "DiscordNick": "tiaguinho_2009",
-        "Color": "rgb(159, 29, 206)",
+        "TagColor": "#3b6cec"
     },
     "aaronandethan123": {
         "Role": "Contributor",
         "DiscordNick": "awdev_",
-        "Color": "rgba(158, 29, 206, 0.075)",
+        "TagColor": "#3b6cec"
     },
     "AvatarRoblox2018": {
         "Role": "24SPY Helper",
         "DiscordNick": "noah_the_plane_guy",
-        "Color": "rgba(158, 29, 206, 0.075)",
+        "TagColor": "#3b6cec"
     },
     "GalaxyON_1": {
         "Role": "24SPY Helper",
         "DiscordNick": "rafa_tugapt",
-        "Color": "rgba(158, 29, 206, 0.075)",
+        "TagColor": "#3b6cec"
     },
     "BEANZBURGERBEANZ": {
         "Role": "24SPY First User",
         "DiscordNick": "echogecko89",
-        "Color": "rgba(158, 29, 206, 0.075)",
+        "TagColor": "#3b6cec"
     },
     "frozenterror13": {
         "Role": "Chart Maker",
         "DiscordNick": "aerosd",
-        "Color": "rgba(158, 29, 206, 0.075)",
+        "TagColor": "#3b6cec"
     },
     "EzyDubbs": {
         "Role": "Chart Maker",
         "DiscordNick": "ezydubbs",
-        "Color": "rgba(158, 29, 206, 0.075)",
+        "TagColor": "#3b6cec"
     },
     "2316Nati": {
         "Role": "Contributor",
         "DiscordNick": "bedsdrout",
-        "Color": "rgba(158, 29, 206, 0.075)",
+        "TagColor": "#3b6cec"
+    },
+    "ArchUserBTW_RBLX": {
+        "Role": "Carboxylic Acid",
+        "DiscordNick": "formicacidgd",
+        "TagColor": "#70d44c"
+    },
+    "zedrucc": {
+        "Role": "24Scope",
+        "DiscordNick": "zedruc",
+        "TagColor": "#3b6cec"
     },
 };

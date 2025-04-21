@@ -258,6 +258,52 @@ function transformCoordinates(coord) {
     ];
 }
 
+function transformAtisInfoToText(atisInfo) {
+    const {
+        airport,
+        position,
+        uptime,
+        upsince,
+        ident,
+        pressure,
+        arwy,
+        drwy,
+        pdc
+    } = atisInfo;
+
+    if (position.toLowerCase() !== "atis") {
+        console.error("Invalid position for ATIS information.");
+        return "";
+    }
+
+    const airportEntry = airportsTable.find(entry => entry.icaoCode === airport);
+    const airportName = airportEntry ? airportEntry.name.toUpperCase() : airport.toUpperCase();
+
+    const informationIdent = ATIScodeTable[ident.toUpperCase()] || ident.toUpperCase();
+    const departureRunways = drwy.join(", ");
+    const arrivalRunways = arwy.join(", ");
+    const visibility = "VISIBILITY 10 KILOMETERS OR MORE";
+    const qnh = `QNH${pressure}`;
+    const datalinkClearances = pdc ? "DATALINK CLEARANCES ARE AVAILABLE" : "";
+    const time = upsince ? upsince : "";
+
+    return `${airportName} INFORMATION ${informationIdent} .. TIME ${time} .. DEPARTURE RUNWAY ${departureRunways} .. ARRIVAL RUNWAY ${arrivalRunways} .. ${visibility} .. ${qnh} .. ${datalinkClearances} .. ACKNOWLEDGE RECIEPT OF INFORMATION ${informationIdent} ON FIRST CONTACT`.trim();
+}
+
+// Example usage
+const atisText = transformAtisInfoToText({
+    "airport": "IRFD",
+    "position": "atis",
+    "uptime": "02:44",
+    "upsince": "1220Z",
+    "ident": "N",
+    "pressure": 1013,
+    "arwy": ["07R", "07L"],
+    "drwy": ["07C", "07R"],
+    "pdc": true
+});
+console.log(atisText);
+
 function updateOnlineATCs(atcList) {
     onlineATCs = {};
 
@@ -995,7 +1041,9 @@ function showInfoMenu(badge, airport, menu, airportUI) {
 
         const baseName = atcName.split(' | ')[0];
         const specialUser = isSpecialUser(baseName);
-        const specialTag = specialUser ? `<span class="special-tag">${specialUsers[baseName].Role}</span>` : '';
+        const specialTag = specialUser 
+            ? `<span class="special-tag" style="background-color: ${specialUsers[baseName].TagColor};">${specialUsers[baseName].Role}</span>` 
+            : '';
 
         infoSections += `
             <div class="controller-info-section">
@@ -1880,7 +1928,7 @@ function getUniqueUserId() {
 
 const uniqueUserId = getUniqueUserId();
 const defaultURL = 'https://ptfs.xyz/api/controllers';
-const API_URL = 'https://123456321.xyz/api/controllers';
+const API_URL = 'https://spy.123456321.xyz/api/controllers';
 
 async function fetchATCData(url) {
     try {
