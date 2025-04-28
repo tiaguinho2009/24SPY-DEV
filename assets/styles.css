@@ -90,38 +90,29 @@ header h1 {
 
 .atc-left-button {
     font-size: 16px;
-    color: #e2e2e2;
+    color: #a0a0a0; /* Texto mais escuro */
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #202024;
+    background-color: #17171a; /* Fundo mais escuro */
     height: 40px;
     width: 110px;
     margin-left: 5px;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     text-decoration: none;
     user-select: none;
+    opacity: 0.7; /* Deixa o botão visualmente mais apagado */
 }
 
 .atc-left-button .atc-left-icon {
     height: 30px;
     width: 30px;
     margin-right: 7px;
-    filter: brightness(0.8);
+    filter: brightness(0.6); /* Ícone mais escuro */
     transition: filter 0.2s ease-in-out;
-}
-
-.atc-left-button:hover {
-    background-color: #323237; 
-}
-
-.atc-left-button:active {
-    background-color: #3b6cec;
-    color: #ffffff;
 }
 
 .atc-online {
