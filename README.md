@@ -30,7 +30,7 @@
 
 For new users or anyone with questions on how to display online ATCs from ATC24 on the website, refer to the [Wiki](https://github.com/tiaguinho2009/24SPY/wiki) for guidance.
 
-## [DEV 0.2.2-1] - 28/04/2025
+## [DEV 0.2.2-1] - 28/04/2025 
 
 ### Corrected
 - Fix ATIS active runways not showing correctly.
