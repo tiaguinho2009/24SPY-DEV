@@ -298,7 +298,7 @@ function updateOnlineATCs(atcList) {
     onlineATCs = {};
 
     atcList.forEach(atcData => {
-        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency, ...otherInfo } = atcData;
+        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency, chartPack, ...otherInfo } = atcData;
 
         if (claimable) return;
 
@@ -312,6 +312,7 @@ function updateOnlineATCs(atcList) {
                 uptime: atisInfo.uptime,
                 ident: atisInfo.ident,
                 pressure: atisInfo.pressure,
+                chartPack,
                 text
             });
             return;
@@ -348,8 +349,7 @@ function updateOnlineATCs(atcList) {
 
 // Função para verificar se um ATC está online
 function isATCOnline(airport, position) {
-    const mappedPosition = positionMapping[position];
-    return onlineATCs[airport] && onlineATCs[airport][mappedPosition].length > 0;
+    return onlineATCs[airport] && onlineATCs[airport][position].length > 0;
 }
 
 // Função para obter a lista de ATCs online em um aeroporto
@@ -875,29 +875,110 @@ function createIcaoMenu(airport, airportUI) {
 
 function populateChartsMenu(airport, menu) {
     const chartsButtonsContainer = menu.querySelector('.charts-buttons');
-    if (airport.charts) {
-        airport.charts.forEach(([chartName, chartLink]) => {
-            const chartButton = document.createElement('button');
-            chartButton.className = 'chart-button';
-            chartButton.textContent = chartName;
-            chartButton.onclick = () => window.open(chartLink, '_blank');
-            chartsButtonsContainer.appendChild(chartButton);
-        });
+    chartsButtonsContainer.innerHTML = ''; // Limpa os botões existentes
+
+    let atisChartAdded = false;
+
+    function normalPopulateCharts() {
+        if (airport.charts) {
+            airport.charts.forEach(([chartName, chartLink]) => {
+                const chartButton = document.createElement('button');
+                chartButton.className = 'chart-button';
+                chartButton.textContent = chartName;
+                chartButton.onclick = () => window.open(chartLink, '_blank');
+                chartsButtonsContainer.appendChild(chartButton);
+            });
+        } else {
+            chartsButtonsContainer.innerHTML = `<div class="no-charts">No charts available</div>`;
+        }
+    }
+
+    // Verifica se o aeroporto possui ATIS online
+    if (isATCOnline(airport.real_name, "ATS")) {
+        const atisInfo = getOnlineATCs(airport.real_name).ATS[0]; // Obtém a primeira informação ATIS disponível
+
+        if (atisInfo && atisInfo.chartPack) {
+            const { author: atisAuthor, url: atisUrl } = atisInfo.chartPack;
+
+            if (airport.charts) {
+                airport.charts.forEach(([chartName, chartLink]) => {
+                    const chartButton = document.createElement('button');
+                    chartButton.className = 'chart-button';
+                    chartButton.textContent = chartName;
+                    chartButton.onclick = () => window.open(chartLink, '_blank');
+
+                    // Verifica se o chartName coincide com o chartPack.author da ATIS
+                    if (chartName === atisAuthor) {
+                        chartButton.className = 'chart-button special';
+
+                        // Adiciona o ícone ao botão especial
+                        const radarIcon = document.createElement('img');
+                        radarIcon.src = 'assets/Icons/radar-2-svgrepo-com.svg'; // Caminho para a imagem
+                        radarIcon.alt = 'Radar Icon';
+                        radarIcon.className = 'radar-icon';
+                        chartButton.appendChild(radarIcon);
+
+                        atisChartAdded = true; // Marca que o botão especial foi adicionado
+                    }
+
+                    chartsButtonsContainer.appendChild(chartButton);
+                });
+            }
+
+            // Caso nenhum chartName coincida com o chartPack.author da ATIS, cria um botão especial
+            if (!atisChartAdded) {
+                const atisButton = document.createElement('button');
+                atisButton.className = 'chart-button special';
+                atisButton.textContent = atisAuthor;
+                atisButton.style.backgroundColor = '#3b6cec'; // Cor azul para botão especial
+                atisButton.onclick = () => window.open(atisUrl, '_blank');
+
+                // Adiciona o ícone ao botão especial
+                const radarIcon = document.createElement('img');
+                radarIcon.src = 'assets/Icons/radar-2-svgrepo-com.svg'; // Caminho para a imagem
+                radarIcon.alt = 'Radar Icon';
+                radarIcon.className = 'radar-icon';
+                atisButton.appendChild(radarIcon);
+
+                chartsButtonsContainer.appendChild(atisButton);
+            }
+        } else {
+            normalPopulateCharts();
+        }
     } else {
-        chartsButtonsContainer.innerHTML = `<div class="no-charts">No charts available</div>`;
+        normalPopulateCharts();
     }
 }
 
 function toggleIcaoMenu(menu, airport) {
-    if (menu.style.display === 'none' || !menu.style.display) {
+    if (!menu.classList.contains('open')) {
+        // Abrir o menu com animação
         resetChartsMenu();
         menu.style.display = 'block';
         const [x, y] = transformCoordinates(airport.coordinates);
         menu.style.left = `${x - menu.offsetWidth / 2}px`;
         menu.style.top = `${y - menu.offsetHeight + 15}px`;
+
+        setTimeout(() => {
+            menu.classList.add('open');
+            menu.classList.remove('closed');
+        }, 10); // Pequeno atraso para garantir que a transição ocorra
     } else {
-        menu.style.display = 'none';
+        // Fechar o menu com animação
+        menu.classList.remove('open');
+        menu.classList.add('closed');
+        setTimeout(() => {
+            menu.style.display = 'none';
+        }, 300); // Tempo da animação
     }
+}
+
+function resetChartsMenu() {
+    const menus = document.querySelectorAll(`.icao-menu`);
+    menus.forEach(menu => {
+        menu.classList.remove('open', 'closed'); // Remove as classes de animação
+        menu.style.display = 'none'; // Garante que o menu seja escondido
+    });
 }
 
 function calculateBoundingArea(div1, div2, indication) {
@@ -1041,16 +1122,21 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     let infoSections = '';
 
     if (position === 'ATIS') {
+
         menu.style.maxWidth = '400px'; // Limit the menu width for ATIS
         atcList.forEach(atc => {
-            const { ident, uptime, text } = atc;
-
+            const { ident, uptime, text, chartPack } = atc;
+            let atisChart = '';
+        if (chartPack) {
+            atisChart = `<div class="separator">|</div><a class="atis-chart" href="${chartPack.url}" target="_blank">${chartPack.author}</a>`;
+        }
             infoSections += `
                 <div class="atis-info-section">
                     <div class="atis-header" style="text-align: right;">
                         <span class="atis-ident">Info ${ident}</span>
                         <div class="separator">|</div>
                         <span class="atis-uptime">Time Online: ${uptime}</span>
+                        ${atisChart}
                         <div class="separator">|</div>
                         <span class="atis-tooltip">
                             <span class="atis-icon">ℹ</span>
@@ -1910,13 +1996,6 @@ function resetHighlights() {
     draw();
 }
 
-function resetChartsMenu() {
-    const menus = document.querySelectorAll(`.icao-menu`);
-    menus.forEach(menu => {
-        menu.style.display = "none";
-    });
-}
-
 function refreshUI() {
     draw();
     document.querySelectorAll('.airport-ui').forEach(el => el.remove());
@@ -1957,7 +2036,7 @@ function getUniqueUserId() {
 }
 
 const uniqueUserId = getUniqueUserId();
-const defaultURL = 'https://ptfs.xyz/api/controllers';
+const defaultURL = 'https://ptfs.app/api/controllers';
 const API_URL = 'https://spy.123456321.xyz/api/controllers';
 
 async function fetchATCData(url) {
