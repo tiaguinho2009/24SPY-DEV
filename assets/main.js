@@ -741,8 +741,21 @@ function updatePosition(airportUI, airport) {
     const uiWidth = airportUI.offsetWidth;
     const uiHeight = airportUI.offsetHeight;
 
-    airportUI.style.left = `${x - uiWidth / 2}px`;
-    airportUI.style.top = `${y + uiHeight / 2}px`;
+    // Determina a referência com base em hasATCOnline
+    if (hasATCOnline) {
+        // Centraliza a UI em relação ao aeroporto
+        airportUI.style.left = `${x - uiWidth / 2}px`;
+        airportUI.style.top = `${y + uiHeight / 2}px`;
+    } else {
+        // Centraliza a div .icao-code em relação ao aeroporto
+        const icaoCode = airportUI.querySelector('.icao-code');
+        if (icaoCode) {
+            const icaoWidth = icaoCode.offsetWidth;
+            const icaoHeight = icaoCode.offsetHeight;
+            airportUI.style.left = `${x - icaoWidth / 2}px`;
+            airportUI.style.top = `${y + icaoHeight * 2}px`;
+        }
+    }
 }
 
 function updateAllAirportsUI() {
@@ -831,7 +844,7 @@ function createAirportElement(airport) {
         if (icaoButton) {
             icaoButton.classList.add('active');
         }
-    }    
+    }
 
     return airportUI;
 }
@@ -879,14 +892,33 @@ function populateChartsMenu(airport, menu) {
 
     let atisChartAdded = false;
 
-    function normalPopulateCharts() {
+    // Função para criar um botão de chart
+    function createChartButton(chartName, chartLink, isSpecial = false) {
+        const chartButton = document.createElement('button');
+        chartButton.className = isSpecial ? 'chart-button special' : 'chart-button';
+        chartButton.textContent = chartName;
+        chartButton.onclick = () => {
+            window.open(chartLink, '_blank');
+            toggleIcaoMenu(menu, airport);
+        };
+
+        // Adiciona o ícone ao botão especial
+        if (isSpecial) {
+            const radarIcon = document.createElement('img');
+            radarIcon.src = 'assets/Icons/radar-2-svgrepo-com.svg'; // Caminho para a imagem
+            radarIcon.alt = 'Radar Icon';
+            radarIcon.className = 'radar-icon';
+            chartButton.appendChild(radarIcon);
+        }
+
+        chartsButtonsContainer.appendChild(chartButton);
+    }
+
+    // Função para popular os charts normais
+    function populateNormalCharts() {
         if (airport.charts) {
             airport.charts.forEach(([chartName, chartLink]) => {
-                const chartButton = document.createElement('button');
-                chartButton.className = 'chart-button';
-                chartButton.textContent = chartName;
-                chartButton.onclick = () => window.open(chartLink, '_blank');
-                chartsButtonsContainer.appendChild(chartButton);
+                createChartButton(chartName, chartLink);
             });
         } else {
             chartsButtonsContainer.innerHTML = `<div class="no-charts">No charts available</div>`;
@@ -900,53 +932,24 @@ function populateChartsMenu(airport, menu) {
         if (atisInfo && atisInfo.chartPack) {
             const { author: atisAuthor, url: atisUrl } = atisInfo.chartPack;
 
+            // Verifica se algum chart coincide com o ATIS
             if (airport.charts) {
                 airport.charts.forEach(([chartName, chartLink]) => {
-                    const chartButton = document.createElement('button');
-                    chartButton.className = 'chart-button';
-                    chartButton.textContent = chartName;
-                    chartButton.onclick = () => window.open(chartLink, '_blank');
-
-                    // Verifica se o chartName coincide com o chartPack.author da ATIS
-                    if (chartName === atisAuthor) {
-                        chartButton.className = 'chart-button special';
-
-                        // Adiciona o ícone ao botão especial
-                        const radarIcon = document.createElement('img');
-                        radarIcon.src = 'assets/Icons/radar-2-svgrepo-com.svg'; // Caminho para a imagem
-                        radarIcon.alt = 'Radar Icon';
-                        radarIcon.className = 'radar-icon';
-                        chartButton.appendChild(radarIcon);
-
-                        atisChartAdded = true; // Marca que o botão especial foi adicionado
-                    }
-
-                    chartsButtonsContainer.appendChild(chartButton);
+                    const isSpecial = chartName === atisAuthor;
+                    if (isSpecial) atisChartAdded = true;
+                    createChartButton(chartName, chartLink, isSpecial);
                 });
             }
 
-            // Caso nenhum chartName coincida com o chartPack.author da ATIS, cria um botão especial
+            // Caso nenhum chart coincida com o ATIS, cria um botão especial
             if (!atisChartAdded) {
-                const atisButton = document.createElement('button');
-                atisButton.className = 'chart-button special';
-                atisButton.textContent = atisAuthor;
-                atisButton.style.backgroundColor = '#3b6cec'; // Cor azul para botão especial
-                atisButton.onclick = () => window.open(atisUrl, '_blank');
-
-                // Adiciona o ícone ao botão especial
-                const radarIcon = document.createElement('img');
-                radarIcon.src = 'assets/Icons/radar-2-svgrepo-com.svg'; // Caminho para a imagem
-                radarIcon.alt = 'Radar Icon';
-                radarIcon.className = 'radar-icon';
-                atisButton.appendChild(radarIcon);
-
-                chartsButtonsContainer.appendChild(atisButton);
+                createChartButton(atisAuthor, atisUrl, true);
             }
         } else {
-            normalPopulateCharts();
+            populateNormalCharts();
         }
     } else {
-        normalPopulateCharts();
+        populateNormalCharts();
     }
 }
 
@@ -955,9 +958,23 @@ function toggleIcaoMenu(menu, airport) {
         // Abrir o menu com animação
         resetChartsMenu();
         menu.style.display = 'block';
+
         const [x, y] = transformCoordinates(airport.coordinates);
-        menu.style.left = `${x - menu.offsetWidth / 2}px`;
-        menu.style.top = `${y - menu.offsetHeight + 15}px`;
+        const uiWidth = menu.offsetWidth;
+        const uiHeight = menu.offsetHeight;
+
+        // Obtém a referência da div .icao-code
+        const airportUI = document.querySelector(`.airport-ui[id="${airport.name}"]`);
+        const icaoCode = airportUI.querySelector('.icao-code');
+        const icaoRect = icaoCode.getBoundingClientRect();
+
+        // Calcula a posição do menu acima do .icao-code
+        const referenceX = icaoRect.left + icaoRect.width / 2 + window.scrollX;
+        const referenceY = icaoRect.top + window.scrollY;
+
+        // Ajusta a posição do menu
+        menu.style.left = `${referenceX - uiWidth / 2}px`;
+        menu.style.top = `${referenceY - uiHeight - 10}px`; // Posiciona acima com um deslocamento de 10px
 
         setTimeout(() => {
             menu.classList.add('open');

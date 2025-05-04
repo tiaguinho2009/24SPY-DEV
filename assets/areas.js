@@ -1303,7 +1303,7 @@ const controlAreas = [
         type: "Airport",
         originalscale: 1,
         scale: 1,
-        coordinates: [440.93, 820.24],
+        coordinates: [441.05, 822.40],
         towerfreq: "124.275",
         app: "IGAR APP",
         charts: [
@@ -1360,7 +1360,7 @@ const controlAreas = [
         originalscale: 2,
         scale: 2,
         coordinates: [493.87, 757.33],
-        towerfreq: "None",
+        towerfreq: "124.605",
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/IBLT%20Ground%20Chart.png"],
         ],
@@ -1375,7 +1375,7 @@ const controlAreas = [
         type: "Airport",
         originalscale: 2,
         scale: 2,
-        coordinates: [844.00, 408.00],
+        coordinates: [842.44, 404.50],
         towerfreq: "120.150",
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ILKL%20Ground%20Chart.png"],
@@ -1455,7 +1455,7 @@ const controlAreas = [
         type: "Airport",
         originalscale: 2,
         scale: 2,
-        coordinates: [873.80, 714.13],
+        coordinates: [875.06, 712.72],
         towerfreq: "124.200",
         ctr: "ISKP CTR",
         charts: [
@@ -1932,7 +1932,7 @@ const specialUsers = {
         "DiscordNick": "zedruc",
         "TagColor": "#3b6cec"
     },
-    //2 random people
+    // random people
     "FlamingBallista21": {
         "Role": "Saba King",
         "DiscordNick": "flamingballista",
