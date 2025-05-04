@@ -1932,4 +1932,10 @@ const specialUsers = {
         "DiscordNick": "zedruc",
         "TagColor": "#3b6cec"
     },
+    //2 random people
+    "FlamingBallista21": {
+        "Role": "Saba King",
+        "DiscordNick": "flamingballista",
+        "TagColor": "#ffa500"
+    },
 };
