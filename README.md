@@ -34,7 +34,7 @@ For new users or anyone with questions on how to display online ATCs from ATC24 
 ### Added
 - New feature in the ATIS, now when some airport has the information in his ATIS about the chart pack it will be displayed in the ATIS Menu and Charts Menu.
 - More animated menus. (because why not)
-
+- Remade FIRs/TMAs.
 
 ### Corrected
 - Some Airport UI position bugs fixed.
