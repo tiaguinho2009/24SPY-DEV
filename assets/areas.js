@@ -198,112 +198,169 @@ let aircraftData = {
 
 let PTFSAPIError = [
     {
-        "holder": "willingpankakes2053",
+      "holder": "Finnf_j | 4DK",
+      "claimable": false,
+      "airport": "Rockford",
+      "position": "control",
+      "uptime": "00:32"
+    },
+    {
+      "holder": "XxECmaxX | ,",
+      "claimable": false,
+      "airport": "Rockford",
+      "position": "ground",
+      "uptime": "00:32"
+    },
+    {
+      "holder": "foxcuber0 | 8932",
+      "claimable": false,
+      "airport": "Izolirani",
+      "position": "control",
+      "uptime": "05:34"
+    },
+    {
+      "holder": "hisses77",
+      "claimable": false,
+      "airport": "Tokyo",
+      "position": "control",
+      "uptime": "02:17"
+    },
+    {
+      "holder": "hx3sh_o | EGCC",
+      "claimable": false,
+      "airport": "Larnaca",
+      "position": "control",
+      "uptime": "02:04"
+    },
+    {
+      "holder": "donncha404",
+      "claimable": false,
+      "airport": "Mellor",
+      "position": "approach",
+      "uptime": "00:14"
+    },
+    {
+      "holder": "donpollohaktuah | LSZH",
+      "claimable": false,
+      "airport": "Perth",
+      "position": "control",
+      "uptime": "00:44"
+    },
+    {
+      "holder": "ChefAviation",
+      "claimable": false,
+      "airport": "Saint Barthélemy",
+      "position": "control",
+      "uptime": "00:00"
+    },
+    {
+        "holder": "ChefAviation",
         "claimable": false,
-        "airport": "Rockford",
+        "airport": "Skopelos",
         "position": "control",
-        "code": "IRFD_1_CTR",
-        "uptime": "00:28",
-        "onlineSince": "2025-03-03T17:47:20.127Z"
+        "uptime": "00:00"
+      },
+    {
+      "airport": "Rockford",
+      "position": "atis",
+      "uptime": "01:19",
+      "onlineSince": 1746555277151,
+      "ident": "K",
+      "pressure": "1015",
+      "arwy": [
+        "25R",
+        "25C"
+      ],
+      "drwy": [
+        "25R",
+        "25L"
+      ],
+      "pdc": true,
+      "chartPack": {
+        "url": "https://drive.google.com/file/d/12rwTgSjcOXxvZ6z8o8y5GRV1lNnt-h4D/view",
+        "author": "FormicAcid"
+      }
     },
     {
-        "holder": "Tiaguinho_2009",
-        "claimable": false,
-        "airport": "Rockford",
-        "position": "control",
-        "code": "IRFD_3_CTR",
-        "uptime": "00:28",
-        "onlineSince": "2025-03-03T17:47:20.127Z"
+      "airport": "Tokyo",
+      "position": "atis",
+      "uptime": "04:06",
+      "onlineSince": 1746545239288,
+      "ident": "B",
+      "pressure": 1013,
+      "arwy": [
+        "13",
+        "20"
+      ],
+      "drwy": [
+        "13",
+        "20"
+      ],
+      "pdc": false,
+      "chartPack": {
+        "url": "https://github.com/Treelon/ptfs-charts/tree/main/Orenji/Tokyo",
+        "author": "Official"
+      }
     },
     {
-        "holder": "tiaguinho_2009",
-        "claimable": false,
-        "airport": "Rockford",
-        "position": "approach",
-        "uptime": "00:28",
-        "onlineSince": "2025-03-03T17:47:20.127Z"
+      "airport": "Larnaca",
+      "position": "atis",
+      "uptime": "01:41",
+      "onlineSince": 1746553969707,
+      "ident": "B",
+      "pressure": "1024",
+      "arwy": [
+        "06"
+      ],
+      "drwy": [
+        "06"
+      ],
+      "pdc": false,
+      "chartPack": {
+        "url": "https://github.com/Treelon/ptfs-charts/tree/main/Cyprus/Larnaca",
+        "author": "Official"
+      }
     },
     {
-        "holder": "willingpankakes2053",
-        "claimable": false,
-        "airport": "Rockford",
-        "position": "tower",
-        "uptime": "00:28",
-        "onlineSince": "2025-03-03T17:47:20.127Z"
-    },
-    {
-        "holder": "willingpankakes2053",
-        "claimable": false,
-        "airport": "Rockford",
-        "position": "ground",
-        "uptime": "00:28",
-        "onlineSince": "2025-03-03T17:47:20.127Z"
-    },
-    {
-        "holder": "willingpankakes2053",
-        "claimable": false,
-        "airport": "Rockford",
-        "position": "delivery",
-        "uptime": "00:28",
-        "onlineSince": "2025-03-03T17:47:20.127Z"
-    },
-    {
-        "holder": "willingpankakes2053",
-        "claimable": false,
-        "airport": "Rockford",
-        "position": "atis",
-        "uptime": "00:28",
-        "onlineSince": "2025-03-03T17:47:20.127Z"
-    },
-    {
-        "holder": "Charisios10 | IZOL_CTR",
-        "claimable": false,
-        "airport": "Izolirani",
-        "position": "control",
-        "uptime": "00:10",
-        "onlineSince": "2025-03-03T18:05:50.153Z"
-    },
-    {
-        "holder": "Ninjakitpard",
-        "claimable": false,
-        "airport": "Tokyo",
-        "position": "control",
-        "uptime": "00:12",
-        "onlineSince": "2025-03-03T18:03:50.122Z"
-    },
-    {
-        "holder": "Mr_richWho | IPPH_CTR",
-        "claimable": false,
-        "airport": "Paphos",
-        "position": "control",
-        "uptime": "00:50",
-        "onlineSince": "2025-03-03T17:25:50.135Z"
-    },
-    {
-        "holder": "MD_590",
-        "claimable": false,
         "airport": "Saint Barthélemy",
-        "position": "control",
-        "uptime": "00:05",
-        "onlineSince": "2025-03-03T18:10:49.945Z"
+        "position": "atis",
+        "uptime": "01:41",
+        "onlineSince": 1746553969707,
+        "ident": "B",
+        "pressure": "1024",
+        "arwy": [
+          "06"
+        ],
+        "drwy": [
+          "06"
+        ],
+        "pdc": false,
+        "chartPack": {
+          "url": "https://github.com/Treelon/ptfs-charts/tree/main/Cyprus/Larnaca",
+          "author": "Official"
+        }
     },
     {
-        "holder": "zedrucc",
-        "claimable": false,
-        "airport": "Perth",
-        "position": "control",
-        "uptime": "00:00",
-        "onlineSince": "2025-03-03T17:25:50.135Z"
+        "airport": "Skopelos",
+        "position": "atis",
+        "uptime": "01:41",
+        "onlineSince": 1746553969707,
+        "ident": "B",
+        "pressure": "1024",
+        "arwy": [
+          "06"
+        ],
+        "drwy": [
+          "06"
+        ],
+        "pdc": false,
+        "chartPack": {
+          "url": "https://github.com/Treelon/ptfs-charts/tree/main/Cyprus/Larnaca",
+          "author": "Official"
+        },
+        "oceanic": true
     },
-    {
-        "holder": "ArchUserBTW_RBLX",
-        "claimable": false,
-        "airport": "Perth",
-        "position": "control",
-        "uptime": "00:00",
-        "onlineSince": "2025-03-03T17:25:50.135Z"
-    },
-]
+  ]
 let PTFSAPI = []
 
 const controlAreas = [
@@ -755,6 +812,47 @@ const controlAreas = [
         active: true
     },
     {
+        name: "IBTH FIR2",
+        type: "polyline",
+        coordinates: [
+            [683.2, 642],
+            [372, 558.6],
+            [413.6, 445.5],
+            [430.2, 400.4],
+            [702.9, 400.4],
+            [764.2, 432.3],
+            [797.6, 528.9],
+            [727.8, 641.9],
+            [683.2, 642]
+        ],
+        color: "rgba(45,45,45,1)",
+        active: false
+    },
+    {
+        name: "ISKP FIR2",
+        type: "polyline",
+        coordinates: [
+            [754, 813.8],
+            [749.2, 786.9],
+            [730.6, 724],
+            [708.3, 685.2],
+            [683.2, 642],
+            [727.8, 641.9],
+            [797.6, 528.9],
+            [856.1, 578.2],
+            [839.2, 640.4],
+            [887.3, 623.3],
+            [970.8, 631.7],
+            [966.8, 658.6],
+            [944.8, 681.8],
+            [949, 745.7],
+            [962.9, 757.5],
+            [754, 813.8]
+        ],
+        color: "rgba(45,45,45,1)",
+        active: false
+    },
+    {
         name: "Map",
         type: "polyline",
         coordinates: [
@@ -977,11 +1075,33 @@ const controlAreas = [
         atc: "",
     },
     {
+        name: "IBTH CTR2",
+        type: "polygon",
+        firReference: "IBTH FIR2",
+        color: "rgb(0, 50, 90)",
+        fillColor: "rgba(45, 114, 235, 0.05)",
+        hightlightcolor: "rgba(0, 166, 255, 0.075)",
+        center: [500,550],
+        active: false,
+        atc: "",
+    },
+    {
         name: "ISKP CTR",
         type: "polygon",
         firReference: "ISKP FIR",
         color: "rgba(0, 90, 50, 1)",
         fillColor: "rgba(0, 90, 50, 0.05)",
+        center: [500,550],
+        active: false,
+        atc: "",
+    },
+    {
+        name: "ISKP CTR2",
+        type: "polygon",
+        firReference: "ISKP FIR2",
+        color: "rgb(0, 50, 90)",
+        fillColor: "rgba(45, 114, 235, 0.05)",
+        hightlightcolor: "rgba(0, 166, 255, 0.075)",
         center: [500,550],
         active: false,
         atc: "",
@@ -1757,6 +1877,12 @@ const CustomWaypoints = [
     { name: "SURGE", type: "Waypoint", coordinates: [610.04, 535.60] },
     { name: "PMPKN", type: "Waypoint", coordinates: [758.45, 828.41] },
 ];
+
+const airways = [
+    //Oceanic
+    { name: "NATA", type: "airway", points: ["ENDER", "32N13W", "35N12W", "TUDEP"], labelposition: [449.82, 487.73], color: "#FFFFFF"},
+    { name: "NATJ", type: "airway", points: ["ATPEV", "24N02E", "25N05E", "26N10E"], labelposition: [449.82, 487.73], color: "#FFFFFF"},
+]
 
 // Função para aplicar coordenadas da FIR para a CTR correspondente e sincronizar o valor de active
 function assignCTRCoordinates() {

@@ -294,11 +294,48 @@ function transformAtisInfoToText(atisInfo) {
     return text
 }
 
+function OceanicOnlineATC() {
+    const SkopelosATIS = getOnlineATCs("Skopelos").ATS[0];
+    if (SkopelosATIS && SkopelosATIS.oceanic) {
+        controlAreas.forEach(area => {
+            if (area.type === 'polyline' && area.name === 'ISKP FIR') {
+                area.active = false;
+            } else if (area.type === 'polyline' && area.name === 'ISKP FIR2') {
+                area.active = true;
+            } else if (area.type === 'Airport' && area.real_name === 'Skopelos') {
+                area.ctr = 'ISKP CTR2';
+            } else if (area.type === 'polyline' && area.name === 'IBTH FIR') {
+                area.active = false;
+            } else if (area.type === 'polyline' && area.name === 'IBTH FIR2') {
+                area.active = true;
+            } else if (area.type === 'Airport' && area.real_name === 'Saint Barthélemy') {
+                area.ctr = 'IBTH CTR2';
+            }
+        })
+    } else {
+        controlAreas.forEach(area => {
+            if (area.type === 'polyline' && area.name === 'ISKP FIR') {
+                area.active = true;
+            } else if (area.type === 'polyline' && area.name === 'ISKP FIR2') {
+                area.active = false;
+            } else if (area.type === 'Airport' && area.real_name === 'Skopelos') {
+                area.ctr = 'ISKP CTR';
+            } else if (area.type === 'polyline' && area.name === 'IBTH FIR') {
+                area.active = true;
+            } else if (area.type === 'polyline' && area.name === 'IBTH FIR2') {
+                area.active = false;
+            } else if (area.type === 'Airport' && area.real_name === 'Saint Barthélemy') {
+                area.ctr = 'IBTH CTR';
+            }
+        })
+    }
+}
+
 function updateOnlineATCs(atcList) {
     onlineATCs = {};
 
     atcList.forEach(atcData => {
-        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency, chartPack, ...otherInfo } = atcData;
+        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency, chartPack, oceanic, ...otherInfo } = atcData;
 
         if (claimable) return;
 
@@ -313,6 +350,7 @@ function updateOnlineATCs(atcList) {
                 ident: atisInfo.ident,
                 pressure: atisInfo.pressure,
                 chartPack,
+                oceanic,
                 text
             });
             return;
@@ -345,6 +383,7 @@ function updateOnlineATCs(atcList) {
 
         onlineATCs[airport][mappedPosition].push({ holder, uptime, frequency, code });
     });
+    OceanicOnlineATC();
 }
 
 // Função para verificar se um ATC está online
@@ -467,6 +506,8 @@ function drawControlAreas() {
         if (area.type === 'polygon') {
             let drawCTR = false;
             let drawAPP = false;
+
+            if (!area.originalFillColor) area.originalFillColor = area.fillColor;
 
             // Verifica se algum aeroporto possui o valor "ctr" ou "app" igual ao nome da área e "tower" ativo
             controlAreas.forEach(airport => {
@@ -774,8 +815,7 @@ const icaoMenuCount = 0;
 function highlightCTR(airport) {
     controlAreas.forEach(area => {
         if (area.type === 'polygon' && area.name === airport.ctr) {
-            area.originalFillColor = area.fillColor;
-            area.fillColor = 'rgba(0, 255, 125, 0.075)';
+            area.fillColor = area.hightlightcolor || 'rgba(0, 255, 125, 0.075)';
             draw();
         }
     });
@@ -793,8 +833,7 @@ function resetCTRHighlight(airport) {
 function highlightAPP(airport) {
     controlAreas.forEach(area => {
         if (area.type === 'polygon' && area.name === airport.app) {
-            area.originalFillColor = area.fillColor;
-            area.fillColor = 'rgba(255, 122, 0, 0.1)';
+            area.fillColor = area.hightlightcolor || 'rgba(255, 122, 0, 0.1)';
             draw();
         }
     });
@@ -856,8 +895,13 @@ function generateBadges(airport) {
         return atcs[position].some(atc => isSpecialUser(atc.holder));
     }
 
+    // Verifica se a condição específica da função OceanicOnlineATC está ativa
+    const isOceanic = (airport.real_name === 'Skopelos' && airport.ctr === 'ISKP CTR2') ||
+                      (airport.real_name === 'Saint Barthélemy' && airport.ctr === 'IBTH CTR2');
+
     return `
-        ${atcs.CTR.length > 0 ? `<div class="badge C ${isPositionSpecial('CTR') ? 'special' : ''}" data-type="Control">C</div>` : ''}
+        ${isOceanic ? `<div class="badge O ${isPositionSpecial('CTR') ? 'special' : ''}" data-type="Oceanic">O</div>` : ''}
+        ${!isOceanic && atcs.CTR.length > 0 ? `<div class="badge C ${isPositionSpecial('CTR') ? 'special' : ''}" data-type="Control">C</div>` : ''}
         ${atcs.APP.length > 0 ? `<div class="badge A ${isPositionSpecial('APP') ? 'special' : ''}" data-type="Approach">A</div>` : ''}
         ${atcs.TWR.length > 0 ? `<div class="badge T ${isPositionSpecial('TWR') ? 'special' : ''}" data-type="Tower">T</div>` : ''}
         ${atcs.GND.length > 0 ? `<div class="badge G ${isPositionSpecial('GND') ? 'special' : ''}" data-type="Ground">G</div>` : ''}
@@ -1089,6 +1133,7 @@ function resetMenuAndListeners(currentMouseMoveListener) {
 function addBadgeEventListeners(airport, airportUI, infoMenu) {
     const atcs = getOnlineATCs(airport.real_name);
     const badges = {
+        O: { condition: atcs.CTR.length > 0, highlight: highlightCTR, reset: resetCTRHighlight },
         C: { condition: atcs.CTR.length > 0, highlight: highlightCTR, reset: resetCTRHighlight },
         A: { condition: atcs.APP.length > 0, highlight: highlightAPP, reset: resetAPPHighlight },
         T: { condition: atcs.TWR.length > 0 },
@@ -1131,22 +1176,24 @@ function addBadgeEventListeners(airport, airportUI, infoMenu) {
 }
 
 function showInfoMenu(badge, airport, menu, airportUI) {
-    const positions = { C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery', S: 'ATIS' };
+    const positions = { O: 'Control', C: 'Control', A: 'Approach', T: 'Tower', G: 'Ground', D: 'Delivery', S: 'ATIS' };
     const position = positions[badge.classList[1]] || 'Unknown';
     const ATCs = getOnlineATCs(airport.real_name);
     const atcList = ATCs[positionMapping[position.toLowerCase()]] || [];
 
     let infoSections = '';
 
-    if (position === 'ATIS') {
+    // Define o título do menu
+    const title = badge.classList.contains('O') ? 'Oceanic' : position;
 
-        menu.style.maxWidth = '400px'; // Limit the menu width for ATIS
+    if (position === 'ATIS') {
+        menu.style.maxWidth = '400px'; // Limita a largura do menu para ATIS
         atcList.forEach(atc => {
             const { ident, uptime, text, chartPack } = atc;
             let atisChart = '';
-        if (chartPack) {
-            atisChart = `<div class="separator">|</div><a class="atis-chart" href="${chartPack.url}" target="_blank">${chartPack.author}</a>`;
-        }
+            if (chartPack) {
+                atisChart = `<div class="separator">|</div><a class="atis-chart" href="${chartPack.url}" target="_blank">${chartPack.author}</a>`;
+            }
             infoSections += `
                 <div class="atis-info-section">
                     <div class="atis-header" style="text-align: right;">
@@ -1190,7 +1237,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
 
     menu.style.display = 'block';
     menu.innerHTML = `
-        <div class="title">${airport.real_name} ${position}</div>
+        <div class="title">${airport.real_name} ${title}</div>
         <hr class="menu-divider">
         <div class="info-sections">
             ${infoSections}
@@ -1718,6 +1765,51 @@ function parseCoordenadas(coordenadas) {
     return [lat, lon];
 }
 
+function processWaypointInput(input, allPoints, flightPlanPoints) {
+    try {
+        // Tenta encontrar o waypoint normalmente
+        const matchedPoint = allPoints.find(point => point.name === input);
+        if (matchedPoint) {
+            flightPlanPoints.push(matchedPoint);
+        } else {
+            // Caso não encontre, tenta processar como coordenadas no formato DD.ddNDD.ddW
+            if (/^\d{2}(?:\.\d+)?[NS]\d{2}(?:\.\d+)?[EW]$/.test(input)) {
+                const [lat, lon] = parseCoordenadas(input);
+                const [x, y] = grausParaXY(lat, lon);
+                flightPlanPoints.push({ name: input, coordinates: [x, y], type: "Waypoint" });
+            } else {
+                // Verifica se é uma Airway
+                const matchedAirway = airways.find(airway => airway.name === input);
+                if (matchedAirway) {
+                    matchedAirway.points.forEach(waypointName => {
+                        // Verifica se o waypoint é um nome ou coordenadas
+                        if (/^\d{2}(?:\.\d+)?[NS]\d{2}(?:\.\d+)?[EW]$/.test(waypointName)) {
+                            // Processa como coordenadas
+                            const [lat, lon] = parseCoordenadas(waypointName);
+                            const [x, y] = grausParaXY(lat, lon);
+                            flightPlanPoints.push({ name: waypointName, coordinates: [x, y], type: "Waypoint" });
+                        } else {
+                            // Processa como um waypoint normal
+                            const waypoint = allPoints.find(point => point.name === waypointName);
+                            if (waypoint) {
+                                flightPlanPoints.push(waypoint);
+                            } else {
+                                // Caso o waypoint da Airway não seja encontrado, exibe um erro
+                                showMessage('Flight Plan Error', `Waypoint "${waypointName}" in Airway "${input}" not found!`);
+                            }
+                        }
+                    });
+                } else if (input !== "") {
+                    // Se não for um waypoint válido nem coordenadas nem uma Airway, exibe o erro
+                    showMessage('Flight Plan Error', `Waypoint or Airway "${input}" not found!`);
+                }
+            }
+        }
+    } catch (error) {
+        showMessage('Flight Plan Error', error.message);
+    }
+}
+
 function saveFlp() {
     const getValue = id => document.getElementById(id).value.trim().toUpperCase();
     const [departure, departureRwy, arrival, arrivalRwy, waypoints, sid, deptrans, star, arrtrans, app] = 
@@ -1807,25 +1899,7 @@ function saveFlp() {
     if (!addProcedure(departureAirport, 'SIDs', sid, deptrans, departureRwy)) return;
     
     inputPoints.forEach(input => {
-        try {
-            // Tenta encontrar o waypoint normalmente
-            const matchedPoint = allPoints.find(point => point.name === input);
-            if (matchedPoint) {
-                flightPlanPoints.push(matchedPoint);
-            } else {
-                // Caso não encontre, tenta processar como coordenadas no formato DD.ddNDD.ddW
-                if (/^\d{2}(?:\.\d+)?[NS]\d{2}(?:\.\d+)?[EW]$/.test(input)) {
-                    const [lat, lon] = parseCoordenadas(input);
-                    const [x, y] = grausParaXY(lat, lon);
-                    flightPlanPoints.push({ name: input, coordinates: [x, y], type: "Waypoint" });
-                } else if (input !== "") {
-                    // Se não for um waypoint válido nem coordenadas, exibe o erro
-                    showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
-                }
-            }
-        } catch (error) {
-            showMessage('Flight Plan Error', error.message);
-        }
+        processWaypointInput(input, allPoints, flightPlanPoints);
     });
     
     if (!addProcedure(arrivalAirport, 'STARs', star, arrtrans, arrivalRwy)) return;
@@ -1864,15 +1938,15 @@ function getProcedures(airport, runway, type) {
     return procedures.filter(proc => proc.rwy.includes(runway)).map(proc => proc.name);
 }
 
-function createList(textareaId, options) {
-    const textarea = document.getElementById(textareaId);
+function createList(type, items) {
+    const textarea = document.getElementById(type);
     if (!textarea) {
-        console.error(`Textarea with ID "${textareaId}" not found!`);
+        console.error(`Textarea with ID "${type}" not found!`);
         return;
     }
 
     // Remove duplicatas usando um Set
-    const uniqueOptions = [...new Set(options)];
+    const uniqueOptions = [...new Set(items)];
 
     // Ordena as opções alfabeticamente
     uniqueOptions.sort();
@@ -1887,24 +1961,13 @@ function createList(textareaId, options) {
     listContainer.style.left = `${rect.left + window.scrollX}px`;
     listContainer.style.top = `${rect.bottom + window.scrollY}px`;
 
-    // Função para calcular a proximidade da correspondência
-    function calculateMatchScore(option, filter) {
-        if (option.startsWith(filter)) {
-            return 0; // Melhor correspondência
-        } else if (option.includes(filter)) {
-            return 1; // Boa correspondência
-        } else {
-            return 2; // Correspondência menos relevante
-        }
-    }
-
     // Função para atualizar a lista com base no filtro
     function updateList(filter) {
         listContainer.innerHTML = ''; // Limpa a lista atual
 
         const filteredOptions = uniqueOptions
             .filter(option => option.toLowerCase().includes(filter.toLowerCase()))
-            .sort((a, b) => calculateMatchScore(a.toLowerCase(), filter.toLowerCase()) - calculateMatchScore(b.toLowerCase(), filter.toLowerCase()));
+            .sort();
 
         filteredOptions.forEach(option => {
             const button = document.createElement('button');
@@ -1912,7 +1975,7 @@ function createList(textareaId, options) {
 
             // Evento de clique para preencher a textarea com a opção selecionada
             button.addEventListener('click', () => {
-                if (textareaId === 'waypoints') {
+                if (type === 'waypoints') {
                     // Adiciona o valor selecionado ao valor existente na textarea de waypoints
                     const words = textarea.value.split(' ');
                     words[words.length - 1] = option;
@@ -1938,7 +2001,7 @@ function createList(textareaId, options) {
 
     // Adiciona evento de input para filtrar a lista
     textarea.addEventListener('input', () => {
-        const filter = textareaId === 'waypoints' ? textarea.value.split(' ').pop() : textarea.value;
+        const filter = type === 'waypoints' ? textarea.value.split(' ').pop() : textarea.value;
         updateList(filter);
     });
 
@@ -1994,7 +2057,7 @@ document.getElementById('arrivalRwy').addEventListener('blur', () => {
 });
 
 document.getElementById('waypoints').addEventListener('focus', () => {
-    createList('waypoints', sortedWaypoints);
+    createList('waypoints', [...sortedWaypoints]); //, ...airways.map(airway => airway.name)
 });
 
 document.getElementById('sid').addEventListener('focus', () => {
@@ -2068,10 +2131,13 @@ function resetHighlights() {
     controlAreas.forEach(area =>{
         if (area.type === "polygon") {
             if (area.name.endsWith("CTR")) {
-                area.fillColor = "rgba(0, 90, 50, 0.05)";
+                area.fillColor = area.originalFillColor;
+            };
+            if (area.name.endsWith("CTR2")) {
+                area.fillColor = area.originalFillColor;
             };
             if (area.name.endsWith("APP")) {
-                area.fillColor = "rgba(255, 122, 0, 0)";
+                area.fillColor = area.originalFillColor;
             };
         };
     });

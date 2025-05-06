@@ -793,6 +793,10 @@ canvas {
     border-bottom-right-radius: 5px;
 }
 
+.airport-ui .badge.O {
+    background-color: #193381;
+}
+
 .airport-ui .badge.C {
     background-color: #3b6cec;
 }
