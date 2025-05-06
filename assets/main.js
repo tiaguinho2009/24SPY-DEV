@@ -900,7 +900,7 @@ function generateBadges(airport) {
                       (airport.real_name === 'Saint Barthélemy' && airport.ctr === 'IBTH CTR2');
 
     return `
-        ${isOceanic ? `<div class="badge O ${isPositionSpecial('CTR') ? 'special' : ''}" data-type="Oceanic">O</div>` : ''}
+        ${isOceanic && atcs.CTR.length > 0 ? `<div class="badge O ${isPositionSpecial('CTR') ? 'special' : ''}" data-type="Oceanic">O</div>` : ''}
         ${!isOceanic && atcs.CTR.length > 0 ? `<div class="badge C ${isPositionSpecial('CTR') ? 'special' : ''}" data-type="Control">C</div>` : ''}
         ${atcs.APP.length > 0 ? `<div class="badge A ${isPositionSpecial('APP') ? 'special' : ''}" data-type="Approach">A</div>` : ''}
         ${atcs.TWR.length > 0 ? `<div class="badge T ${isPositionSpecial('TWR') ? 'special' : ''}" data-type="Tower">T</div>` : ''}
