@@ -1669,6 +1669,55 @@ function generateFPL() {
     waypointsInput.value = filteredPath.map(point => point.name).join(' ');
 }
 
+const ORIGEM_LAT = 54.07; // Latitude da origem do mapa em graus
+const ORIGEM_LON = 29.69; // Longitude da origem do mapa em graus
+const SCALE = 24.45; // px por grau
+
+function grausParaXY(lat, lon) {
+    // Verifica se a latitude e longitude são strings com as direções N/S e E/W
+    if (typeof lat === 'string' && typeof lon === 'string') {
+        const latDir = lat.slice(-1); // Último caractere indica N ou S
+        const lonDir = lon.slice(-1); // Último caractere indica E ou W
+
+        // Remove as direções para converter para número
+        lat = parseFloat(lat.slice(0, -1));
+        lon = parseFloat(lon.slice(0, -1));
+
+        // Ajusta os valores com base nas direções
+        if (latDir === 'S') lat = -lat;
+        if (lonDir === 'E') lon = -lon;
+    }
+
+    const deltaLat = ORIGEM_LAT - lat; // mais N = Y menor
+    const deltaLon = ORIGEM_LON - lon; // mais W = X menor
+
+    const y = deltaLat * SCALE;
+    const x = deltaLon * SCALE;
+
+    return [x, y];
+}
+
+
+function parseCoordenadas(coordenadas) {
+    // Atualiza o regex para aceitar 0 ou mais casas decimais
+    const regex = /^(\d{2}(?:\.\d+)?)([NS])(\d{2}(?:\.\d+)?)([EW])$/;
+    const match = coordenadas.match(regex);
+
+    if (!match) {
+        throw new Error("Formato inválido de coordenadas. Use o formato DD.ddNDD.ddW.");
+    }
+
+    const [, latStr, latDir, lonStr, lonDir] = match;
+
+    let lat = parseFloat(latStr);
+    let lon = parseFloat(lonStr);
+
+    if (latDir === "S") lat = -lat;
+    if (lonDir === "E") lon = -lon;
+
+    return [lat, lon];
+}
+
 function saveFlp() {
     const getValue = id => document.getElementById(id).value.trim().toUpperCase();
     const [departure, departureRwy, arrival, arrivalRwy, waypoints, sid, deptrans, star, arrtrans, app] = 
@@ -1679,7 +1728,7 @@ function saveFlp() {
     const flightPlanPoints = [];
     
     const scaleFactor = (1478 / 1852) / Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
-    
+
     function findAirport(name) {
         return allPoints.find(point => point.name === name && point.type === "Airport");
     }
@@ -1758,9 +1807,25 @@ function saveFlp() {
     if (!addProcedure(departureAirport, 'SIDs', sid, deptrans, departureRwy)) return;
     
     inputPoints.forEach(input => {
-        const matchedPoint = allPoints.find(point => point.name === input);
-        if (matchedPoint) flightPlanPoints.push(matchedPoint);
-        else if (input !== "") showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
+        try {
+            // Tenta encontrar o waypoint normalmente
+            const matchedPoint = allPoints.find(point => point.name === input);
+            if (matchedPoint) {
+                flightPlanPoints.push(matchedPoint);
+            } else {
+                // Caso não encontre, tenta processar como coordenadas no formato DD.ddNDD.ddW
+                if (/^\d{2}(?:\.\d+)?[NS]\d{2}(?:\.\d+)?[EW]$/.test(input)) {
+                    const [lat, lon] = parseCoordenadas(input);
+                    const [x, y] = grausParaXY(lat, lon);
+                    flightPlanPoints.push({ name: input, coordinates: [x, y], type: "Waypoint" });
+                } else if (input !== "") {
+                    // Se não for um waypoint válido nem coordenadas, exibe o erro
+                    showMessage('Flight Plan Error', `Waypoint "${input}" not found!`);
+                }
+            }
+        } catch (error) {
+            showMessage('Flight Plan Error', error.message);
+        }
     });
     
     if (!addProcedure(arrivalAirport, 'STARs', star, arrtrans, arrivalRwy)) return;
