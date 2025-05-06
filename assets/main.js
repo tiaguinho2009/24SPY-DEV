@@ -2298,7 +2298,7 @@ async function checkUpdate() {
         const versionContent = await response.text();
         if (versionContent.trim() !== localInfo.version.trim()) {
             showMessage('New Version', `The version ${versionContent} is now available! Enjoy the update!`, 'Update').then(response => {
-                if (response === 1) location.replace(location.href);
+                if (response === 1) location.replace(`${location.href.split('?')[0]}?forceReload=${Date.now()}`);
             });
         }
     } catch (error) {
