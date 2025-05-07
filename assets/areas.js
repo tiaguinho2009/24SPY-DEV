@@ -254,12 +254,26 @@ let PTFSAPIError = [
       "uptime": "00:00"
     },
     {
-        "holder": "ChefAviation",
+        "holder": "Tiaguinho_2009 | ISKP Oceanic",
         "claimable": false,
         "airport": "Skopelos",
         "position": "control",
         "uptime": "00:00"
-      },
+    },
+    {
+        "holder": "ChefAviation",
+        "claimable": false,
+        "airport": "Grindavik",
+        "position": "control",
+        "uptime": "00:00"
+    },
+    {
+        "holder": "ChefAviation",
+        "claimable": false,
+        "airport": "Sauthemptona",
+        "position": "control",
+        "uptime": "00:00"
+    },
     {
       "airport": "Rockford",
       "position": "atis",
@@ -356,7 +370,7 @@ let PTFSAPIError = [
         "pdc": false,
         "chartPack": {
           "url": "https://github.com/Treelon/ptfs-charts/tree/main/Cyprus/Larnaca",
-          "author": "Official"
+          "author": "userwastaken, Nikita39Gamer"
         },
         "oceanic": true
     },
@@ -993,6 +1007,7 @@ const controlAreas = [
         active: false,
         atc: "",
     },
+
     // CTRs
     {
         name: "IRFD CTR",
@@ -1289,6 +1304,7 @@ const controlAreas = [
         charts: [
             ["Official", "https://ptfs.xyz/charts/dark/ILAR%20Ground%20Chart.png"],
             ["TUGACHARTS", "https://drive.google.com/file/d/1ofmuravfpMXW1d4B9M43MyOGbc1RORCs/view"],
+            ["AeroNav", "https://drive.google.com/file/d/19gg9VmHTmyurm6rCwgjnBj2BenFUOBp1/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
         runways: [

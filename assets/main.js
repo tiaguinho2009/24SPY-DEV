@@ -1192,6 +1192,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
             const { ident, uptime, text, chartPack } = atc;
             let atisChart = '';
             if (chartPack) {
+                if (chartPack.author === 'userwastaken, Nikita39Gamer') chartPack.author = 'Nikita39Gamer';
                 atisChart = `<div class="separator">|</div><a class="atis-chart" href="${chartPack.url}" target="_blank">${chartPack.author}</a>`;
             }
             infoSections += `
@@ -1203,7 +1204,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
                         ${atisChart}
                         <div class="separator">|</div>
                         <span class="atis-tooltip">
-                            <span class="atis-icon">ℹ</span>
+                            <img src="assets/Icons/question-mark-circle-svgrepo-com.svg" class="atis-icon">
                             <span class="atis-tooltip-text">ATIS Info provided by 24Scope</span>
                         </span>
                     </div>
@@ -1213,6 +1214,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
         });
     } else {
         atcList.forEach(atc => {
+            menu.style.maxWidth = 'none';
             const atcName = atc.holder || 'N/A';
             const frequency = atc.frequency || 'N/A';
             const uptime = atc.uptime || 'N/A';
