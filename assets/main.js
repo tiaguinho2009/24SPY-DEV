@@ -1817,26 +1817,26 @@ function saveFlp() {
     const [departure, departureRwy, arrival, arrivalRwy, waypoints, sid, deptrans, star, arrtrans, app] = 
         ['departure', 'departureRwy', 'arrival', 'arrivalRwy', 'waypoints', 'sid', 'deptrans', 'star', 'arrtrans', 'app'].map(getValue);
     
-    const inputPoints = waypoints.split(' ').map(wp => wp.trim());
+    const inputPoints = waypoints.split(' ').map(wp => wp.trim()).filter(wp => wp); // Remove entradas vazias
     const allPoints = [...controlAreas.filter(a => a.type === "Airport"), ...CustomWaypoints, ...Waypoints];
     const flightPlanPoints = [];
-    
+
     const scaleFactor = (1478 / 1852) / Math.sqrt((534.22 - 512.13) ** 2 + (243.11 - 225.89) ** 2);
 
     function findAirport(name) {
         return allPoints.find(point => point.name === name && point.type === "Airport");
     }
-    
+
     function calculateAlignmentPoint(airport, runwayNumber, rotate) {
         const runway = airport.runways.find(rwy => rwy.number === runwayNumber);
         if (!runway) return null;
-        
+
         const hdgRad = (runway.hdg - (rotate ? 180 : 0)) * (Math.PI / 180);
         const distanceEuclidean = (1.5 / scaleFactor);
         const baseCoordinates = runway.coordinates || airport.coordinates;
-        
+
         return {
-            name: runwayNumber, 
+            name: runwayNumber,
             coordinates: [
                 baseCoordinates[0] + distanceEuclidean * Math.sin(hdgRad),
                 baseCoordinates[1] - distanceEuclidean * Math.cos(hdgRad)
@@ -1844,14 +1844,7 @@ function saveFlp() {
             type: "Waypoint"
         };
     }
-    
-    const departureAirport = findAirport(departure);
-    const arrivalAirport = findAirport(arrival);
-    if (!departureAirport || !arrivalAirport) {
-        showMessage('Flight Plan Error', `Airport not found!`);
-        return;
-    }
-    
+
     function addRunway(airport, runwayNumber, align) {
         const runway = airport.runways.find(rwy => rwy.number === runwayNumber);
         if (!runway || !runway.coordinates) {
@@ -1873,12 +1866,12 @@ function saveFlp() {
     }
     
     function addProcedure(airport, type, name, transition, runway) {
-        if (!name) return true;
+        if (!name) return false;
     
         let procedure;
         if (type === 'APPs') {
             // O APP não tem transition, então encontramos apenas pelo nome
-            procedure = airport[type]?.find(proc => proc.name === name && proc.rwy.includes(transition));
+            procedure = airport[type]?.find(proc => proc.name === name && proc.rwy.includes(runway));
         } else {
             // Para SIDs e STARs, mantém-se a lógica original
             procedure = airport[type]?.find(proc => proc.name === name && proc.transition === transition && proc.rwy.includes(runway));
@@ -1895,19 +1888,44 @@ function saveFlp() {
         });
     
         return true;
-    }	
-    
-    if (!addRunway(departureAirport, departureRwy, 'departure')) return;
-    if (!addProcedure(departureAirport, 'SIDs', sid, deptrans, departureRwy)) return;
-    
+    }
+
+    const departureAirport = findAirport(departure);
+    const arrivalAirport = findAirport(arrival);
+
+    // Adiciona o aeroporto de partida, se existir
+    if (departureAirport) {
+        if (departureRwy) {
+            addRunway(departureAirport, departureRwy, 'departure');
+            addProcedure(departureAirport, 'SIDs', sid, deptrans, departureRwy);
+        } else {
+            flightPlanPoints.push({ name: departure, coordinates: departureAirport.coordinates, type: "Airport" });
+        }
+    }
+
+    // Processa os waypoints intermediários
     inputPoints.forEach(input => {
         processWaypointInput(input, allPoints, flightPlanPoints);
     });
-    
-    if (!addProcedure(arrivalAirport, 'STARs', star, arrtrans, arrivalRwy)) return;
-    if (!addProcedure(arrivalAirport, 'APPs', app, arrivalRwy)) return;
-    if (!addRunway(arrivalAirport, arrivalRwy, app ? false : 'arrival')) return;
-    
+
+    // Adiciona o aeroporto de chegada, se existir
+    if (arrivalAirport) {
+        if (arrivalRwy) {
+            addProcedure(arrivalAirport, 'STARs', star, arrtrans, arrivalRwy);
+            if (addProcedure(arrivalAirport, 'APPs', app, '', arrivalRwy)) {
+                addRunway(arrivalAirport, arrivalRwy, app ? false : 'arrival')
+            }
+        } else {
+            flightPlanPoints.push({ name: arrival, coordinates: arrivalAirport.coordinates, type: "Airport" });
+        }
+    }
+
+    // Verifica se há pelo menos dois pontos no plano de voo
+    if (flightPlanPoints.length < 2) {
+        showMessage('Flight Plan Error', 'A flight plan requires at least two points!');
+        return;
+    }
+
     flightRoute = flightPlanPoints;
     draw();
 }

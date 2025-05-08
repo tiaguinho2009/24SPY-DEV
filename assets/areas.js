@@ -1221,7 +1221,7 @@ const controlAreas = [
 
             //RNAV ARR 07R/C/L
             { name: "RNAV", rwy: ["07L"], waypoints: ["OTTES", "GUPPI", "REEBO"]},
-            { name: "RNAV", rwy: ["07C"], waypoints: ["MOGTA", "DIGGY", "TURKA"]},
+            { name: "RNAV", rwy: ["07C"], waypoints: ["MOGTA", "TURKA", "DIGGY"]},
             { name: "RNAV", rwy: ["07R"], waypoints: ["TIMSE", "JACKI", "FUMBL"]},
         ]
     },
