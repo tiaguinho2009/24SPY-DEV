@@ -1136,7 +1136,7 @@ const controlAreas = [
         ctr: "IRFD CTR",
         app: "IRFD APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IRFD%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IRFD%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1a8ZqQjxqUC99J5oSskeH6dmsBeDTRUb9/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1_g0U7Zf4VtxZSkpNLzIEAaU4rEW0m-Uma1jnO_BoCvU/edit?usp=sharing"],
         ],
@@ -1237,7 +1237,7 @@ const controlAreas = [
         ctr: "IPPH CTR",
         app: "IPPH APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IPPH%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IPPH%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1Qhg6zRsIBAjeC_iidsy39FVt5UZhdi5o/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1s4xXrrKYt5BMCcXUvx5RF-wo76cAQ0ot6XVZEQvNiIc/edit?usp=sharing"],
         ],
@@ -1260,7 +1260,7 @@ const controlAreas = [
         ctr: "IZOL CTR",
         app: "IZOL APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IZOL%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IZOL%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "28", length: 3281, hdg: 288, glideslope: 3.00, coordinates: [1087.90, 613.69]},
@@ -1279,7 +1279,7 @@ const controlAreas = [
         ctr: "ITKO CTR",
         app: "ITKO APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/ITKO%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/ITKO%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1iYxp9qz4f7C6o5DaMVQQufx9rInLcmJh/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1MleQXy5h_2zbMrS6Iu0hUmH8W3qgtK7lCWtkHwVkxFI/edit?usp=sharing"],
         ],
@@ -1302,7 +1302,7 @@ const controlAreas = [
         ctr: "ILAR CTR",
         app: "ILAR APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/ILAR%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/ILAR%20Ground%20Chart.png"],
             ["TUGACHARTS", "https://drive.google.com/file/d/1ofmuravfpMXW1d4B9M43MyOGbc1RORCs/view"],
             ["AeroNav", "https://drive.google.com/file/d/19gg9VmHTmyurm6rCwgjnBj2BenFUOBp1/view?usp=sharing"],
             ["AeroNav SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
@@ -1323,7 +1323,7 @@ const controlAreas = [
         ctr: "IGRV CTR",
         app: "IGRV APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IGRV%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IGRV%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1G4M1CGxjXO688x-l7WBnD8UfhiLq2yrB/view?usp=sharing"],
         ],
         runways: [
@@ -1342,7 +1342,7 @@ const controlAreas = [
         ctr: "IBTH CTR",
         app: "IBTH APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IBTH%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IBTH%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1OSWgKHBnu8ch3sP68erv8_nVcAFIY7CQ/view?usp=sharing"],
             ["Oceanic", "https://drive.google.com/file/d/1eKfj9PNM5WKTHHXzHvvyEGtfmsngWyY7/view?usp=sharing"],
             
@@ -1363,7 +1363,7 @@ const controlAreas = [
         ctr: "ISAU CTR",
         app: "ISAU APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/ISAU%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/ISAU%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1m18kxQhwlVMXoY4T8FSIHtmz_ohooGbI/view?usp=sharing"],
         ],
         runways: [
@@ -1382,7 +1382,7 @@ const controlAreas = [
         towerfreq: "130.625",
         app: "IPAP APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IPAP%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IPAP%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1Ckwrvr93OBZxEfpSwTzc75ALkCmjqsqr/view?usp=sharing"],
             ["AeroNav ILAR SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
@@ -1401,7 +1401,7 @@ const controlAreas = [
         towerfreq: "125.650",
         app: "IMLR APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IMLR%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IMLR%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1iJ-5He0OgX4FMW6Y32DRKr9rAh4hgQ4R/view"],
             ["AeroNav IRFD SOP", "https://docs.google.com/document/d/1_g0U7Zf4VtxZSkpNLzIEAaU4rEW0m-Uma1jnO_BoCvU/edit?usp=sharing"],
         ],
@@ -1420,7 +1420,7 @@ const controlAreas = [
         towerfreq: "118.250",
         app: "IDCS APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IDCS%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IDCS%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "25", length: 750, hdg: 251, glideslope: 3.00, coordinates: [556.96, 110.11]},
@@ -1437,7 +1437,7 @@ const controlAreas = [
         towerfreq: "124.275",
         app: "IGAR APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IGAR%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IGAR%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "04", length: 2980, hdg:  42, glideslope: 3.00, coordinates: [435.48, 828.25]},
@@ -1454,7 +1454,7 @@ const controlAreas = [
         towerfreq: "127.250",
         app: "IIAB APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IIAB%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IIAB%20Ground%20Chart.png"],
             ["AeroNav", "https://drive.google.com/file/d/1opJg195YF73dI5t-tsQ88hyoIC9eoBde/view?usp=sharing"],
             ["AeroNav ILAR SOP", "https://docs.google.com/document/d/1TjaEmv7gd2SwcySAZwSr3r8-7cEVl_5vH-5IiaiqokE/edit?usp=sharing"],
         ],
@@ -1475,7 +1475,7 @@ const controlAreas = [
         towerfreq: "None",
         app: "ISCM APP",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/ISCM%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/ISCM%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "13", length: 1812, hdg: 126, glideslope: 3.00, coordinates: [980.56, 521.01]},
@@ -1492,7 +1492,7 @@ const controlAreas = [
         coordinates: [493.87, 757.33],
         towerfreq: "124.605",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IBLT%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IBLT%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "01", length: 1378, hdg:  14, glideslope: 3.00, coordinates: [493.50, 761.77]},
@@ -1508,7 +1508,7 @@ const controlAreas = [
         coordinates: [842.44, 404.50],
         towerfreq: "120.150",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/ILKL%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/ILKL%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "09", length: 1303, hdg:  89, glideslope: 3.00, coordinates: [842.26, 404.35]},
@@ -1524,7 +1524,7 @@ const controlAreas = [
         coordinates: [589.33, 892.00],
         towerfreq: "None",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/ITRN%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/ITRN%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "18", length: 1286, hdg: 180, glideslope: 3.00, coordinates: [588.72, 887.83]},
@@ -1540,7 +1540,7 @@ const controlAreas = [
         coordinates: [1087.76, 576.64],
         towerfreq: "120.200",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IJAF%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IJAF%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "07", length: 2278, hdg: 251, glideslope: 3.00, coordinates: [1083.60, 580.97]},
@@ -1556,7 +1556,7 @@ const controlAreas = [
         coordinates: [788.62, 1004.13],
         towerfreq: "130.250",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IHEN%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IHEN%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "17", length: 1170, hdg: 172, glideslope: 3.00, coordinates: [788.34, 1000.24]},
@@ -1572,7 +1572,7 @@ const controlAreas = [
         coordinates: [897.02, 973.33],
         towerfreq: "118.080",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/IBAR%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/IBAR%20Ground%20Chart.png"],
         ],
         runways: [
             { number: "06", length: 1320, hdg:  66, glideslope: 3.00, coordinates: [905.99, 967.01]},
@@ -1589,7 +1589,7 @@ const controlAreas = [
         towerfreq: "124.200",
         ctr: "ISKP CTR",
         charts: [
-            ["Official", "https://ptfs.xyz/charts/dark/ISKP%20Ground%20Chart.png"],
+            ["Official", "https://ptfs.app/charts/dark/ISKP%20Ground%20Chart.png"],
             ["TUGACHARTS", "https://drive.google.com/file/d/1BEaoKLa9hvXCPPKdkc4IGa9Wc22OXr0s/view"],
             ["Oceanic", "https://drive.google.com/file/d/1eKfj9PNM5WKTHHXzHvvyEGtfmsngWyY7/view?usp=sharing"],
         ],
