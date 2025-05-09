@@ -1192,7 +1192,7 @@ function showInfoMenu(badge, airport, menu, airportUI) {
             const { ident, uptime, text, chartPack } = atc;
             let atisChart = '';
             if (chartPack) {
-                if (chartPack.author === 'userwastaken, Nikita39Gamer') chartPack.author = 'Nikita39Gamer';
+                if (chartPack.author.includes('Nikita39Gamer')) chartPack.author = 'Nikita39Gamer';
                 atisChart = `<div class="separator">|</div><a class="atis-chart" href="${chartPack.url}" target="_blank">${chartPack.author}</a>`;
             }
             infoSections += `
