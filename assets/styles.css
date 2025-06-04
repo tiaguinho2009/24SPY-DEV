@@ -1058,6 +1058,10 @@ canvas {
     font-size: 0.9em;
 }
 
+.controller-info-section.queue {
+    padding: 5px 10px 5px 10px;
+}
+
 .atis-info-section {
     background-color: rgba(32, 32, 36, 1);
     border-radius: 5px;

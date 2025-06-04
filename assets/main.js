@@ -296,7 +296,11 @@ function transformAtisInfoToText(atisInfo) {
 
 function OceanicOnlineATC() {
     const SkopelosATIS = getOnlineATCs("Skopelos").ATS[0];
-    if (SkopelosATIS && SkopelosATIS.oceanic) {
+    const SaintBarthATIS = getOnlineATCs("Saint Barthélemy").ATS[0];
+    if (
+        SkopelosATIS && SkopelosATIS.oceanic &&
+        SaintBarthATIS && SaintBarthATIS.oceanic
+    ) {
         controlAreas.forEach(area => {
             if (area.type === 'polyline' && area.name === 'ISKP FIR') {
                 area.active = false;
@@ -335,7 +339,7 @@ function updateOnlineATCs(atcList) {
     onlineATCs = {};
 
     atcList.forEach(atcData => {
-        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency, chartPack, oceanic, ...otherInfo } = atcData;
+        const { holder, claimable, airport, position, code, uptime, frequency: initialFrequency, chartPack, oceanic, queue, ...otherInfo } = atcData;
 
         if (claimable) return;
 
@@ -382,6 +386,12 @@ function updateOnlineATCs(atcList) {
         }
 
         onlineATCs[airport][mappedPosition].push({ holder, uptime, frequency, code });
+        if (Array.isArray(queue) && queue.length > 0) {
+            onlineATCs[airport][mappedPosition].push({
+                type: "queue",
+                queue: queue
+            });
+        }
     });
     OceanicOnlineATC();
 }
@@ -1215,6 +1225,14 @@ function showInfoMenu(badge, airport, menu, airportUI) {
     } else {
         atcList.forEach(atc => {
             menu.style.maxWidth = 'none';
+            if (atc.type === "queue") {
+                infoSections += `
+                    <div class="controller-info-section queue">
+                        <p><strong>${atc.queue.length}</strong> in queue</p>
+                    </div>
+                `;
+                return;
+            }
             const atcName = atc.holder || 'N/A';
             const frequency = atc.frequency || 'N/A';
             const uptime = atc.uptime || 'N/A';

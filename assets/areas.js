@@ -1954,7 +1954,7 @@ const settingsValues = {
 };
 
 const websiteInfo = {
-    version: "DEV 0.2.3",
+    version: "DEV 0.2.3a",
 };
 
 const localInfo = {};
